@@ -1,14 +1,26 @@
 " ------------------------------------
 "  Plug
 call plug#begin('~/.config/nvim/plugged')
+
+"function! BuildYCM(info)
+"  " info is a dictionary with 3 fields
+"  " - name:   name of the plugin
+"  " - status: 'installed', 'updated', or 'unchanged'
+"  " - force:  set on PlugInstall! or PlugUpdate!
+"  if a:info.status == 'installed' || a:info.force
+"    !./install.py --clangd-completer
+"  endif
+"endfunction
+
+"This should work but isn't. Instead one should compile with the flags after the repository is cloned
+"Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') } 
+Plug 'ycm-core/YouCompleteMe'
 Plug 'preservim/nerdtree'
-"Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer' }
 call plug#end()
 
 
