@@ -1,6 +1,9 @@
+# Ignore everything
 *
 
-!kitty/
-!nvim/
+!.gitignore
+
+!*kitty/
+!*nvim/
 
 nvim/plugged/*

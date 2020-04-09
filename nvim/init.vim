@@ -1,27 +1,27 @@
+
 " ------------------------------------
-"  Plug
-call plug#begin('~/.config/nvim/plugged')
+" Plugins and scripts
+" ------------------------------------
+source ~/.config/nvim/vimrcs/plugins.vim
 
-"function! BuildYCM(info)
-"  " info is a dictionary with 3 fields
-"  " - name:   name of the plugin
-"  " - status: 'installed', 'updated', or 'unchanged'
-"  " - force:  set on PlugInstall! or PlugUpdate!
-"  if a:info.status == 'installed' || a:info.force
-"    !./install.py --clangd-completer
-"  endif
-"endfunction
+" ------------------------------------
+" GUI related
+" Set font according to system
+" https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip?_ga=2.21246782.427104117.1586269112-2045209984.1586269112
+set gfn=JetBrains\ Mono
 
-"This should work but isn't. Instead one should compile with the flags after the repository is cloned
-"Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') } 
-Plug 'ycm-core/YouCompleteMe'
-Plug 'preservim/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'octol/vim-cpp-enhanced-highlight'
-call plug#end()
+" Disable scrollbars (real hackers don't use scrollbars for navigation!)
+set guioptions-=r
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
+
+try
+    " Colorscheme
+    set background=dark
+    colorscheme peaksea
+catch
+endtry
 
 
 " ------------------------------------
@@ -99,38 +99,19 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-
 " ------------------------------------
-" NERD Tree
-let g:NERDTreeWinPos = "left"
-let NERDTreeShowHidden=0
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+"python with virtualenv support
 
-map <leader>nn :NERDTreeToggle<cr>
-map <leader>nb :NERDTreeFromBookmark<Space>
-map <leader>nf :NERDTreeFind<cr>
+function! Pythonvenv()
+py3 << EOF
+import os
+import sys
+if "VIRTUAL_ENV" in os.environ:
+  project_base_dir = os.environ["VIRTUAL_ENV"]
+  activate_this = os.path.join(project_base_dir, "bin/activate_this.py")
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+endfunction
 
-" ------------------------------------
-" Vim airline
-let g:airline_powerline_fonts = 1
-let g:airline_detect_modified=1
-let g:airline_detect_paste=1
-let g:airline_detect_crypt=1
-let g:airline_detect_spell=1
-
-" ------------------------------------
-"  git gutter
-highlight GitGutterAdd    guifg=#009900 guibg=<X> ctermfg=2
-highlight GitGutterChange guifg=#bbbb00 guibg=<X> ctermfg=3
-highlight GitGutterDelete guifg=#ff2222 guibg=<X> ctermfg=1
-
-" ------------------------------------
-"  cpp-enhanced-highlight
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let c_no_curly_error=1
-" ------------------------------------
-"  vim-markdown
-"let vim_markdown_preview_github=1
-
+autocmd BufReadPost,BufNewFile *.py call Pythonvenv()
 
