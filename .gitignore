@@ -1,1 +1,6 @@
+*
+
+!kitty/
+!nvim/
+
 nvim/plugged/*
