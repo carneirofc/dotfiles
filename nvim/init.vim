@@ -5,6 +5,18 @@
 source ~/.config/nvim/vimrcs/plugins.vim
 
 " ------------------------------------
+"  clang-format
+" ------------------------------------
+function! Formatdiff()
+  let l:formatdiff = 1
+  py3f ~/.config/nvim/scripts/clang-format.py
+endfunction
+autocmd BufWritePre *.hpp,*.h,*.cc,*.cpp call Formatdiff()
+noremap <leader>k :call Formatdiff()<cr>
+
+let g:clang_format_fallback_style = "llvm"
+
+" ------------------------------------
 " GUI related
 " Set font according to system
 " https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip?_ga=2.21246782.427104117.1586269112-2045209984.1586269112
@@ -109,7 +121,10 @@ import sys
 if "VIRTUAL_ENV" in os.environ:
   project_base_dir = os.environ["VIRTUAL_ENV"]
   activate_this = os.path.join(project_base_dir, "bin/activate_this.py")
-  execfile(activate_this, dict(__file__=activate_this))
+  # execfile(activate_this, dict(__file__=activate_this))
+  with open(activate_this, "rb") as source_file:
+    code = compile(source_file.read(), activate_this, "exec")
+  exec(code, dict(__file__=activate_this))
 EOF
 endfunction
 

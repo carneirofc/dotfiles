@@ -1,9 +1,10 @@
 # Ignore everything
-*
+/*
 
 !.gitignore
+!README.md
 
-!*kitty/
-!*nvim/
+!kitty/*
+!nvim/*
 
 nvim/plugged/*

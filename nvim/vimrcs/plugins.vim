@@ -1,7 +1,6 @@
 " ------------------------------------
 "  Plug
 " ------------------------------------
-
 call plug#begin('~/.config/nvim/plugged')
 "This should work but isn't. Instead one should compile with the flags after the repository is cloned
 "Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') } 
@@ -12,20 +11,16 @@ Plug 'psf/black', {'tag':'19.10b0'} " Python Formatter
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-syntastic/syntastic'
 Plug 'ycm-core/YouCompleteMe'
 call plug#end()
 
 " ------------------------------------
-"  clang-format
+"  syntastic
 " ------------------------------------
-function! Formatdiff()
-  let l:formatdiff = 1
-  py3f ~/.config/nvim/scripts/clang-format.py
-endfunction
-autocmd BufWritePre *.h,*.cc,*.cpp call Formatdiff()
-noremap <leader>k :call Formatdiff()<cr>
-
-let g:clang_format_fallback_style = "llvm"
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_python_exec = 'python3'
+let g:syntastic_python_flake8_args='--ignore=E501,E221,E231'
 
 " ------------------------------------
 "  black python format
@@ -76,5 +71,6 @@ let c_no_curly_error=1
 "  YCM
 " ------------------------------------
 let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_confirm_extra_conf = 0
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
