@@ -8,6 +8,10 @@ https://forum.manjaro.org/t/it-is-possible-to-use-2560x1080-resolution-on-linux-
 
 Assuming that it is connected to the `HDMI-1` port:
 ```bash
+#/bin/sh
+
+[ "$XDG_SESSION_TYPE" = x11 ] || exit 0
+
 xrandr --newmode “2560x1080x53.92” 162.500000 2560 2608 2640 2720 1080 1083 1087 1108 +HSync -VSync
 xrandr --addmode HDMI-0 “2560x1080x53.92”
 xrandr --verbose --output HDMI-0 --mode “2560x1080x53.92” 
