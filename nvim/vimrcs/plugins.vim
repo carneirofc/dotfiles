@@ -13,6 +13,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-syntastic/syntastic'
 Plug 'ycm-core/YouCompleteMe'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " ------------------------------------
