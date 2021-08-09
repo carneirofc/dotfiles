@@ -13,13 +13,6 @@ cp -v zshrc ${ZSH_DOTDIR}/.zshrc
 cp -v zshenv ~/.zshenv
 
 # https://github.com/ryanoasis/nerd-fonts
-FONT_MESLO=/usr/share/fonts/meslo
-FONTS_URLS="https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf"
-sudo mkdir -p ${FONT_MESLO}
-for url in $FONTS_URLS; do
-sudo wget ${url} --directory-prefix ${FONT_MESLO}
-done
-
 for f in p10k.zsh zsh-config zsh-prompt; do
     cp -v ${f} ${ZSH_PATH}/${f}
 done

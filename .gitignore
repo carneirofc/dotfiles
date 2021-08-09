@@ -1,8 +1,2 @@
-# Ignore everything
-/*
-!.gitignore
-!*.md
-!kitty/*
-!nvim/*
-!zsh
+nvim/.netrwhist
 nvim/plugged/*
