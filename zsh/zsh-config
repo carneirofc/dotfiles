@@ -17,12 +17,12 @@ zstyle ':completion:*' rehash true                              # automatically 
 # Speed up completions
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-HISTFILE=~/.zhistory
+zstyle ':completion:*' cache-path ~/.config/zsh/cache
+HISTFILE=~/.config/zsh/zhistory
 HISTSIZE=10000
 SAVEHIST=10000
-#export EDITOR=/usr/bin/nano
-#export VISUAL=/usr/bin/nano
+export EDITOR=/usr/bin/nvim
+export VISUAL=/usr/bin/nvim
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
 
 
@@ -34,7 +34,7 @@ if [[ "${terminfo[khome]}" != "" ]]; then
   bindkey "${terminfo[khome]}" beginning-of-line                # [Home] - Go to beginning of line
 fi
 bindkey '^[[8~' end-of-line                                     # End key
-bindkey '^[[F' end-of-line                                     # End key
+bindkey '^[[F' end-of-line                                      # End key
 if [[ "${terminfo[kend]}" != "" ]]; then
   bindkey "${terminfo[kend]}" end-of-line                       # [End] - Go to end of line
 fi
@@ -78,20 +78,16 @@ export LESS=-R
 ## Plugins section: Enable fish style features
 # Use syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 # Use history substring search
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+
 # bind UP and DOWN arrow keys to history substring search
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up			
 bindkey '^[[B' history-substring-search-down
-
-# Offer to install missing package if command is not found
-if [[ -r /usr/share/zsh/functions/command-not-found.zsh ]]; then
-    source /usr/share/zsh/functions/command-not-found.zsh
-    export PKGFILE_PROMPT_INSTALL_MISSING=1
-fi
 
 # Set terminal window and tab/icon title
 #
