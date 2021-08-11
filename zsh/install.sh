@@ -14,20 +14,20 @@ cp -v zshenv ~/.zshenv
 
 # https://github.com/ryanoasis/nerd-fonts
 for f in p10k.zsh zsh-config zsh-prompt; do
-    cp -v ${f} ${ZSH_PATH}/${f}
+    sudo cp -v ${f} ${ZSH_PATH}/${f}
 done
 
 set +e
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_PLUGINS}/zsh-syntax-highlighting \
-    || cd ${ZSH_PLUGINS}/zsh-syntax-highlighting && git pull && cd -
+sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_PLUGINS}/zsh-syntax-highlighting 2>/dev/null \
+    || cd ${ZSH_PLUGINS}/zsh-syntax-highlighting && sudo git pull && cd -
 
-git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_PLUGINS}/zsh-history-substring-search \
-    || cd ${ZSH_PLUGINS}/zsh-history-substring-search && git pull && cd -
+sudo git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_PLUGINS}/zsh-history-substring-search 2>/dev/null \
+    || cd ${ZSH_PLUGINS}/zsh-history-substring-search && sudo git pull && cd -
 
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_PLUGINS}/zsh-autosuggestions \
-    || cd ${ZSH_PLUGINS}/zsh-autosuggestions && git pull && cd -
+sudo git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_PLUGINS}/zsh-autosuggestions 2>/dev/null \
+    || cd ${ZSH_PLUGINS}/zsh-autosuggestions && sudo git pull && cd -
 
-git clone https://github.com/romkatv/powerlevel10k /usr/share/zsh-theme-powerlevel10k \
-    || cd /usr/share/zsh-theme-powerlevel10k && git pull && cd -
+sudo git clone https://github.com/romkatv/powerlevel10k /usr/share/zsh-theme-powerlevel10k 2>/dev/null \
+    || cd /usr/share/zsh-theme-powerlevel10k && sudo git pull && cd -
 
 set -e
