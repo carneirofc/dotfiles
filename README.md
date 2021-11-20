@@ -9,16 +9,23 @@ cd zsh && ./install.sh
 Install steps:
 
 1) Move or create a soft link to `nvim/`
+```bash
+mkdir -v  ~/.config
+ln -v -r -s ./nvim ~/.config/nvim
+```
+
 2) Clone the required plugins using 'vim-plug'
 
 ```
 :PlugInstall
 ```
+
 3) Compile 'YouCompleteMe'
 ```bash
 cd nvim/plugged/YouCompleteMe/
 CC=clang-12 CXX=clang++-12 python ./install.py --clangd-completer --verbose
 ```
+
 4) Install `clang-format` and set vim to use the correct binary
 Debian/Ubuntu example
 ```
