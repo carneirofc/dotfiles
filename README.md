@@ -1,5 +1,10 @@
 # General Configurations
 
+# zsh
+```
+cd zsh && ./install.sh
+```
+
 ## nvim
 Install steps:
 

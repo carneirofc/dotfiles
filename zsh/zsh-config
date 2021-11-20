@@ -1,15 +1,15 @@
 ## Options section
+setopt appendhistory                                            # Immediately append history instead of overwriting
+setopt autocd                                                   # if only directory path is entered, cd there.
 setopt correct                                                  # Auto correct mistakes
 setopt extendedglob                                             # Extended globbing. Allows using regular expressions with *
+setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
+setopt inc_append_history                                       # save commands are added to the history immediately, otherwise only when shell exits.
+setopt nobeep                                                   # No beep
 setopt nocaseglob                                               # Case insensitive globbing
-setopt rcexpandparam                                            # Array expension with parameters
 setopt nocheckjobs                                              # Don't warn about running processes when exiting
 setopt numericglobsort                                          # Sort filenames numerically when it makes sense
-setopt nobeep                                                   # No beep
-setopt appendhistory                                            # Immediately append history instead of overwriting
-setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
-setopt autocd                                                   # if only directory path is entered, cd there.
-setopt inc_append_history                                       # save commands are added to the history immediately, otherwise only when shell exits.
+setopt rcexpandparam                                            # Array expension with parameters
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
@@ -21,6 +21,7 @@ zstyle ':completion:*' cache-path ~/.config/zsh/cache
 HISTFILE=~/.config/zsh/zhistory
 HISTSIZE=10000
 SAVEHIST=10000
+
 export EDITOR=/usr/bin/nvim
 export VISUAL=/usr/bin/nvim
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
@@ -54,9 +55,10 @@ bindkey '^H' backward-kill-word                                 # delete previou
 bindkey '^[[Z' undo                                             # Shift+tab undo last action
 
 ## Alias section 
-alias cp="cp -i"                                                # Confirm before overwriting something
+alias cp='cp -i'                                                # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes
 alias diff='diff --color'
+alias grep='grep --color'
 alias free='free -m'                                            # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 alias ls='ls --color'
