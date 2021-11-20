@@ -22,7 +22,7 @@ $ ln -v -r -s ./nvim ~/.config/nvim
 
 3) Compile 'YouCompleteMe'
 Optionally install c/cpp compilers and tools (llvm)
-```bash
+```
 # apt install llvm-12 llvm-12-doc clang-12 clang-tidy-12 clang-format-12 clangd-12 lld-12 lldb-12
 $ cd nvim/plugged/YouCompleteMe/
 $ CC=clang-12 CXX=clang++-12 python ./install.py --clangd-completer --verbose
