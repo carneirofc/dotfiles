@@ -2,18 +2,16 @@
 "  Plug
 " ------------------------------------
 call plug#begin('~/.config/nvim/plugged')
-"This should work but isn't. Instead one should compile with the flags after the repository is cloned
-" Plug 'ycm-core/YouCompleteMe'
 Plug 'airblade/vim-gitgutter'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/nerdtree'
-Plug 'psf/black', {'tag':'19.10b0'} " Python Formatter
+Plug 'psf/black', {'tag':'21.11b1'} " Python Formatter
+Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-syntastic/syntastic'
-Plug 'ycm-core/YouCompleteMe'
-Plug 'ryanoasis/vim-devicons'
+Plug 'ycm-core/YouCompleteMe' " Remember to compile the code! Requires nvim v0.6+
 call plug#end()
 
 " ------------------------------------
@@ -31,14 +29,13 @@ autocmd BufWritePre *.py execute ':Black'
 " ------------------------------------
 "  cmake-format
 " ------------------------------------
-" /home/carneirofc/Devel/cons-regatron-interface/venv/bin/cmake-format
 " @todo
 
 " ------------------------------------
 " NERD Tree
 " ------------------------------------
 let g:NERDTreeWinPos = "left"
-let NERDTreeShowHidden=0
+let NERDTreeShowHidden = 0
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 
 map <leader>nn :NERDTreeToggle<cr>
