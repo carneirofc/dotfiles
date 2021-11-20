@@ -3,7 +3,7 @@
 " ------------------------------------
 call plug#begin('~/.config/nvim/plugged')
 "This should work but isn't. Instead one should compile with the flags after the repository is cloned
-"Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') } 
+" Plug 'ycm-core/YouCompleteMe'
 Plug 'airblade/vim-gitgutter'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/nerdtree'
