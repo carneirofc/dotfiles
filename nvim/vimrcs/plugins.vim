@@ -12,7 +12,15 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-syntastic/syntastic'
 Plug 'ycm-core/YouCompleteMe' " Remember to compile the code! Requires nvim v0.6+
+Plug 'junegunn/fzf'
 call plug#end()
+
+" -----------------------------------
+" FZF Fuzzy Finder
+" -----------------------------------
+"  https://github.com/junegunn/fzf
+"  https://github.com/junegunn/fzf.vim
+nmap <C-P> :FZF<CR>
 
 " ------------------------------------
 "  syntastic

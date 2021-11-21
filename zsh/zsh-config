@@ -55,12 +55,18 @@ bindkey '^H' backward-kill-word                                 # delete previou
 bindkey '^[[Z' undo                                             # Shift+tab undo last action
 
 ## Alias section 
+if [ -f "/usr/bin/batcat" ]; then                                # cat with syntax highligh and more!
+    alias cat='batcat --paging=never'
+elif [ -f "/usr/bin/bat" ]; then
+    alias cat='bat --paging=never'
+fi
+
 alias cp='cp -i'                                                # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes
 alias diff='diff --color'
-alias grep='grep --color'
 alias free='free -m'                                            # Show sizes in MB
 alias gitu='git add . && git commit && git push'
+alias grep='grep --color'
 alias ls='ls --color'
 alias more=less
 
