@@ -1,6 +1,12 @@
 # General Configurations
 
-# zsh
+Terminal utilities:
+
+```
+sudo apt install bat fzf
+```
+
+## zsh
 ```
 $ cd zsh && ./install.sh
 ```
