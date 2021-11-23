@@ -1,5 +1,5 @@
 #!/bin/sh
-set -exu
+set -ex
 
 ZSH_DOTDIR=~/.config/zsh
 ZSH_PATH=/usr/share/zsh
@@ -12,7 +12,7 @@ mkdir -v -p ${ZSH_DOTDIR}
 USE_LN=True
 
 if [ ! -z ${USE_LN} ]; then
-    alias cp='ln -r -s'
+    [ ! -z "${FORCE}" ] && alias cp='ln -f -r -s' || alias cp='ln -r -s'
 fi
 
 cp .zshrc ${ZSH_DOTDIR}/.zshrc -v
