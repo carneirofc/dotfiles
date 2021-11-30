@@ -4,7 +4,7 @@
 " ------------------------------------
 source ~/.config/nvim/vimrcs/plugins.vim
 source ~/.config/nvim/vimrcs/clang-format.vim
-source ~/.config/nvim/vimrcs/gui.nvim
+source ~/.config/nvim/vimrcs/gui.vim
 source ~/.config/nvim/vimrcs/virtualenv.vim
 source ~/.config/nvim/vimrcs/text-tag-etc.vim
 
