@@ -3,68 +3,10 @@
 " Plugins and scripts
 " ------------------------------------
 source ~/.config/nvim/vimrcs/plugins.vim
-
-" ------------------------------------
-"  clang-format
-" ------------------------------------
-
-let g:clang_format_path = "clang-format-12"
-
-function! Formatdiff()
-  let l:formatdiff = 1
-  py3f ~/.config/nvim/scripts/clang-format.py
-endfunction
-autocmd BufWritePre *.hpp,*.h,*.cc,*.cpp call Formatdiff()
-noremap <leader>k :call Formatdiff()<cr>
-
-let g:clang_format_fallback_style = "llvm"
-
-" ------------------------------------
-" GUI related
-" Set font according to system
-" https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip?_ga=2.21246782.427104117.1586269112-2045209984.1586269112
-set gfn="JetBrainsMono Nerd Font"
-
-" Disable scrollbars (real hackers don't use scrollbars for navigation!)
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
-
-try
-    " Colorscheme
-    set background=dark
-    colorscheme peaksea
-catch
-endtry
-
-
-" ------------------------------------
-" General editor settings
-set updatetime=1000
-set number
-set relativenumber
-
-" ------------------------------------
-" Text, tab and indent related
-
-" Use spaces instead of tabs
-set expandtab
-
-" Be smart when using tabs ;)
-set smarttab
-
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-
-" Linebreak on 500 characters
-set lbr
-set tw=500
-
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
+source ~/.config/nvim/vimrcs/clang-format.vim
+source ~/.config/nvim/vimrcs/gui.nvim
+source ~/.config/nvim/vimrcs/virtualenv.vim
+source ~/.config/nvim/vimrcs/text-tag-etc.vim
 
 " ------------------------------------
 " Moving around, tabs, windows and buffers
@@ -114,22 +56,4 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" ------------------------------------
-"python with virtualenv support
-
-function! Pythonvenv()
-py3 << EOF
-import os
-import sys
-if "VIRTUAL_ENV" in os.environ:
-  project_base_dir = os.environ["VIRTUAL_ENV"]
-  activate_this = os.path.join(project_base_dir, "bin/activate_this.py")
-  # execfile(activate_this, dict(__file__=activate_this))
-  with open(activate_this, "rb") as source_file:
-    code = compile(source_file.read(), activate_this, "exec")
-  exec(code, dict(__file__=activate_this))
-EOF
-endfunction
-
-autocmd BufReadPost,BufNewFile *.py call Pythonvenv()
 
