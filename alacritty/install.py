@@ -15,7 +15,7 @@ def install_alacritty():
     elif sys.platform == "win32":
         if os.environ.get("APPDATA"):
             alacritty_yml = Path(os.environ.get("APPDATA")).joinpath(
-                ".config/alacritty/alacritty.yml"
+                "alacritty/alacritty.yml"
             )
         else:
             alacritty_yml = Path.home().joinpath(
