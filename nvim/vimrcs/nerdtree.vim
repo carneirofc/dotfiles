@@ -18,8 +18,11 @@ let g:NERDTreeWinPos = "left"
 let g:NERDTreeDirArrowExpandable = '▹'
 let g:NERDTreeDirArrowCollapsible = '▿'
 
-nnoremap <expr> <leader>n g:NERDTree.IsOpen() ? ':NERDTreeClose<CR>' : @% == '' ? ':NERDTree<CR>' : ':NERDTreeFind<CR>'
+" map <leader>nn :NERDTreeToggle<cr>
+nnoremap <expr> <leader>nn g:NERDTree.IsOpen() ? ':NERDTreeClose<CR>' : @% == '' ? ':NERDTree<CR>' : ':NERDTreeFind<CR>'
 nmap <leader>N :NERDTreeFind<CR>
+map <leader>nb :NERDTreeFromBookmark<Space>
+map <leader>nf :NERDTreeFind<cr>
 
 " If more than one window and previous buffer was NERDTree, go back to it.
 " autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
@@ -27,6 +30,3 @@ nmap <leader>N :NERDTreeFind<CR>
 " avoid crashes when calling vim-plug functions while the cursor is on the NERDTree window
 let g:plug_window = 'noautocmd vertical topleft new'
 
-map <leader>nn :NERDTreeToggle<cr>
-map <leader>nb :NERDTreeFromBookmark<Space>
-map <leader>nf :NERDTreeFind<cr>
