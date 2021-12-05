@@ -20,7 +20,7 @@ cp zshenv ~/.zshenv -v
 
 # https://github.com/ryanoasis/nerd-fonts
 for f in p10k.zsh zsh-config zsh-prompt; do
-    sudo cp ${f} ${ZSH_PATH}/${f} -v
+    cp ${f} ${ZSH_PATH}/${f} -v
 done
 
 set +e
