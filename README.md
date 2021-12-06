@@ -12,6 +12,17 @@ $ cd zsh && ./install.sh
 ```
 
 ## nvim
+
+### build from source
+Requirements
+```bash
+sudo apt install libtool libtool-bin
+mkdir /opt/neovim
+cd /opt/neovim
+git clone https://github.com/neovim/neovim neovim-src
+```
+
+### download build
 Install steps:
 
 1) Move or create a soft link to `nvim/`
@@ -39,4 +50,11 @@ Debian/Ubuntu example
 ```
 # apt install clang-format-12 -y
 $ sed -i 's|let g:clang_format_path = "clang-format.*"|let g:clang_format_path = "clang-format-12"|g' ./nvim/init.vim
+```
+
+### how-to-use-the-windows-clipboard-from-wsl
+ # https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl
+```
+# sudo ln -s "$NEOVIM_WIN_DIR/bin/win32yank.exe" "/usr/local/bin/win32yank.exe"
+sudo ln -v -s "$(whereis win32yank.exe |awk '{print $2 }')" "/usr/local/bin/win32yank.exe"
 ```

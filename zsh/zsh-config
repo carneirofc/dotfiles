@@ -22,6 +22,8 @@ HISTFILE=~/.config/zsh/zhistory
 HISTSIZE=10000
 SAVEHIST=10000
 
+export TERM="xterm-256color"                                    # getting proper colors
+
 export EDITOR=/usr/bin/nvim
 export VISUAL=/usr/bin/nvim
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
@@ -65,12 +67,17 @@ alias cp='cp -i'                                                # Confirm before
 alias df='df -h'                                                # Human-readable sizes
 alias diff='diff --color'
 alias free='free -m'                                            # Show sizes in MB
-alias gitu='git add . && git commit && git push'
-alias gits='git status'
 alias grep='grep --color'
 alias ls='ls --color'
 alias ll='ls -l'
 alias more=less
+
+alias gitu='git add . && git commit && git push'
+alias gits='git status'
+
+if [ ! -z "$WSL_DISTRO_NAME" ]; then
+    alias neovide="neovide.exe --wsl"
+fi
 
 # Theming section  
 autoload -U compinit colors zcalc

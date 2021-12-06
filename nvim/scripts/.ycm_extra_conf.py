@@ -47,7 +47,10 @@ flags = [
 ]
 
 if os.environ.get("EPICS_BASE", ""):
-    flags.append("-isystem",os.path.join(os.environ.get("EPICS_BASE", ""), "include/")
+    flags.append("-isystem")
+    flags.append(os.path.join(os.environ.get("EPICS_BASE", ""), "include/"))
+    flags.append("-isystem")
+    flags.append(os.path.join(os.environ.get("EPICS_BASE", ""), "src/"))
 
 
 # Set this to the absolute path to the folder (NOT the file!) containing the

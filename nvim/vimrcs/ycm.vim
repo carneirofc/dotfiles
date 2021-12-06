@@ -10,4 +10,4 @@ let g:ycm_global_ycm_extra_conf = "~/.config/nvim/scripts/.ycm_extra_conf.py"
 
 nmap <C-Space> :YcmCompleter GetType<CR>
 nmap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nmap <leader>h :YcmDiags<CR>
+nmap <leader>r :YcmCompleter GoToReferences<CR>
