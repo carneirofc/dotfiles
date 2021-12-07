@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Claudio F. Carneiro
+  description: Configure a workstation with my dotfiles
+  company: CNPEM
+  license: BSD
+  min_ansible_version: 2.10.15
+
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+    - name: Ubuntu
+      versions:
+        - bullseye
+        - sid

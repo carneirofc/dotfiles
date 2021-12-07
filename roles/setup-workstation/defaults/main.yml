@@ -1,0 +1,21 @@
+# -------- general ---------
+user: "{{ ansible_user_id }}"
+dotdir: "~/.config"
+
+# ------- Alacritty --------
+alacritty_dotdir: "{{ dotdir }}/alacritty"
+
+# --------- FONTS ----------
+fonts_dir: /usr/share/fonts
+fonts_packages: [] # list of package names = Install fonts with package manager
+fonts_download: [] # list of dict {"url": ..., "dest": ...} Download and install fonts
+
+# ---------- ZSH -----------
+zsh_dotdir: "{{ dotdir }}/zsh"
+zsh_bin: "/usr/bin/zsh"
+zsh_path: "/usr/share/zsh"
+zsh_plugins: "{{ zsh_path }}/plugins" # Plugins path
+zsh_plugins_repos: [] # Dict with zsh plugins { "repo": ..., "dest": ... } where dest is relative to the plugins path
+
+zsh_settings: [] # { "src": ..., "dest": ...} simple file copy
+zsh_template_settings: [] # jinja templates

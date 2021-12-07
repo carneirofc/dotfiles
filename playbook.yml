@@ -1,0 +1,13 @@
+---
+- connection: local
+  become: false
+  hosts: localhost
+
+  vars:
+    setup_zsh: true
+    setup_fonts: true
+    setup_nvim: true
+    setup_alacritty: false
+
+  roles:
+    - setup-workstation
