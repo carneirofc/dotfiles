@@ -1,5 +1,14 @@
 # General Configurations
 
+Install using ansible:
+```command
+ansible-playbook playbook.yml
+```
+If ansible is having troubles finding some packages, try specifying the interpreter.
+```
+ansible-playbook playbook.yml -K  -e 'ansible_python_interpreter=/usr/bin/python3.8'
+```
+
 Terminal utilities:
 
 ```
