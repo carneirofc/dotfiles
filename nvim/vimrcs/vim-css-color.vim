@@ -1,1 +1,1 @@
-Plug 'ap/vim-css-color' " Color previews for CSS
+Plug 'ap/vim-css-color', { 'for': ['css', 'vim'] } " Color previews for CSS

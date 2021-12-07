@@ -1,7 +1,7 @@
 " ------------------------------------
 " General editor settings
 set updatetime=300      " Reduce time for highlighting other references
-" set redrawtime=10000    " Allow more time for loading syntax on large files
+set redrawtime=10000    " Allow more time for loading syntax on large files
 set number
 set relativenumber
 set encoding=utf-8
@@ -20,7 +20,6 @@ set showtabline=2
 " GUI related
 
 " Set font according to system.
-" https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip?_ga=2.21246782.427104117.1586269112-2045209984.1586269112
 set guifont=JetBrainsMono\ Nerd\ Font:h16
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -34,59 +33,6 @@ set guioptions-=r
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Theming
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-highlight Normal           guifg=#dfdfdf ctermfg=15   guibg=#1D1F21 ctermbg=none  cterm=none
-highlight LineNr           guifg=#5b6268 ctermfg=8    guibg=#1D1F21 ctermbg=none  cterm=none
-highlight CursorLineNr     guifg=#202328 ctermfg=7    guifg=#1D1F21 ctermbg=8     cterm=none
-highlight VertSplit        guifg=#1c1f24 ctermfg=0    guifg=#5b6268 ctermbg=8     cterm=none
-highlight Statement        guifg=#98be65 ctermfg=2    guibg=none    ctermbg=none  cterm=none
-highlight Directory        guifg=#51afef ctermfg=4    guibg=none    ctermbg=none  cterm=none
-highlight StatusLine       guifg=#202328 ctermfg=7    guifg=#5b6268 ctermbg=8     cterm=none
-highlight StatusLineNC     guifg=#202328 ctermfg=7    guifg=#5b6268 ctermbg=8     cterm=none
-highlight NERDTreeClosable guifg=#98be65 ctermfg=2
-highlight NERDTreeOpenable guifg=#5b6268 ctermfg=8
-highlight Comment          guifg=#51afef ctermfg=4    guibg=none    ctermbg=none  cterm=italic
-highlight Constant         guifg=#3071db ctermfg=12   guibg=none    ctermbg=none  cterm=none
-highlight Special          guifg=#51afef ctermfg=4    guibg=none    ctermbg=none  cterm=none
-highlight Identifier       guifg=#5699af ctermfg=6    guibg=none    ctermbg=none  cterm=none
-highlight PreProc          guifg=#c678dd ctermfg=5    guibg=none    ctermbg=none  cterm=none
-highlight String           guifg=#3071db ctermfg=12   guibg=none    ctermbg=none  cterm=none
-highlight Number           guifg=#ff6c6b ctermfg=1    guibg=none    ctermbg=none  cterm=none
-highlight Function         guifg=#ff6c6b ctermfg=1    guibg=none    ctermbg=none  cterm=none
-highlight Visual           guifg=#dfdfdf ctermfg=1    guibg=#748096 ctermbg=none  cterm=none
-
-" highlight WildMenu         ctermfg=0       ctermbg=80      cterm=none
-" highlight Folded           ctermfg=103     ctermbg=234     cterm=none
-" highlight FoldColumn       ctermfg=103     ctermbg=234     cterm=none
-" highlight DiffAdd          ctermfg=none    ctermbg=23      cterm=none
-" highlight DiffChange       ctermfg=none    ctermbg=56      cterm=none
-" highlight DiffDelete       ctermfg=168     ctermbg=96      cterm=none
-" highlight DiffText         ctermfg=0       ctermbg=80      cterm=none
-" highlight SignColumn       ctermfg=244     ctermbg=235     cterm=none
-" highlight Conceal          ctermfg=251     ctermbg=none    cterm=none
-" highlight SpellBad         ctermfg=168     ctermbg=none    cterm=underline
-" highlight SpellCap         ctermfg=80      ctermbg=none    cterm=underline
-" highlight SpellRare        ctermfg=121     ctermbg=none    cterm=underline
-" highlight SpellLocal       ctermfg=186     ctermbg=none    cterm=underline
-" highlight Pmenu            ctermfg=251     ctermbg=234     cterm=none
-" highlight PmenuSel         ctermfg=0       ctermbg=111     cterm=none
-" highlight PmenuSbar        ctermfg=206     ctermbg=235     cterm=none
-" highlight PmenuThumb       ctermfg=235     ctermbg=206     cterm=none
-" highlight TabLine          ctermfg=244     ctermbg=234     cterm=none
-" highlight TablineSel       ctermfg=0       ctermbg=247     cterm=none
-" highlight TablineFill      ctermfg=244     ctermbg=234     cterm=none
-" highlight CursorColumn     ctermfg=none    ctermbg=236     cterm=none
-" highlight CursorLine       ctermfg=none    ctermbg=236     cterm=none
-" highlight ColorColumn      ctermfg=none    ctermbg=236     cterm=none
-" highlight Cursor           ctermfg=0       ctermbg=5       cterm=none
-" highlight htmlEndTag       ctermfg=114     ctermbg=none    cterm=none
-" highlight xmlEndTag        ctermfg=114     ctermbg=none    cterm=none
-
-
  
 " ------------------------------------
 " Text, tab and indent related
