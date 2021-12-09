@@ -15,6 +15,19 @@ Terminal utilities:
 sudo apt install bat fzf
 ```
 
+## Bear
+(ʕ·ᴥ·ʔ Build EAR)[https://github.com/rizsotto/Bear]
+Bear is a tool that generates a compilation database for clang tooling.
+
+The JSON compilation database is used in the clang project to provide information on how a single compilation unit is processed. With this, it is easy to re-run the compilation with alternate programs.
+
+Some build system natively supports the generation of JSON compilation database. For projects which does not use such build tool, Bear generates the JSON file during the build process.
+```bash
+sudo apt install bear
+
+# usage
+bear make
+```
 ## zsh
 ```
 $ cd zsh && ./install.sh

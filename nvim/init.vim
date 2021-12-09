@@ -106,12 +106,16 @@ Plug 'hrsh7th/cmp-nvim-lua'  " neovim lua api
 Plug 'hrsh7th/cmp-cmdline'   " command line completion, currently bugged when ! os used !
 Plug 'hrsh7th/nvim-cmp'      " A completion engine plugin
 Plug 'onsails/lspkind-nvim'  " vscode-like pictograms to neovim
+
 " For luasnip users.
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 
 " Language servers
 Plug 'sumneko/lua-language-server', { 'do': 'git submodule update --init --recursive && cd ./3rd/luamake && ./compile/install.sh && cd ../.. && ./3rd/luamake/luamake rebuild' }
+
+" Markdown preview on the web...  MarkdownPreview ...
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 source ~/.config/nvim/vimrcs/black.vim
 source ~/.config/nvim/vimrcs/vim-css-color.vim
@@ -120,7 +124,6 @@ source ~/.config/nvim/vimrcs/fzf.vim
 source ~/.config/nvim/vimrcs/git-gutter.vim
 source ~/.config/nvim/vimrcs/nerdtree.vim
 source ~/.config/nvim/vimrcs/vim-fugitive.vim
-" source ~/.config/nvim/vimrcs/ycm.vim
 
 call plug#end()
 
@@ -128,13 +131,9 @@ doautocmd User PlugLoaded
 
 " --------------------------------------
 "  Language Server Config
-lua require("ls.lua")
-lua require("ls.clangd")
-lua require("ls.pylsp")
-" lua require("ls.jedi-py")
+lua require("lsp_config")
 
 " --------------------------------------
 "  Completion Engine
 lua require("nvim-cpm")
 
-lua require("lsp-mappings")
