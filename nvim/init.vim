@@ -1,59 +1,26 @@
-" ------------------------------------
-" General editor settings
-set updatetime=300      " Reduce time for highlighting other references
-set redrawtime=10000    " Allow more time for loading syntax on large files
-set number
-set relativenumber
-set encoding=utf-8
-set termguicolors       " True collor (24bit) support
-set title
-set ignorecase
-set smartcase
-set confirm
+" Load neovim settings
+lua require('settings')
 
-" Send yank to system's clipboard
-set clipboard=unnamedplus
+" Colors
+hi NonText   guifg=#494949
+hi SignColum guibg=#000000
+hi Visual    guibg=#575757
+hi VerSplit  guibg=#575757 guifg=#000000
 
-set showtabline=2
+set guioptions-=r                         " Disable scrollbar
+set guioptions-=R                         " Disable scrollbar
+set guioptions-=l                         " Disable scrollbar
+set guioptions-=L                         " Disable scrollbar
 
 " ------------------------------------
-" GUI related
+lua << EOF
 
-" Set font according to system.
-set guifont=JetBrainsMono\ Nerd\ Font:h16
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Mouse Scrolling
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set mouse=nicr
-set mouse=a
-
-" Disable scrollbars
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
- 
-" ------------------------------------
-" Text, tab and indent related
-
-set expandtab       " Use spaces instead of tabs
-set smarttab        " Be smart when using tabs ;)
-set shiftwidth=4    " 1 tab == 4 spaces
-set tabstop=4       " 1 tab == 4 spaces
-set lbr             " Linebreak on 500 characters
-set tw=500          " Linebreak on 500 characters
-set ai              " Auto indent
-set si              " Smart indent
-set wrap            " Wrap lines
-
-" ------------------------------------
+EOF
 " Moving around, tabs, windows and buffers
 
 " Reselect visual selection after indenting
 vnoremap < <gv
 vnoremap > >gv
-
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -121,24 +88,53 @@ tnoremap <leader>q <C-\><C-n>
 
 " https://stackoverflow.com/questions/3997078/how-to-paste-yanked-text-into-the-vim-command-line
 
-" ------------------------------------
-" Plugins and scripts
-" ------------------------------------
-call plug#begin('~/.config/nvim/plugged')
 
-source ~/.config/nvim/vimrcs/vim-css-color.vim
-source ~/.config/nvim/vimrcs/airline.vim
-source ~/.config/nvim/vimrcs/black.vim
+" ------------------------------------
+" Scripts
 source ~/.config/nvim/vimrcs/clang-format.vim
 source ~/.config/nvim/vimrcs/cmake-format.vim
-source ~/.config/nvim/vimrcs/cpp-enhanced-highlight.vim
+source ~/.config/nvim/vimrcs/virtualenv.vim
+
+" ------------------------------------
+" Plugins
+call plug#begin('~/.config/nvim/plugged')
+Plug 'neovim/nvim-lspconfig' "  common configuration for various servers
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-nvim-lua'  " neovim lua api
+Plug 'hrsh7th/cmp-cmdline'   " command line completion, currently bugged when ! os used !
+Plug 'hrsh7th/nvim-cmp'      " A completion engine plugin
+Plug 'onsails/lspkind-nvim'  " vscode-like pictograms to neovim
+" For luasnip users.
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
+" Language servers
+Plug 'sumneko/lua-language-server', { 'do': 'git submodule update --init --recursive && cd ./3rd/luamake && ./compile/install.sh && cd ../.. && ./3rd/luamake/luamake rebuild' }
+
+source ~/.config/nvim/vimrcs/black.vim
+source ~/.config/nvim/vimrcs/vim-css-color.vim
+source ~/.config/nvim/vimrcs/airline.vim
 source ~/.config/nvim/vimrcs/fzf.vim
 source ~/.config/nvim/vimrcs/git-gutter.vim
 source ~/.config/nvim/vimrcs/nerdtree.vim
-source ~/.config/nvim/vimrcs/syntastic.vim
 source ~/.config/nvim/vimrcs/vim-fugitive.vim
-source ~/.config/nvim/vimrcs/virtualenv.vim
-source ~/.config/nvim/vimrcs/ycm.vim
+" source ~/.config/nvim/vimrcs/ycm.vim
 
 call plug#end()
+
 doautocmd User PlugLoaded
+
+" --------------------------------------
+"  Language Server Config
+lua require("ls.lua")
+lua require("ls.clangd")
+lua require("ls.pylsp")
+" lua require("ls.jedi-py")
+
+" --------------------------------------
+"  Completion Engine
+lua require("nvim-cpm")
+
+lua require("lsp-mappings")
