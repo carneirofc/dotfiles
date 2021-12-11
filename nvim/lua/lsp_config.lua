@@ -48,6 +48,11 @@ require'lspconfig'.clangd.setup {
     single_file_support = true
 }
 
+-- Ansible:  npm i -g ansible-language-server
+require'lspconfig'.ansiblels.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
 -- [[
 --  pip install -U \
 --      python-lsp-server[all] \

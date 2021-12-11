@@ -15,34 +15,40 @@ set guioptions-=L                         " Disable scrollbar
 " ------------------------------------
 lua << EOF
 
+-- Reselect visual selection after indenting
+vim.api.nvim_set_keymap('v', '<', '<gv', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true, silent = true })
+
+-- Buffer handling
+vim.api.nvim_set_keymap('n', '<leader>bd', ':bdelete<cr>',   { silent = false })
+vim.api.nvim_set_keymap('n', '<leader>ba', ':bufdo bd<cr>',  { silent = false }) -- Close all the buffers
+vim.api.nvim_set_keymap('n', '<leader>l',  ':bnext<cr>',     { silent = false })
+vim.api.nvim_set_keymap('n', '<leader>h',  ':bprevious<cr>', { silent = false })
+
+-- Smart way to move between windows
+vim.api.nvim_set_keymap('n', '<C-j>', '<C-W>j', { silent = false })
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', { silent = false })
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', { silent = false })
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', { silent = false })
+
+-- Useful mappings for managing tabs
+vim.api.nvim_set_keymap('n', '<leader>tn',         ':tabnew<cr>',   { silent = false })
+vim.api.nvim_set_keymap('n', '<leader>to',         ':tabonly<cr>',  { silent = false })
+vim.api.nvim_set_keymap('n', '<leader>tc',         ':tabclose<cr>', { silent = false })
+vim.api.nvim_set_keymap('n', '<leader>tm',         ':tabmove',      { silent = false })
+vim.api.nvim_set_keymap('n', '<leader>t<leader>',  ':tabnext',      { silent = false })
+
+
+-- Switch CWD to the directory of the open buffer
+vim.api.nvim_set_keymap('n', '<leader>cd', ':cd %:p:h<cr>:pwd<cr>', { silent = false })
+
+-- Vertical Split Current Buffer
+vim.api.nvim_set_keymap('n', '<leader>vs', ':vs %<cr>', { silent = false })
+
+-- Horizontal Split Current Buffer
+vim.api.nvim_set_keymap('n', '<leader>sv', ':sv %<cr>', { silent = false })
+
 EOF
-" Moving around, tabs, windows and buffers
-
-" Reselect visual selection after indenting
-vnoremap < <gv
-vnoremap > >gv
-
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Close the current buffer
-map <leader>bd :bdelete<cr>
-
-" Close all the buffers
-map <leader>ba :bufdo bd<cr>
-
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
-
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -55,7 +61,7 @@ au TabLeave * let g:lasttab = tabpagenr()
 map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 " Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+" map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers 
 try
@@ -70,10 +76,6 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 let g:python_host_prog  = '/home/carneirofc/miniconda3/envs/py27/bin/python'
 let g:python3_host_prog  = '/home/carneirofc/miniconda3/bin/python'
 
-" let g:loaded_python_provider = 0  " To disable Python 2 support
-" let g:loaded_python3_provider = 0 " To disable Python 3 support
-"
-"
 " Temporary workaround for: https://github.com/neovim/neovim/issues/1716
 if has("nvim")
   command! W w !sudo --non-interactive tee % > /dev/null || echo "Press <leader>w to authenticate and try again"
@@ -99,12 +101,12 @@ source ~/.config/nvim/vimrcs/virtualenv.vim
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
 Plug 'neovim/nvim-lspconfig' "  common configuration for various servers
-Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'      " A completion engine plugin
+Plug 'hrsh7th/cmp-nvim-lsp'  " source for neovim builtin LSP client
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-nvim-lua'  " neovim lua api
 Plug 'hrsh7th/cmp-cmdline'   " command line completion, currently bugged when ! os used !
-Plug 'hrsh7th/nvim-cmp'      " A completion engine plugin
 Plug 'onsails/lspkind-nvim'  " vscode-like pictograms to neovim
 
 " For luasnip users.
@@ -125,6 +127,8 @@ source ~/.config/nvim/vimrcs/git-gutter.vim
 source ~/.config/nvim/vimrcs/nerdtree.vim
 source ~/.config/nvim/vimrcs/vim-fugitive.vim
 
+Plug 'kyazdani42/nvim-web-devicons' " lua fork of vim-devicons
+
 call plug#end()
 
 doautocmd User PlugLoaded
@@ -136,4 +140,16 @@ lua require("lsp_config")
 " --------------------------------------
 "  Completion Engine
 lua require("nvim-cpm")
+
+
+" --------------------------------------
+"  FormatMarkdown - pip install --user -U mdformat mdformat-gfm
+function! FormatMarkdown()
+    let l:cursor_pos = getpos(".")
+    execute ':%!mdformat -'
+    " call histdel('search', -1)
+    call setpos(".", l:cursor_pos)
+endfunction
+
+autocmd BufWritePre *.md execute ':call FormatMarkdown()'
 

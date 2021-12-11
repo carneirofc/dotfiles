@@ -6,8 +6,10 @@ local options = {
     completeopt     = "menu,menuone,noselect",  -- Better autocompletion
     confirm         = true,                     -- Confirm dialog when executing commands
     cursorline      = false,                    -- Highlight cursor line
-    encoding        = "utf-8",
+    encoding        = "utf-8",                  -- The encoding displayed
+    errorbells      = false,                    -- Disables sound effect for errors
     expandtab       = true,                     -- Use spaces instead of tabs
+    fileencoding    = "utf-8",                  -- The encoding written to file
     guifont         = "JetBrainsMono Nerd Font:h16",
     ignorecase      = true,                     -- Ingore case on searchs
     linebreak       = true,                     -- Vim will wrap long lines at a character in 'breakat'
@@ -33,11 +35,7 @@ local options = {
     updatetime      = 300,                      -- Reduce time for highlighting other references in ms
     wildignore      = "*node_modules/**",       -- Don't search inside Node.js modules (works for gutentag)
     wrap            = true,                     -- Wrap lines
-    listchars       = {                         -- Remap invisible chars
-        eol = '↲',
-        tab = '▸ ',
-        trail = '·'
-    }
+    listchars       = {eol='↲',tab ='▸ ',trail='·'} -- Remap invisible chars
 }
 
 for k, v in pairs(options) do
