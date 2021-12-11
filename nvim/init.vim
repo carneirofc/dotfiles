@@ -63,7 +63,7 @@ map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 " Switch CWD to the directory of the open buffer
 " map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -113,6 +113,19 @@ Plug 'onsails/lspkind-nvim'  " vscode-like pictograms to neovim
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 
+" Tree-Sitter
+"  parsers should be installed, use the command :TSInstall <language> or :TSInstallInfo
+"  usage:   :TSUpdate so we keep parsers fresh
+"           :TSInstall bash cmake cpp css dockerfile http javascript json5 latex lua python tsx typescript vim
+"
+"   Each module provides a distinct tree-sitter-based feature such as highlighting, indentation, or folding;
+"   see :h nvim-treesitter-modules or "Available modules" below for a list of modules and their options.
+"
+"   All modules are disabled by default and need to be activated explicitly in your init.vim
+"
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+
 " Language servers
 Plug 'sumneko/lua-language-server', { 'do': 'git submodule update --init --recursive && cd ./3rd/luamake && ./compile/install.sh && cd ../.. && ./3rd/luamake/luamake rebuild' }
 
@@ -153,3 +166,21 @@ endfunction
 
 autocmd BufWritePre *.md execute ':call FormatMarkdown()'
 
+" ------------------------------------------
+"  Configure nvim-treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
+  ignore_install = {},  -- List of parsers to ignore installing
+  highlight = {
+    enable = true, -- false will disable the whole extension
+    disable = {},  -- list of language that will be disabled
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
