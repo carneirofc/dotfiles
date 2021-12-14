@@ -100,9 +100,7 @@ $ ln -v -r -s ./nvim ~/.config/nvim
 4. Install `clang-format` and set vim to use the correct binary
    Debian/Ubuntu example
 
-### how-to-use-the-windows-clipboard-from-wsl
-
-# https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl
+### [how-to-use-the-windows-clipboard-from-wsl](https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl)
 
 ```
 # sudo ln -s "$NEOVIM_WIN_DIR/bin/win32yank.exe" "/usr/local/bin/win32yank.exe"
