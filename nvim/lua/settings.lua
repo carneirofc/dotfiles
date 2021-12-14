@@ -1,4 +1,5 @@
 local options = {
+
     autoindent      = true,                     -- Auto indent
     belloff         = "all",                    -- turn it off
     clipboard       = "unnamed,unnamedplus",    -- Send yank to system's clipboard
@@ -14,14 +15,17 @@ local options = {
     ignorecase      = true,                     -- Ingore case on searchs
     linebreak       = true,                     -- Vim will wrap long lines at a character in 'breakat'
     list            = true,                     -- Display invisible chart such as spaces, linebreaks and tabs
+    listchars       = {eol='↲',tab ='▸ ',trail='·'}, -- Remap invisible chars
     mouse           = "a",                      -- Enable mouse interactions
     number          = true,                     -- Line number
+    pumheight       = 10,                       -- Maximum number of items to show in the popup menu
     redrawtime      = 10000,                    -- Time in milliseconds for redrawing the display in ms
     relativenumber  = true,                     -- Relative line numbers
     shiftwidth      = 4,                        -- Tab size
     showcmd         = true,
     showmatch       = true,                     -- show matching brackets when text indicator is over them
     showtabline     = 2,                        -- When the line with tab page labels will be displayed
+    signcolumn      = "yes",                    -- Always display sign column
     smartcase       = true,                     -- Only ignore case if not uppercase is present on serachs
     smartindent     = true,                     -- Smart indent
     smarttab        = true,                     -- Be smart when using tabs ;)
@@ -35,7 +39,6 @@ local options = {
     updatetime      = 300,                      -- Reduce time for highlighting other references in ms
     wildignore      = "*node_modules/**",       -- Don't search inside Node.js modules (works for gutentag)
     wrap            = true,                     -- Wrap lines
-    listchars       = {eol='↲',tab ='▸ ',trail='·'} -- Remap invisible chars
 }
 
 for k, v in pairs(options) do
