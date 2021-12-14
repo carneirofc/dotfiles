@@ -47,7 +47,7 @@ pip install --user -U mdformat mdformat-gfm
 
 ## zsh
 
-zsh can should be installed using Ansible using this [playbook](./playbook.yml). Enable the role settings the corresponding variable to `true`.
+zsh should be installed using Ansible using this [playbook](./playbook.yml). Enable the role settings the corresponding variable to `true`.
 
 ```yml
 ---
