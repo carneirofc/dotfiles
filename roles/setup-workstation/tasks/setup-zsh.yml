@@ -1,0 +1,44 @@
+---
+- name: "zsh install from package manager"
+  apt:
+    name: zsh
+    state: latest
+    update_cache: yes
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: "change user shell to zsh"
+  become: yes
+  user:
+    name: "{{ user }}"
+    shell: "{{ zsh_bin }}"
+
+- name: "zsh dirs"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - "{{ zsh_dotdir }}"
+    - "{{ zsh_path }}"
+    - "{{ zsh_plugins }}"
+
+- name: "zsh dotfiles"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  with_items: "{{ zsh_settings }}"
+
+- name: "zsh dotfiles templates"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  with_items: "{{ zsh_template_settings }}"
+
+- name: "zsh plugins"
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ zsh_plugins }}/{{ item.dest }}"
+  with_items: "{{ zsh_plugins_repos }}"

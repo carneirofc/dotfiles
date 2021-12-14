@@ -1,0 +1,67 @@
+alacritty_settings:
+  - src: alacritty/alacritty.yml
+    dest: "{{ alacritty_dotdir }}"
+
+zsh_settings:
+  - src: zsh/p10k.zsh
+    dest: "{{ zsh_path }}"
+
+zsh_template_settings:
+  - src: zsh/zshenv
+    dest: "~/"
+  - src: zsh/zsh-config 
+    dest: "{{ zsh_path }}"
+  - src: zsh/zsh-prompt
+    dest: "{{ zsh_path }}"
+  - src: zsh/.zshrc
+    dest: "{{ zsh_dotdir }}"
+
+zsh_plugins_repos:
+    - repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+      dest: "zsh-syntax-highlighting"
+    - repo: https://github.com/zsh-users/zsh-history-substring-search.git
+      dest: "zsh-history-substring-search"
+    - repo: https://github.com/zsh-users/zsh-autosuggestions.git
+      dest: "zsh-autosuggestions"
+    - repo: https://github.com/romkatv/powerlevel10k.git
+      dest: "zsh-theme-powerlevel10k"
+
+
+fonts_dir_jetbrains: "{{ fonts_dir }}/JetBrains"
+fonts_packages: # Install fonts with package manager
+  - ttf-mscorefonts-installer
+fonts_nerdfonts_url: "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono"
+fonts_download: # Download and install fonts
+  - url: "{{ fonts_nerdfonts_url }}/ExtraLightItalic/complete/JetBrains Mono ExtraLight Italic Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/Thin/complete/JetBrains Mono Thin Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/MediumItalic/complete/JetBrains Mono Medium Italic Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/ExtraLight/complete/JetBrains Mono ExtraLight Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/Light/complete/JetBrains Mono Light Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/Italic/complete/JetBrains Mono Italic Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/Regular/complete/JetBrains Mono Regular Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/Bold/complete/JetBrains Mono Bold Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/LightItalic/complete/JetBrains Mono Light Italic Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/SemiBoldItalic/complete/JetBrains Mono SemiBold Italic Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/ExtraBoldItalic/complete/JetBrains Mono ExtraBold Italic Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/BoldItalic/complete/JetBrains Mono Bold Italic Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/Medium/complete/JetBrains Mono Medium Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/ExtraBold/complete/JetBrains Mono ExtraBold Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/ThinItalic/complete/JetBrains Mono Thin Italic Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+  - url: "{{ fonts_nerdfonts_url }}/SemiBold/complete/JetBrains Mono SemiBold Nerd Font Complete.ttf"
+    dest: "{{ fonts_dir_jetbrains }}"
+

@@ -1,0 +1,13 @@
+---
+# TODO: Build alacritty from source on Linux platforms...
+- name: "Alacritty dotdir"
+  file:
+    path: "{{ alacritty_dotdir }}"
+    state: directory
+
+- name: "Alacritty settings"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    mode: "0644"
+  with_items: "{{ alacritty_settings }}"

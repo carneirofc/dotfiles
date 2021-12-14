@@ -5,14 +5,31 @@ import shutil
 from pathlib import Path
 
 
+def is_windows():
+    return sys.platform == "win32"
+
+
+def is_wsl():
+    return "WSL_DISTRO_NAME" in os.environ
+
+
+def is_linux():
+    return "linux" in sys.platform
+
+
 def install_alacritty():
     print("Installing Alacritty")
     alacritty_yml = None
 
-    if "linux" in sys.platform:
-        alacritty_yml = Path.home().joinpath(".config/alacritty/alacritty.yml")
+    if is_linux():
+        if is_wsl():
+            raise Exception(
+                "WSL detected, Alacritty settings should be installed on Windows"
+            )
+        else:
+            alacritty_yml = Path.home().joinpath(".config/alacritty/alacritty.yml")
 
-    elif sys.platform == "win32":
+    elif is_windows():
         if os.environ.get("APPDATA"):
             alacritty_yml = Path(os.environ.get("APPDATA")).joinpath(
                 "alacritty/alacritty.yml"
