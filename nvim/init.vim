@@ -73,6 +73,12 @@ Plug 'onsails/lspkind-nvim'  " vscode-like pictograms to neovim
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+" sudo apt-get install ripgrep
+"
+"
 " Tree-Sitter
 "  parsers should be installed, use the command :TSInstall <language> or :TSInstallInfo
 "  usage:   :TSUpdate so we keep parsers fresh
@@ -95,7 +101,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 source ~/.config/nvim/vimrcs/black.vim
 source ~/.config/nvim/vimrcs/vim-css-color.vim
 source ~/.config/nvim/vimrcs/airline.vim
-source ~/.config/nvim/vimrcs/fzf.vim
+" source ~/.config/nvim/vimrcs/fzf.vim
 source ~/.config/nvim/vimrcs/git-gutter.vim
 source ~/.config/nvim/vimrcs/nerdtree.vim
 source ~/.config/nvim/vimrcs/vim-fugitive.vim
@@ -113,6 +119,34 @@ lua require("lsp_config")
 " --------------------------------------
 "  Completion Engine
 lua require("nvim-cpm")
+
+" ---------------
+lua << EOF
+
+-- You dont need to set any of these options. These are the default ones. Only
+-- the loading is important
+require('telescope').setup {
+  extensions = {
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                       -- the default case_mode is "smart_case"
+    }
+  }
+}
+-- To get fzf loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require('telescope').load_extension('fzf')
+EOF
+
+" Using Lua functions
+" nnoremap <C-f> <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 
 " --------------------------------------
