@@ -9,11 +9,11 @@ zsh_settings:
 zsh_template_settings:
   - src: zsh/zshenv
     dest: "~/"
-  - src: zsh/zsh-config 
+  - src: zsh/zsh-config.j2 
     dest: "{{ zsh_path }}"
-  - src: zsh/zsh-prompt
+  - src: zsh/zsh-prompt.j2
     dest: "{{ zsh_path }}"
-  - src: zsh/.zshrc
+  - src: zsh/zshrc.j2
     dest: "{{ zsh_dotdir }}"
 
 zsh_plugins_repos:

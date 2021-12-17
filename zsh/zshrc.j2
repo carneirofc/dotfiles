@@ -1,0 +1,23 @@
+# Enable Powerlevel10k instant prompt.
+# Should stay close to the top of ~/.config/zsh//.zshrc.
+# Initialization code that may require console input
+# (password prompts, [y/n] confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Use powerline
+USE_POWERLINE="true"
+
+# Source zsh-configuration
+if [[ -e {{ zsh_path }}/zsh-config ]]; then
+  source {{ zsh_path }}/zsh-config
+fi
+
+# Use manjaro zsh prompt
+if [[ -e {{ zsh_path }}/zsh-prompt ]]; then
+  source {{ zsh_path }}/zsh-prompt
+fi
+
+export PATH=/opt/node/node-v16.13.0-linux-x64/bin/:${PATH}
+
