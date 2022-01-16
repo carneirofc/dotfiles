@@ -76,6 +76,10 @@ alias gits='git status'
 
 if [ ! -z "$WSL_DISTRO_NAME" ]; then
     alias neovide="neovide.exe --wsl"
+    alias docker="podman"
+
+    # Set display variable so we can run linux gui apps on windows (requires win xserver)
+    export DISPLAY="`sed -n 's/nameserver //p' /etc/resolv.conf`:0"
 fi
 
 # Theming section  
