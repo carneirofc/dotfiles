@@ -8,7 +8,7 @@ zsh_settings:
 
 zsh_template_settings:
   - src: zsh/zshenv
-    dest: "~/"
+    dest: "~/.zshenv"
   - src: zsh/zsh-config.j2 
     dest: "{{ zsh_path }}"
   - src: zsh/zsh-prompt.j2
