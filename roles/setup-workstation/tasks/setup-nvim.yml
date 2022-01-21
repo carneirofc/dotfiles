@@ -1,1 +1,54 @@
 ---
+- name: Install neovim
+  get_url:
+    dest: /usr/local/bin/nvim
+    force: yes
+    url: "{{ nvim_url }}"
+    checksum: "{{ nvim_checksum }}"
+    mode: u=rx,g=rx,o=rx
+  become: true
+
+- name: Neovim apt dependencies for plugins
+  apt:
+    pkg:
+      - nodejs
+      - npm
+      - bat
+      - fzf
+      - clangd
+      - fuse
+      - libfuse
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Neovim Python dependencies
+  pip:
+    state: latest
+    # executable: "{{ nvim_pip_executable }}"
+    name:
+      # Neovim
+      - neovim
+
+      # Markdown
+      - mdformat
+      - mdformat-gfm
+
+      # Python nvim LSP
+      - python-lsp-server
+      - pyls-flake8
+      - pylsp-mypy
+      - pyls-isort
+      - python-lsp-black
+      - pylsp-rope
+      - rope
+
+      # python dev
+      - black
+      - mypy
+      - flake8
+      - pre-commit
+
+      # Ansible
+      - ansible
+      - ansible-lint
+      - ansible-format

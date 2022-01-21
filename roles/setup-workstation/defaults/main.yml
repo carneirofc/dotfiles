@@ -19,3 +19,8 @@ zsh_plugins_repos: [] # Dict with zsh plugins { "repo": ..., "dest": ... } where
 
 zsh_settings: [] # { "src": ..., "dest": ...} simple file copy
 zsh_template_settings: [] # jinja templates
+
+# ---------- NVIM ----------
+nvim_checksum: sha256:f4d32d032ffe00d1e7becaec2473115e672fbc343531be27670a11785fe7dc9c
+nvim_url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+nvim_pip_executable: pip3
