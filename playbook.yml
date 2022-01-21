@@ -4,10 +4,12 @@
   hosts: localhost
 
   vars:
-    setup_zsh: true
-    setup_fonts: true
+    setup_zsh: false
+    setup_fonts: false
     setup_nvim: true
     setup_alacritty: false
+
+    nvim_pip_executable: /home/carneirofc/miniconda3/bin/pip
 
   roles:
     - setup-workstation

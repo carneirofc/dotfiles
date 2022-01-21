@@ -158,7 +158,7 @@ function! FormatMarkdown()
     call setpos(".", l:cursor_pos)
 endfunction
 
-autocmd BufWritePre *.md execute ':call FormatMarkdown()'
+" autocmd BufWritePre *.md execute ':call FormatMarkdown()'
 
 " ------------------------------------------
 "  Configure nvim-treesitter
