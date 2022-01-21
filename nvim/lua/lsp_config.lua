@@ -53,6 +53,8 @@ require'lspconfig'.ansiblels.setup{
     on_attach = on_attach,
     capabilities = capabilities,
 }
+
+-- Python
 -- [[
 --  pip install -U \
 --      python-lsp-server[all] \
@@ -63,7 +65,6 @@ require'lspconfig'.ansiblels.setup{
 --      pylsp-rope \
 --      rope
 -- ]]
--- Python
 require'lspconfig'.pylsp.setup{
     on_attach = on_attach,
     capabilities = capabilities
@@ -114,3 +115,5 @@ require'lspconfig'.sumneko_lua.setup {
         }
     }
 }
+
+-- TypeScript npm install -g typescript typescript-language-server eslint prettier
