@@ -7,6 +7,14 @@
   become: true
   when: ansible_os_family == 'Debian'
 
+- name: "zsh install from package manager"
+  yum:
+    name: zsh
+    state: latest
+    update_cache: yes
+  become: true
+  when: ansible_os_family == 'RedHat'
+
 - name: "change user shell to zsh"
   become: yes
   user:

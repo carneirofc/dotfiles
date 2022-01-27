@@ -10,9 +10,9 @@ zsh_template_settings:
   - src: zsh/zshenv
     dest: "~/.zshenv"
   - src: zsh/zsh-config.j2 
-    dest: "{{ zsh_path }}"
+    dest: "{{ zsh_path }}/zsh-config"
   - src: zsh/zsh-prompt.j2
-    dest: "{{ zsh_path }}"
+    dest: "{{ zsh_path }}/zsh-prompt"
   - src: zsh/zshrc.j2
     dest: "{{ zsh_dotdir }}/.zshrc"
 
