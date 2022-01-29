@@ -60,25 +60,26 @@ source ~/.config/nvim/vimrcs/virtualenv.vim
 " ------------------------------------
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
-Plug 'neovim/nvim-lspconfig' "  common configuration for various servers
-Plug 'hrsh7th/nvim-cmp'      " A completion engine plugin
-Plug 'hrsh7th/cmp-nvim-lsp'  " source for neovim builtin LSP client
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-nvim-lua'  " neovim lua api
-Plug 'hrsh7th/cmp-cmdline'   " command line completion, currently bugged when ! os used !
+Plug 'neovim/nvim-lspconfig' "  common configuration for various LSP servers
+Plug 'hrsh7th/nvim-cmp',     { 'branch': 'main'}  " A completion engine plugin
+Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main'}  " source for neovim builtin LSP client
+Plug 'hrsh7th/cmp-buffer',   { 'branch': 'main'}
+Plug 'hrsh7th/cmp-path',     { 'branch': 'main'}
+Plug 'hrsh7th/cmp-nvim-lua', { 'branch': 'main'}  " neovim lua api
+Plug 'hrsh7th/cmp-cmdline' , { 'branch': 'main'}  " command line completion, currently bugged when ! os used !
+
 Plug 'onsails/lspkind-nvim'  " vscode-like pictograms to neovim
 
-" For luasnip users.
+" Code snipped engine, required for code completion
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 
+" telescope can use a series of third party tools, such as 'ripgrep'
+" sudo apt-get install ripgrep
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-" sudo apt-get install ripgrep
-"
-"
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'branch': 'main', 'do': 'make' }
+
 " Tree-Sitter
 "  parsers should be installed, use the command :TSInstall <language> or :TSInstallInfo
 "  usage:   :TSUpdate so we keep parsers fresh
@@ -88,7 +89,6 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 "   see :h nvim-treesitter-modules or "Available modules" below for a list of modules and their options.
 "
 "   All modules are disabled by default and need to be activated explicitly in your init.vim
-"
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 
@@ -101,7 +101,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 source ~/.config/nvim/vimrcs/black.vim
 source ~/.config/nvim/vimrcs/vim-css-color.vim
 source ~/.config/nvim/vimrcs/airline.vim
-" source ~/.config/nvim/vimrcs/fzf.vim
 source ~/.config/nvim/vimrcs/git-gutter.vim
 source ~/.config/nvim/vimrcs/nerdtree.vim
 source ~/.config/nvim/vimrcs/vim-fugitive.vim
