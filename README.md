@@ -3,6 +3,15 @@
 These are my dotfiles, always WIP.
 I'm slowly moving things to ansible in a way that it is not tight coupled with it. For now, some config files are jinja templates.
 
+Install ansible.
+
+```command
+pip install \
+    ansible==5.2.0 \
+    ansible-core==2.12.1 \
+    ansible-lint==5.3.2
+```
+
 Install using ansible:
 
 ```command
