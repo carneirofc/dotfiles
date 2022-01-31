@@ -33,8 +33,8 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-let g:python_host_prog  = '/home/carneirofc/miniconda3/envs/py27/bin/python'
-let g:python3_host_prog  = '/home/carneirofc/miniconda3/bin/python'
+let g:python_host_prog  = '/usr/bin/python'
+let g:python3_host_prog  = '/usr/bin/python3'
 
 " Temporary workaround for: https://github.com/neovim/neovim/issues/1716
 if has("nvim")
@@ -142,7 +142,7 @@ EOF
 
 " Using Lua functions
 " nnoremap <C-f> <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files({ hidden = true })<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
