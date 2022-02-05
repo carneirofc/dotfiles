@@ -1,15 +1,37 @@
 ---
-- connection: local
+- hosts: all
   become: false
-  hosts: localhost
+  gather_facts: true
+# connection: local
 
   vars:
-    setup_zsh: false
+    setup_zsh: true
     setup_fonts: false
-    setup_nvim: true
+    setup_nvim: false
     setup_alacritty: false
 
-    nvim_pip_executable: /home/carneirofc/miniconda3/bin/pip
+    neovim_enable_config: true
+    neovim_enable_install_dependencies: true
+    neovim_enable_install_dependencies_node: true
+    neovim_enable_install_dependencies_package_manager: true
+    neovim_enable_install_dependencies_python: true
+    neovim_enable_install_dotfiles: true
+    neovim_enable_install_neovim: true
+
+    # remove node/npm from dependencies
+    # neovim_dependencies: []
+
+    neovim_dotfiles:
+      repo: https://github.com/carneirofc/dotfiles.git
+      path: nvim
+      version: master
+
+    neovim_python_executable: '/home/carneirofc/miniconda3/envs/py27/bin/python'
+    neovim_python_support: true
+
+    neovim_python3_executable: '/home/carneirofc/miniconda3/bin/python'
+    neovim_python3_support: true
 
   roles:
-    - setup-workstation
+    - ansible-role-neovim
+#   - setup-workstation
