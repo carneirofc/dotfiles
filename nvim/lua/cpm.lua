@@ -1,10 +1,10 @@
--- Setup nvim-cmp, completion engine
+-- This tiny plugin adds vscode-like pictograms to neovim built-in lsp:
 local lspkind = require('lspkind')
-lspkind.init()
 
-local cmp = require'cmp'
+-- Setup nvim-cmp, completion engine
+local cmp = require('cmp')
 
-cmp.setup({
+local defaults = {
   completion = {
     completeopt = "menu,menuone,noinsert",
   },
@@ -55,5 +55,8 @@ cmp.setup({
        }
      })
    }
-})
+
+}
+
+cmp.setup(defaults)
 
