@@ -33,8 +33,9 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-let g:python_host_prog  = '/usr/bin/python'
-let g:python3_host_prog  = '/usr/bin/python3'
+let g:python_host_prog = '/home/carneirofc/miniconda3/envs/py27/bin/python'
+
+let g:python3_host_prog = '/home/carneirofc/miniconda3/bin/python'
 
 " Temporary workaround for: https://github.com/neovim/neovim/issues/1716
 if has("nvim")
@@ -55,7 +56,7 @@ tnoremap <leader>q <C-\><C-n>
 " Scripts
 source ~/.config/nvim/vimrcs/clang-format.vim
 source ~/.config/nvim/vimrcs/cmake-format.vim
-source ~/.config/nvim/vimrcs/virtualenv.vim
+" source ~/.config/nvim/vimrcs/virtualenv.vim
 
 " ------------------------------------
 " Plugins
@@ -117,14 +118,22 @@ lua require("lsp_config")
 
 " --------------------------------------
 "  Completion Engine
-lua require("nvim-cpm")
+lua require("cpm")
 
 " ---------------
 lua << EOF
 
--- You dont need to set any of these options. These are the default ones. Only
--- the loading is important
-require('telescope').setup {
+local status, telescope = pcall(required, "telescope")
+
+if not status then
+    -- Failed to load telescope
+    return
+end
+
+local default = {
+  defaults = {
+      set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+  },
   extensions = {
     fzf = {
       fuzzy = true,                    -- false will only do exact matching
@@ -135,9 +144,19 @@ require('telescope').setup {
     }
   }
 }
--- To get fzf loaded and working with telescope, you need to call
--- load_extension, somewhere after setup function:
-require('telescope').load_extension('fzf')
+
+-- You dont need to set any of these options. These are the default ones. Only
+-- the loading is important
+telescope.setup(default)
+
+local extensions = { "fzf" }
+
+pcall(function()
+   for _, ext in ipairs(extensions) do
+      telescope.load_extension(ext)
+   end
+end)
+
 EOF
 
 " Using Lua functions

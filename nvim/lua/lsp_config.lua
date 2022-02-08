@@ -1,4 +1,7 @@
+--
+-- LSP
 local nvim_lsp = require('lspconfig')
+
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -34,13 +37,12 @@ local on_attach = function(client, bufnr)
 
 end
 
-
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- C++/C `clangd`.
-require'lspconfig'.clangd.setup {
+nvim_lsp.clangd.setup {
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = { "clangd", "--background-index", "--clang-tidy" },
@@ -48,11 +50,13 @@ require'lspconfig'.clangd.setup {
     single_file_support = true
 }
 
+
 -- Ansible:  npm i -g ansible-language-server
-require'lspconfig'.ansiblels.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-}
+--  nvim_lsp.ansiblels.setup{
+--      on_attach = on_attach,
+--      capabilities = capabilities,
+--  }
+--
 
 -- Python
 -- [[
@@ -65,7 +69,8 @@ require'lspconfig'.ansiblels.setup{
 --      pylsp-rope \
 --      rope
 -- ]]
-require'lspconfig'.pylsp.setup{
+-- TODO: move to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pyright
+nvim_lsp.pylsp.setup{
     on_attach = on_attach,
     capabilities = capabilities
 }
@@ -87,8 +92,9 @@ end
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
+
 -- Setup lspconfig.
-require'lspconfig'.sumneko_lua.setup {
+nvim_lsp.sumneko_lua.setup({
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
@@ -114,6 +120,6 @@ require'lspconfig'.sumneko_lua.setup {
             },
         }
     }
-}
+})
 
 -- TypeScript npm install -g typescript typescript-language-server eslint prettier

@@ -1,7 +1,8 @@
 # General Configurations
 
-These are my dotfiles, always WIP.
-I'm slowly moving things to ansible in a way that it is not tight coupled with it. For now, some config files are jinja templates.
+These are my dotfiles.
+
+I'm slowly moving things to ansible. Some config files are jinja templates.
 
 Install ansible.
 
