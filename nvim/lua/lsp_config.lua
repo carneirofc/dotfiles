@@ -58,17 +58,7 @@ nvim_lsp.clangd.setup {
 --  }
 --
 
--- Python
--- [[
---  pip install -U \
---      python-lsp-server[all] \
---      pyls-flake8 \
---      pylsp-mypy \
---      pyls-isort \
---      python-lsp-black \
---      pylsp-rope \
---      rope
--- ]]
+-- Python: pip install -U python-lsp-server[all] pyls-flake8 pylsp-mypy pyls-isort python-lsp-black pylsp-rope rope
 -- TODO: move to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pyright
 nvim_lsp.pylsp.setup{
     on_attach = on_attach,
@@ -76,6 +66,15 @@ nvim_lsp.pylsp.setup{
 }
 
 -- Lua `sumneko_lua`
+local system_name
+if vim.fn.has("unix") == 1 then
+    system_name = "Linux"
+elseif vim.fn.has('win32') == 1 then
+    system_name = "Windows"
+else
+    print("Unsupported system for sumneko")
+end
+
 HOME = vim.fn.expand('$HOME')
 
 local sumneko_root_path = ""
@@ -83,7 +82,10 @@ local sumneko_binary = ""
 
 if vim.fn.has("unix") == 1 then
     sumneko_root_path = HOME .. "/.config/nvim/plugged/lua-language-server"
-    sumneko_binary = HOME .. "/.config/nvim/plugged/lua-language-server/bin/Linux/lua-language-server"
+    sumneko_binary = HOME .. "/.config/nvim/plugged/lua-language-server/bin/"..system_name.."/lua-language-server"
+elseif vim.fn.has("win32") == 1 then
+    sumneko_root_path = HOME .. "\\AppData\\Local\\nvim\\plugged\\lua-language-server"
+    sumneko_binary = HOME .. "\\AppData\\Local\\nvim\\plugged\\lua-language-server\\bin\\lua-language-server.exe"
 else
     print("Unsupported system for sumneko")
 end

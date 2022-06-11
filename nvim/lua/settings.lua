@@ -1,5 +1,6 @@
 local options = {
-
+--  backup          = true,
+--  backupdir       = "C:\\Users\\claud\\AppData\\Local\\Temp\\nvim",
     autoindent      = true,                     -- Auto indent
     belloff         = "all",                    -- turn it off
     clipboard       = "unnamed,unnamedplus",    -- Send yank to system's clipboard
