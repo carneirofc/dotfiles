@@ -87,12 +87,12 @@ Plug 'hrsh7th/cmp-cmdline' , { 'branch': 'main'}  " command line completion, cur
 Plug 'onsails/lspkind-nvim'  " vscode-like pictograms to neovim
 
 " Code snipped engine, required for code completion
-Plug 'L3MON4D3/LuaSnip'
-Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'                 " code snippets
+Plug 'saadparwaiz1/cmp_luasnip'         " luasnip completion source for nvim-cmp
 
 " telescope can use a series of third party tools, such as 'ripgrep'
 " sudo apt-get install ripgrep
-Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/plenary.nvim'            " lua library for nvim
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'branch': 'main', 'do': 'make' }
 
@@ -216,8 +216,6 @@ lua << EOF
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = 'all',
-  -- ensure_installed = {'astro','bash','c','c_sharp','clojure','cmake','comment','commonlisp','cooklang','cpp','css','dart','dockerfile','dot','eex','elixir','elm','elvish','embedded_template','erlang','fennel','fish','foam','fortran','gleam','glimmer','go','gowork','graphql','hack','haskell','hcl','heex','help','hjson','hocon','html','http','java','javascript','jsdoc','json','json5','jsonc','julia','kotlin','lalrpop','latex','llvm','lua','m68k','make','markdown','ninja','nix','norg','ocaml','ocaml_interface','org','pascal','perl','php','pioasm','prisma','proto','pug','python','ql','query','rasi','regex','rego','rst','ruby','rust','scala','scheme','scss','slint','solidity','sparql','supercollider','surface','swift','tlaplus','todotxt','toml','tsx','typescript','vala','verilog','vim','vue','yaml','yang','zig'},
-
   sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
 
   ignore_install = {'phpdoc'},  -- List of parsers to ignore installing
