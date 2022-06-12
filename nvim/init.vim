@@ -120,7 +120,7 @@ endif
 
 " Markdown preview on the web...  MarkdownPreview ...
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install'  }
-
+Plug 'dracula/vim', { 'as': 'dracula' }
 if has('win32')
     source ~/AppData/Local/nvim/vimrcs/black.vim
     source ~/AppData/Local/nvim/vimrcs/vim-css-color.vim
