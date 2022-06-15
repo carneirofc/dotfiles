@@ -1,3 +1,5 @@
+local M = {}
+
 local options = {
 --  backup          = true,
 --  backupdir       = "C:\\Users\\claud\\AppData\\Local\\Temp\\nvim",
@@ -33,6 +35,7 @@ local options = {
     splitbelow      = true,                     -- Horizontal splits will automatically be to the bottom
     splitright      = true,                     -- Vertical splits will automatically be to the right
     swapfile        = false,                    -- Swap not needed
+    switchbuf       = "useopen,usetab,newtab",  -- This option controls the behavior when switching between buffers.
     tabstop         = 4,                        -- 1 tab == 4 spaces
     termguicolors   = true,                     -- Enables 24-bit RGB color
     textwidth       = 500,                      -- Maximum width of text that is being
@@ -42,6 +45,22 @@ local options = {
     wrap            = true,                     -- Wrap lines
 }
 
-for k, v in pairs(options) do
-    vim.opt[k] = v
+function SetOptions()
+    for k, v in pairs(options) do
+        vim.opt[k] = v
+    end
 end
+
+function SetColors()
+    vim.cmd([[ hi NonText   guifg=#494949 ]])
+    vim.cmd([[ hi SignColum guibg=#000000 ]])
+    vim.cmd([[ hi Visual    guibg=#575757 ]])
+    vim.cmd([[ hi VerSplit  guibg=#575757 guifg=#000000 ]])
+end
+
+function M.setup()
+    SetOptions()
+    SetColors()
+end
+
+return M
