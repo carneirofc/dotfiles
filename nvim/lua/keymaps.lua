@@ -23,6 +23,11 @@ function M.setup()
     vim.api.nvim_set_keymap('n', '<leader>tm',         ':tabmove',      { silent = false })
     vim.api.nvim_set_keymap('n', '<leader>t<leader>',  ':tabnext',      { silent = false })
     vim.api.nvim_set_keymap('n', '<leader>te',        [[:tabedit <C-r>=expand("%:p:h")<cr>]], { silent = false }) -- Opens a new tab with the current buffer's path
+    vim.cmd([[
+        let g:lasttab = 1
+        nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+        au TabLeave * let g:lasttab = tabpagenr()
+    ]]) --- Let 'tl' toggle between this and the last accessed tab
 
     -- Exit terminal emulator remap
     vim.api.nvim_set_keymap('t', '<leader>q', [[<C-\><C-n>]], { silent = false })
@@ -35,5 +40,8 @@ function M.setup()
 
     -- Horizontal Split Current Buffer
     vim.api.nvim_set_keymap('n', '<leader>sv', ':sv %<cr>', { silent = false })
+
+    --- Switch CWD to the directory of the open buffer
+    vim.api.nvim_set_keymap('n', '<leader>cd', ':cd %:p:h<cr>:pwd<cr>', { silent = false })
 end
 return M

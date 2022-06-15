@@ -1,31 +1,6 @@
 lua require('settings').setup()
 lua require('keymaps').setup()
 
-" Let 'tl' toggle between this and the last accessed tab
-let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
-
-" Switch CWD to the directory of the open buffer
-" map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-" Return to last edit position when opening files (You want this!)
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-let g:python_host_prog = '~/miniconda3/envs/py27/bin/python'
-let g:python3_host_prog = '~/miniconda3/bin/python'
-
-" Temporary workaround for: https://github.com/neovim/neovim/issues/1716
-if has("nvim")
-  command! W w !sudo --non-interactive tee % > /dev/null || echo "Press <leader>w to authenticate and try again"
-  map <leader>w :new<cr>:term sudo true<cr>
-else
-  command! W w !sudo tee % > /dev/null
-end
-
-" https://stackoverflow.com/questions/3997078/how-to-paste-yanked-text-into-the-vim-command-line
-
-
 " ------------------------------------
 " Scripts
 "

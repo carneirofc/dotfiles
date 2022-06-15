@@ -61,6 +61,24 @@ end
 function M.setup()
     SetOptions()
     SetColors()
+
+    --- Return to last edit position when opening files (You want this!)
+    vim.cmd([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
+
+    vim.g.python_host_prog = '~/miniconda3/envs/py27/bin/python'
+    vim.g.python3_host_prog = '~/miniconda3/bin/python'
+
+    vim.cmd([[
+    if has("nvim")
+      command! W w !sudo --non-interactive tee % > /dev/null || echo "Press <leader>w to authenticate and try again"
+      map <leader>w :new<cr>:term sudo true<cr>
+    else
+      command! W w !sudo tee % > /dev/null
+    end
+    ]]) --- Temporary workaround for: https://github.com/neovim/neovim/issues/1716
+
+    --- Paste Yanked Text into vim command line
+    --- https://stackoverflow.com/questions/3997078/how-to-paste-yanked-text-into-the-vim-command-line !!!!!!!
 end
 
 return M
