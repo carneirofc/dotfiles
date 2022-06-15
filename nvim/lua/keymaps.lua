@@ -43,5 +43,6 @@ function M.setup()
 
     --- Switch CWD to the directory of the open buffer
     vim.api.nvim_set_keymap('n', '<leader>cd', ':cd %:p:h<cr>:pwd<cr>', { silent = false })
+
 end
 return M

@@ -4,9 +4,19 @@ function M.setup()
     local telescope = require("telescope")
 
     local default = {
-      initial_mode = "insert",
       defaults = {
-          set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+          initial_mode = "insert",
+          set_env = { ["COLORTERM"] = "truecolor" },
+          vimgrep_arguments = {
+              "rg",
+              "--color=never",
+              "--no-heading",
+              "--with-filename",
+              "--line-number",
+              "--column",
+              "--smart-case",
+              "--hidden"
+          }
       },
       extensions = {
         fzf = {
@@ -14,7 +24,6 @@ function M.setup()
           override_generic_sorter = true,  -- override the generic sorter
           override_file_sorter = true,     -- override the file sorter
           case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                           -- the default case_mode is "smart_case"
         }
       }
     }
@@ -33,11 +42,10 @@ function M.setup()
 
 
     -- Using Lua functions
-    -- nnoremap <C-f> <cmd>lua require('telescope.builtin').find_files()<cr>
-    vim.cmd([[ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files({ hidden = true })<cr> ]])
-    vim.cmd([[ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep({ follow = true })<cr> ]])
-    vim.cmd([[ nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr> ]])
-    vim.cmd([[ nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr> ]])
+     vim.api.nvim_set_keymap('n', '<leader>ff', [[:lua require('telescope.builtin').find_files({ hidden = true })<cr>]], { silent = true })
+     vim.api.nvim_set_keymap('n', '<leader>fg', [[:lua require('telescope.builtin').live_grep({ follow = true })<cr>]], { silent = true })
+     vim.api.nvim_set_keymap('n', '<leader>fb', [[:lua require('telescope.builtin').buffers()<cr>]], { silent = true })
+     vim.api.nvim_set_keymap('n', '<leader>fh', [[:lua require('telescope.builtin').help_tags()<cr>]], { silent = true })
 
 end
 
