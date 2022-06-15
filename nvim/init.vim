@@ -62,11 +62,11 @@ Plug 'hrsh7th/cmp-cmdline' , { 'branch': 'main'}  " command line completion, cur
 Plug 'onsails/lspkind-nvim'  " vscode-like pictograms to neovim
 
 " Code snipped engine, required for code completion
-Plug 'L3MON4D3/LuaSnip'
-Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'                 " code snippets
+Plug 'saadparwaiz1/cmp_luasnip'         " luasnip completion source for nvim-cmp
 
 " telescope can use a series of third party tools, such as 'ripgrep'
-Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/plenary.nvim'            " lua library for nvim
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'branch': 'main', 'do': 'make' }
 
@@ -94,7 +94,7 @@ endif
 
 " Markdown preview on the web...  MarkdownPreview ...
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install'  }
-
+Plug 'dracula/vim', { 'as': 'dracula' }
 if has('win32')
     source ~/AppData/Local/nvim/vimrcs/black.vim
     source ~/AppData/Local/nvim/vimrcs/vim-css-color.vim
@@ -119,7 +119,7 @@ doautocmd User PlugLoaded
 " --------------------------------------
 "  Language Server Config
 lua require('lsp_config')
-lua require('cpm') --- Completion Engine
+lua require('cpm')               --- Completion Engine
 lua require('plugins.telescope').setup()
 lua require('plugins.mdformat').setup()
 lua require('plugins.treesitter').setup()
