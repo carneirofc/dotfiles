@@ -62,9 +62,6 @@ function M.setup()
     SetOptions()
     SetColors()
 
-    --- Return to last edit position when opening files (You want this!)
-    vim.cmd([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
-
     vim.g.python_host_prog = '~/miniconda3/envs/py27/bin/python'
     vim.g.python3_host_prog = '~/miniconda3/bin/python'
 
