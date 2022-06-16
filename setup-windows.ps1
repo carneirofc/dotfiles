@@ -29,7 +29,8 @@ function Install-Lua {
 #Install-Lua
 
 function Install-Neovim {
-    Copy-Item -Verbose -Recurse -Force -Path nvim -Destination $env:USERPROFILE\AppData\Local
+    $dest = (Get-Location).Path + "\nvim"
+    New-Item -Verbose -Value $dest  -Path $env:USERPROFILE\AppData\Local\nvim -ItemType SymbolicLink 
 }
 
 Install-Profile
