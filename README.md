@@ -4,13 +4,49 @@ These are my dotfiles.
 
 I'm slowly moving things to ansible. Some config files are jinja templates.
 
+## [Neovim](https://github.com/neovim/neovim)
+Always install the latest version available, the project is extremely active and some plugins will use nightly features. Check the releases section and go from there.
+
+1. Clone the repository and create a link to the corresponding folder according to the OS.
+
+```bash
+# Linux based
+mkdir -v  ~/.config
+ln -v -r -s ./nvim ~/.config/nvim
+```
+or
+```powershell
+$dest = (Get-Location).Path + "\nvim" # We need absolute paths here!
+New-Item -Verbose -Value $dest  -Path $env:USERPROFILE\AppData\Local\nvim -ItemType SymbolicLink 
+```
+
+
+2. Check the `.vim` and `.lua` files and install external dependencies e.g.: mdformat, ansible-language-server, etc.
+
+3. Clone the required plugins using 'vim-plug'
+
+```
+:PlugInstall
+```
+
+### FAQ
+#### [how-to-use-the-windows-clipboard-from-wsl](https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl)
+
+```
+# sudo ln -s "$NEOVIM_WIN_DIR/bin/win32yank.exe" "/usr/local/bin/win32yank.exe"
+sudo ln -v -s "$(whereis win32yank.exe |awk '{print $2 }')" "/usr/local/bin/win32yank.exe"
+```
+## Windows setup
+
+The folder `./windows/` contains a PowerShell profile and a Windows terminal settings `profile.json` file.
+It is important to download and install the specified font `JetBraing Mono NF`.
+
+
+## Linux setup and Ansible
 Install ansible.
 
 ```command
-pip install \
-    ansible==5.2.0 \
-    ansible-core==2.12.1 \
-    ansible-lint==5.3.2
+pip install ansible==5.2.0 ansible-core==2.12.1 ansible-lint==5.3.2
 ```
 
 Install using ansible:
@@ -29,7 +65,8 @@ There are several utilities required, specially related to neovim and the develo
 
 ## Some utilities and must have programs
 
-### ripgrep
+- ripgrep https://github.com/BurntSushi/ripgrep
+
 ```
 # https://github.com/BurntSushi/ripgrep
 wget https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb
@@ -37,13 +74,10 @@ sudo dpkg -i ripgrep_13.0.0_amd64.deb
 ```
 
 
-- A really useful terminal fuzzyfinder https://github.com/junegunn/fzf.
+- fzf *A really useful terminal fuzzyfinder https://github.com/junegunn/fzf.*
 
-- Unix `cat` replacement with syntax highlight https://github.com/sharkdp/bat.
+- bat *Unix `cat` replacement with syntax highlight https://github.com/sharkdp/bat.*
 
-```
-sudo apt install bat fzf
-```
 
 - [ʕ·ᴥ·ʔ BEAR](https://github.com/rizsotto/Bear) is compilation database generator, works great with llvm based tools (aka: clangd).
 
@@ -51,8 +85,6 @@ The JSON compilation database is used in the clang project to provide informatio
 Some build system natively supports the generation of JSON compilation database. For projects which does not use such build tool, Bear generates the JSON file during the build process.
 
 ```bash
-sudo apt install bear
-
 # usage
 bear make
 ```
@@ -63,7 +95,7 @@ bear make
 pip install --user -U mdformat mdformat-gfm
 ```
 
-## zsh
+### zsh
 
 zsh should be installed using Ansible using this [playbook](./playbook.yml). Enable the role settings the corresponding variable to `true`.
 
@@ -79,48 +111,4 @@ zsh should be installed using Ansible using this [playbook](./playbook.yml). Ena
   roles:
     - setup-workstation
 
-```
-
-## nvim
-
-Ansible WIP.
-
-### build from source
-
-Requirements
-
-```bash
-sudo apt install libtool libtool-bin
-mkdir /opt/neovim
-cd /opt/neovim
-git clone https://github.com/neovim/neovim neovim-src
-```
-
-### download build
-
-Install steps:
-
-1. Move or create a soft link to `nvim/`
-
-```bash
-$ mkdir -v  ~/.config
-$ ln -v -r -s ./nvim ~/.config/nvim
-```
-
-2. Check the `.vim` and `.lua` files and install external dependencies e.g.: mdformat, ansible-language-server, etc.
-
-1. Clone the required plugins using 'vim-plug'
-
-```
-:PlugInstall
-```
-
-4. Install `clang-format` and set vim to use the correct binary
-   Debian/Ubuntu example
-
-### [how-to-use-the-windows-clipboard-from-wsl](https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl)
-
-```
-# sudo ln -s "$NEOVIM_WIN_DIR/bin/win32yank.exe" "/usr/local/bin/win32yank.exe"
-sudo ln -v -s "$(whereis win32yank.exe |awk '{print $2 }')" "/usr/local/bin/win32yank.exe"
 ```
