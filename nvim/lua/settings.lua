@@ -3,6 +3,7 @@ local M = {}
 local options = {
 --  backup          = true,
 --  backupdir       = "C:\\Users\\claud\\AppData\\Local\\Temp\\nvim",
+    laststatus      = 3,                        -- Single status bar
     autoindent      = true,                     -- Auto indent
     belloff         = "all",                    -- turn it off
     clipboard       = "unnamed,unnamedplus",    -- Send yank to system's clipboard
