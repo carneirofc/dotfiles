@@ -53,6 +53,8 @@ function SetOptions()
 end
 
 function SetColors()
+    vim.cmd([[colorscheme dracula]])
+
     vim.cmd([[ hi NonText   guifg=#494949 ]])
     vim.cmd([[ hi SignColum guibg=#000000 ]])
     vim.cmd([[ hi Visual    guibg=#575757 ]])
@@ -63,8 +65,26 @@ function M.setup()
     SetOptions()
     SetColors()
 
-    vim.g.python_host_prog = '~/miniconda3/envs/py27/bin/python'
-    vim.g.python3_host_prog = '~/miniconda3/bin/python'
+    vim.g.python_host_prog = ''
+    vim.g.python3_host_prog = '/usr/bin/python3'
+
+    if vim.fn.has('wsl') then
+        vim.cmd([[
+            let g:clipboard = {
+              \   'name': 'WslClipboard',
+              \   'copy': {
+              \      '+': 'clip.exe',
+              \      '*': 'clip.exe',
+              \    },
+              \   'paste': {
+              \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+              \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+              \   },
+              \   'cache_enabled': 0,
+              \ }
+        ]])
+    end
+
 
     vim.cmd([[
     if has("nvim")

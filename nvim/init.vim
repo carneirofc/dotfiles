@@ -9,8 +9,6 @@ if has('unix')
   source ~/.config/nvim/vimrcs/clang-format.vim
 endif
 
-colorscheme dracula
-
 lua << EOF
 
 require('settings').setup()

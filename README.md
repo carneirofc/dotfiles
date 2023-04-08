@@ -5,7 +5,8 @@ These are my dotfiles.
 I'm slowly moving things to ansible. Some config files are jinja templates.
 
 ## [Neovim](https://github.com/neovim/neovim)
-Always install the latest version available, the project is extremely active and some plugins will use nightly features. Check the releases section and go from there.
+Always install the latest version available, the project is extremely active and some plugins will use nightly features.
+Check the releases section and go from there.
 
 1. Clone the repository and create a link to the corresponding folder according to the OS.
 
@@ -14,7 +15,9 @@ Always install the latest version available, the project is extremely active and
 mkdir -v  ~/.config
 ln -v -r -s ./nvim ~/.config/nvim
 ```
+
 or
+
 ```powershell
 $dest = (Get-Location).Path + "\nvim" # We need absolute paths here!
 New-Item -Verbose -Value $dest  -Path $env:USERPROFILE\AppData\Local\nvim -ItemType SymbolicLink 
@@ -33,8 +36,7 @@ New-Item -Verbose -Value $dest  -Path $env:USERPROFILE\AppData\Local\nvim -ItemT
 #### [how-to-use-the-windows-clipboard-from-wsl](https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl)
 
 ```
-# sudo ln -s "$NEOVIM_WIN_DIR/bin/win32yank.exe" "/usr/local/bin/win32yank.exe"
-sudo ln -v -s "$(whereis win32yank.exe |awk '{print $2 }')" "/usr/local/bin/win32yank.exe"
+sudo ln -v -s "$(whereis win32yank.exe | awk '{print $2 }')" "/usr/local/bin/win32yank.exe"
 ```
 ## Windows setup
 
