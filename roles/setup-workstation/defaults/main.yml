@@ -21,6 +21,7 @@ zsh_settings: [] # { "src": ..., "dest": ...} simple file copy
 zsh_template_settings: [] # jinja templates
 
 # ---------- NVIM ----------
-nvim_checksum: sha256:8146ae98747f9ab9d4ed8cf57e0a7e7664d2d6e46b450254c36242794aa79c79  
+# nvim_checksum wget https://github.com/neovim/neovim/releases/download/v0.9.0/nvim-linux64.tar.gz.sha256sum --quiet -^C | awk '{print $1 }'
+nvim_checksum: sha256:fa93f06bec111fea6f316f186b96e19ba289a2dca2d0731e23597398b7397c8f
 nvim_url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
 nvim_pip_executable: pip3
