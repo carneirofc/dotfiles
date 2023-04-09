@@ -1,0 +1,5 @@
+require('carneirofc.packer').setup()
+require('carneirofc.settings').setup()
+require('carneirofc.keymaps').setup()
+require('carneirofc.plugins')
+require('carneirofc.lsp').setup()

@@ -1,6 +1,8 @@
 local M = {}
-
--- pip install --user -U mdformat mdformat-gfm
+-- Markdown format plugin integration.
+-- mdformat is a python tool. mdformat python package is required.
+-- Install dependencies using:
+--   pip install --user -U mdformat mdformat-gfm
 function M.FormatMarkdown()
     local pos = vim.fn.getpos(".")
     vim.cmd('!mdformat -')

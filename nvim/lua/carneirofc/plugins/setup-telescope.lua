@@ -40,13 +40,13 @@ function M.setup()
        end
     end)
 
-
-    -- Using Lua functions
-     vim.api.nvim_set_keymap('n', '<leader>ff', [[:lua require('telescope.builtin').find_files({ hidden = true })<cr>]], { silent = true })
-     vim.api.nvim_set_keymap('n', '<leader>fg', [[:lua require('telescope.builtin').live_grep({ follow = true })<cr>]], { silent = true })
-     vim.api.nvim_set_keymap('n', '<leader>fb', [[:lua require('telescope.builtin').buffers()<cr>]], { silent = true })
-     vim.api.nvim_set_keymap('n', '<leader>fh', [[:lua require('telescope.builtin').help_tags()<cr>]], { silent = true })
-
+    local builtin = require('telescope.builtin')
+    vim.keymap.set('n', '<leader>ff', function() builtin.find_files({ hidden = true}) end, { desc = "[f]ind [f]iles" })
+    vim.keymap.set('n', '<leader>fg', function() builtin.live_grep({ follow = true}) end, { desc = "[f]ind [g]rep" })
+    vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = "[f]ind [b]uffers" })
+    vim.keymap.set('n', '<leader>fG', builtin.git_files, { desc = "[f]ind [G]it" })
+    vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "[f]ind [h]elp" })
+    vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = "[f]ind [d]diagnostics" })
 end
 
 return M
