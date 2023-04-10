@@ -1,4 +1,3 @@
-require('carneirofc.plugins.setup-clang-format').setup()
 require('carneirofc.plugins.setup-galaxyline').setup()
 require('carneirofc.plugins.setup-mdformat').setup()
 require('carneirofc.plugins.setup-nvim-tree').setup()

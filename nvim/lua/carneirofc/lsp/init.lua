@@ -61,7 +61,7 @@ end
 local function setup_lsp_zero()
     local lsp = require('lsp-zero').preset({})
 
-    lsp.ensure_installed({ 'clangd', 'gopls', 'pyright', 'rust_analyzer', 'tsserver' })
+    lsp.ensure_installed({ 'clangd', 'gopls', 'pyright', 'rust_analyzer', 'tsserver', 'csharp_ls' })
 
     lsp.on_attach(on_attach)
 
