@@ -33,6 +33,17 @@ New-Item -Verbose -Value $dest  -Path $env:USERPROFILE\AppData\Local\nvim -ItemT
 ```
 
 ### FAQ
+
+#### neovim on windows, graphical bug on line warp and stuff
+before estating vim, set the TERM variable do empty
+```bash
+TERM= nvim
+```
+or add an alias to the `.bashrc`
+```bash
+alias nvim='TERM= nvim'
+```
+
 #### [how-to-use-the-windows-clipboard-from-wsl](https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl)
 
 ```
