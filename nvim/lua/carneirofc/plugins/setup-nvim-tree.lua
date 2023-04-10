@@ -7,4 +7,5 @@ function M.setup()
     })
     vim.api.nvim_set_keymap('n', '<leader>n', [[:NvimTreeToggle<cr>]], { silent = true })
 end
+
 return M

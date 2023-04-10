@@ -1,4 +1,3 @@
--- require('carneirofc.plugins.setup-black').setup()
 require('carneirofc.plugins.setup-clang-format').setup()
 require('carneirofc.plugins.setup-galaxyline').setup()
 require('carneirofc.plugins.setup-mdformat').setup()
@@ -6,6 +5,3 @@ require('carneirofc.plugins.setup-nvim-tree').setup()
 require('carneirofc.plugins.setup-telescope').setup()
 require('carneirofc.plugins.setup-treesitter').setup()
 require('carneirofc.plugins.setup-gitgutter').setup()
-
--- require('carneirofc.plugins.setup-fidget').setup()
--- require('carneirofc.plugins.setup-neodev').setup()

@@ -5,10 +5,10 @@ function M.setup()
     vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true, silent = true })
 
     -- Buffer handling
-    vim.api.nvim_set_keymap('n', '<leader>bd', ':bdelete<cr>',   { silent = false })
-    vim.api.nvim_set_keymap('n', '<leader>ba', ':bufdo bd<cr>',  { silent = false }) -- Close all the buffers
-    vim.api.nvim_set_keymap('n', '<leader>l',  ':bnext<cr>',     { silent = false })
-    vim.api.nvim_set_keymap('n', '<leader>h',  ':bprevious<cr>', { silent = false })
+    vim.api.nvim_set_keymap('n', '<leader>bd', ':bdelete<cr>', { silent = false })
+    vim.api.nvim_set_keymap('n', '<leader>ba', ':bufdo bd<cr>', { silent = false }) -- Close all the buffers
+    vim.api.nvim_set_keymap('n', '<leader>l', ':bnext<cr>', { silent = false })
+    vim.api.nvim_set_keymap('n', '<leader>h', ':bprevious<cr>', { silent = false })
 
     -- Smart way to move between windows
     vim.api.nvim_set_keymap('n', '<C-j>', '<C-W>j', { silent = false })
@@ -17,12 +17,12 @@ function M.setup()
     vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', { silent = false })
 
     -- Useful mappings for managing tabs
-    vim.api.nvim_set_keymap('n', '<leader>tn',         ':tabnew<cr>',   { silent = false })
-    vim.api.nvim_set_keymap('n', '<leader>to',         ':tabonly<cr>',  { silent = false })
-    vim.api.nvim_set_keymap('n', '<leader>tc',         ':tabclose<cr>', { silent = false })
-    vim.api.nvim_set_keymap('n', '<leader>tm',         ':tabmove',      { silent = false })
-    vim.api.nvim_set_keymap('n', '<leader>t<leader>',  ':tabnext',      { silent = false })
-    vim.api.nvim_set_keymap('n', '<leader>te',        [[:tabedit <C-r>=expand("%:p:h")<cr>]], { silent = false }) -- Opens a new tab with the current buffer's path
+    vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnew<cr>', { silent = false })
+    vim.api.nvim_set_keymap('n', '<leader>to', ':tabonly<cr>', { silent = false })
+    vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<cr>', { silent = false })
+    vim.api.nvim_set_keymap('n', '<leader>tm', ':tabmove', { silent = false })
+    vim.api.nvim_set_keymap('n', '<leader>t<leader>', ':tabnext', { silent = false })
+    vim.api.nvim_set_keymap('n', '<leader>te', [[:tabedit <C-r>=expand("%:p:h")<cr>]], { silent = false }) -- Opens a new tab with the current buffer's path
     vim.cmd([[
         let g:lasttab = 1
         nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
@@ -43,6 +43,6 @@ function M.setup()
 
     --- Switch CWD to the directory of the open buffer
     vim.api.nvim_set_keymap('n', '<leader>cd', ':cd %:p:h<cr>:pwd<cr>', { silent = false })
-
 end
+
 return M
