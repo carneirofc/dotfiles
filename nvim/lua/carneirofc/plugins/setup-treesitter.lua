@@ -5,7 +5,7 @@ function M.setup()
         -- A list of parser names, or "all" (the five listed parsers should always be installed)
         ensure_installed = {
             "bash", "c", "c_sharp", "cmake", "cpp", "css", "dockerfile", "go", "graphql", "html", "ini", "javascript",
-            "jq", "json", "json5", "jsonc", "lua", "make", "markdown", "ninja", "python", "regex", "rust", "scss", "sql",
+            "jq", "json", "lua", "make", "markdown", "python", "regex", "rust", "scss", "sql",
             "terraform", "tsx", "typescript", "vim", "vimdoc", "yaml"
         },
         sync_install = false,
