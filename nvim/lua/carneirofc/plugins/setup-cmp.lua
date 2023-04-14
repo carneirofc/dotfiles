@@ -81,9 +81,6 @@ function M.setup()
             { name = "buffer",  keyword_length = 4 },
             { name = "luasnip" }
         },
-        experimental = {
-            ghost_text = true
-        },
         formatting = {
             format = lspkind.cmp_format({
                 with_text = true, -- do not show text alongside icons

@@ -41,12 +41,13 @@ function M.setup()
     end)
 
     local builtin = require('telescope.builtin')
-    vim.keymap.set('n', '<leader>ff', function() builtin.find_files({ hidden = true }) end, { desc = "[f]ind [f]iles" })
-    vim.keymap.set('n', '<leader>fg', function() builtin.live_grep({ follow = true }) end, { desc = "[f]ind [g]rep" })
-    vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = "[f]ind [b]uffers" })
-    vim.keymap.set('n', '<leader>fG', builtin.git_files, { desc = "[f]ind [G]it" })
-    vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "[f]ind [h]elp" })
-    vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = "[f]ind [d]diagnostics" })
+    vim.keymap.set('n', '<leader>ff', function() builtin.find_files({ hidden = true }) end, { desc = "find files" })
+    vim.keymap.set('n', '<leader>fg', function() builtin.live_grep({ follow = true }) end, { desc = "find grep,string" })
+    vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = "find open buffers" })
+    vim.keymap.set('n', '<leader>fG', builtin.git_files, { desc = "find Git files" })
+    vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "find help" })
+    vim.keymap.set('n', '<leader>fH', builtin.keymaps, { desc = "find keymaps,hotkeys,shortcuts" })
+    vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = "find diagnostics,warnings,errors" })
 end
 
 return M
