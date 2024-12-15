@@ -53,7 +53,6 @@ function M.setup()
         -- Useful status updates for LSP
         use({ 'j-hui/fidget.nvim', tag = "v1.4.5" })
 
-        -- Additional lua configuration, makes nvim stuff amazing!
         use({ 'nvimtools/none-ls.nvim' })
 
         -- LSP Support
@@ -61,6 +60,7 @@ function M.setup()
         use({ 'williamboman/mason.nvim' })
         use({ 'williamboman/mason-lspconfig.nvim' })
         use({ 'neovim/nvim-lspconfig' })
+        use({ 'folke/lazydev.nvim' })
 
         -- Autocompletion
         use({ 'hrsh7th/nvim-cmp' })

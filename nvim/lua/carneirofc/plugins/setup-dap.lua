@@ -1,13 +1,9 @@
 local M = {}
 function M.setup()
-    local neodev = require("neodev")
+    -- require("lazydev").setup({})
+
     local dap = require("dap")
     local dapui = require("dapui")
-
-    neodev.setup({
-        library = { plugins = { "nvim-dap-ui" }, types = true },
-        --      ...
-    })
     dapui.setup()
 
     --  require("dapui").open()
