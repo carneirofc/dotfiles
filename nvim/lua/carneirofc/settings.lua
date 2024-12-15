@@ -12,7 +12,7 @@ local options = {
     errorbells     = false,                                  -- Disables sound effect for errors
     expandtab      = true,                                   -- Use spaces instead of tabs
     fileencoding   = "utf-8",                                -- The encoding written to file
-    guifont        = "JetBrainsMono Nerd Font:h16",
+    guifont        = "JetBrainsMono Nerd Font Mono:h16",
     ignorecase     = true,                                   -- Ingore case on searchs
     laststatus     = 3,                                      -- Single status bar
     linebreak      = true,                                   -- Vim will wrap long lines at a character in 'breakat'
@@ -65,22 +65,22 @@ function M.setup()
     vim.g.python_host_prog = ''
     vim.g.python3_host_prog = '/usr/bin/python3'
 
-    if vim.fn.has('wsl') then
-        vim.cmd([[
-            let g:clipboard = {
-              \   'name': 'WslClipboard',
-              \   'copy': {
-              \      '+': 'clip.exe',
-              \      '*': 'clip.exe',
-              \    },
-              \   'paste': {
-              \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-              \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-              \   },
-              \   'cache_enabled': 0,
-              \ }
-        ]])
-    end
+    --  if vim.fn.has('wsl') then
+    --      vim.cmd([[
+    --          let g:clipboard = {
+    --            \   'name': 'WslClipboard',
+    --            \   'copy': {
+    --            \      '+': 'clip.exe',
+    --            \      '*': 'clip.exe',
+    --            \    },
+    --            \   'paste': {
+    --            \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    --            \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    --            \   },
+    --            \   'cache_enabled': 0,
+    --            \ }
+    --      ]])
+    --  end
 
 
     -- vim.cmd([[

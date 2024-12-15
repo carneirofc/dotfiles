@@ -18,6 +18,9 @@ function M.setup()
 
     -- Install your plugins here
     return packer.startup(function(use)
+        -- DAP
+        use({ 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio'}})
+        use({ 'theHamsta/nvim-dap-virtual-text' })
         -- Packer can manage itself
         use({ 'wbthomason/packer.nvim' })
 
@@ -38,7 +41,7 @@ function M.setup()
         use({ 'iamcco/markdown-preview.nvim', run = 'cd app && npm install' })
         use({ 'glepnir/galaxyline.nvim', branch = 'main' })
 
-        use({ 'ap/vim-css-color' }) -- { 'for': ['css', 'vim'] } -- Color previews for CSS
+        -- use({ 'ap/vim-css-color' }) -- { 'for': ['css', 'vim'] } -- Color previews for CSS
 
         -- Tree-Sitter
         -- "  parsers should be installed, use the command :TSInstall <language> or :TSInstallInfo
@@ -48,38 +51,28 @@ function M.setup()
         use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
 
         -- Useful status updates for LSP
-        use({ 'j-hui/fidget.nvim' })
+        use({ 'j-hui/fidget.nvim', tag = "v1.4.5" })
 
         -- Additional lua configuration, makes nvim stuff amazing!
-        use({ 'folke/neodev.nvim' })
-        use({ 'jose-elias-alvarez/null-ls.nvim' })
-        use {
-            'VonHeikemen/lsp-zero.nvim',
-            branch = 'v2.x',
-            requires = {
-                -- LSP Support
-                { 'neovim/nvim-lspconfig' },
-                {
-                    'williamboman/mason.nvim',
-                    run = function()
-                        pcall(vim.cmd, "MasonUpdate")
-                    end
-                },
-                { 'williamboman/mason-lspconfig.nvim' },
+        use({ 'nvimtools/none-ls.nvim' })
 
-                -- Autocompletion
-                { 'hrsh7th/nvim-cmp' },
-                { 'hrsh7th/cmp-buffer' },
-                { 'hrsh7th/cmp-path' },
-                { 'saadparwaiz1/cmp_luasnip' },
-                { 'hrsh7th/cmp-nvim-lsp' },
-                { 'hrsh7th/cmp-nvim-lua' },
+        -- LSP Support
+        use({ 'neovim/nvim-lspconfig' })
+        use({ 'williamboman/mason.nvim' })
+        use({ 'williamboman/mason-lspconfig.nvim' })
+        use({ 'neovim/nvim-lspconfig' })
 
-                -- Snippets
-                { 'L3MON4D3/LuaSnip' },
-                { 'rafamadriz/friendly-snippets' },
-            }
-        }
+        -- Autocompletion
+        use({ 'hrsh7th/nvim-cmp' })
+        use({ 'hrsh7th/cmp-buffer' })
+        use({ 'hrsh7th/cmp-path' })
+        use({ 'saadparwaiz1/cmp_luasnip' })
+        use({ 'hrsh7th/cmp-nvim-lsp' })
+        use({ 'hrsh7th/cmp-nvim-lua' })
+
+        -- Snippets
+        use({ 'L3MON4D3/LuaSnip' })
+        use({ 'rafamadriz/friendly-snippets' })
 
         -- Automatically set up your configuration after cloning packer.nvim
         -- Put this at the end after all plugins

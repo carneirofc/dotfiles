@@ -1,5 +1,6 @@
 local M = {}
 function M.setup()
+    require('fidget').notify("[carneirofc] setup cmp", vim.log.levels.INFO, nil)
     -- This tiny plugin adds vscode-like pictograms to neovim built-in lsp:
     local lspkind = require('lspkind')
 
