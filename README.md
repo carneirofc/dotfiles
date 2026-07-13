@@ -21,7 +21,7 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 │   ├── install-tools.sh   # fetch prebuilt CLI tools (rg, jq, fd) into ~/.local/bin
 │   └── ansible/       # ansible-based provisioning
 │       ├── playbook.yml
-│       └── roles/     # setup-workstation + ansible-role-neovim (submodule)
+│       └── roles/     # local workstation role for linux tooling
 └── windows/           # Windows-specific
     ├── profile.ps1        # PowerShell profile
     ├── settings.json      # Windows Terminal settings
@@ -34,9 +34,9 @@ under `linux/` or `windows/`.
 
 ## Neovim
 
-Always install the latest version available — the project is extremely active and
-some plugins rely on nightly features. The config itself is cross-platform and
-lives in `common/nvim/`; only the symlink target differs per OS.
+Neovim is kept as a regular cross-platform config under `common/nvim/`. It's
+optional in this repo: the main focus is overall workstation tooling, and nvim
+can be linked independently without requiring any extra role or submodule.
 
 Linux:
 
@@ -52,9 +52,9 @@ $dest = (Get-Location).Path + "\common\nvim"
 New-Item -Verbose -Value $dest -Path $env:USERPROFILE\AppData\Local\nvim -ItemType SymbolicLink
 ```
 
-Then install external dependencies referenced by the `.lua` files (mdformat,
-ansible-language-server, etc.) and, if using packer/vim-plug, run the plugin
-install from inside Neovim.
+Then install any external dependencies referenced by the `.lua` files
+(`mdformat`, `ansible-language-server`, etc.) and install plugins from inside
+Neovim if you use this setup.
 
 ### FAQ
 
@@ -110,11 +110,8 @@ If Ansible can't find some packages, specify the interpreter:
 ansible-playbook playbook.yml -K -e 'ansible_python_interpreter=/usr/bin/python3.8'
 ```
 
-The neovim role is a git submodule — initialize it after cloning:
-
-```bash
-git submodule update --init --recursive
-```
+This playbook uses the local `setup-workstation` role in this repo. Toggle the
+features you want in `linux/ansible/playbook.yml`.
 
 ### Alacritty
 
