@@ -1,0 +1,30 @@
+---
+- name: "Fonts dependency"
+  apt:
+    name: fontconfig
+    state: latest
+    update_cache: yes
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: "Fonts packages"
+  apt:
+    name: "{{ fonts_packages }}"
+    update_cache: yes
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: "JetBrains fonts directory"
+  file:
+    path: "{{ fonts_dir_jetbrains }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: "Download fonts"
+  get_url:
+    url: "{{ item.url | urlencode }}"
+    dest: "{{ item.dest }}/{{ item.url | basename }}"
+  become: true
+  with_items: "{{ fonts_download }}"
+  notify: "rebuild fonts cache"

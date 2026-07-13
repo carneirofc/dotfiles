@@ -1,0 +1,17 @@
+---
+- include_tasks: setup-fonts.yml
+  when:
+    - setup_fonts is defined and setup_fonts
+
+- include_tasks: setup-nvim.yml
+  when:
+    - setup_nvim is defined and setup_nvim
+
+- include_tasks: setup-zsh.yml
+  when:
+    - setup_zsh is defined and setup_zsh
+
+- include_tasks: setup-alacritty.yml
+  when:
+    - setup_alacritty is defined and setup_alacritty
+

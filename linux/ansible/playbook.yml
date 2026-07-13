@@ -8,7 +8,7 @@
     setup_zsh: true
     setup_fonts: false
     setup_nvim: false
-    setup_alacritty: false
+    setup_alacritty: true
 
     neovim_enable_config: true
     neovim_enable_install_dependencies: true
@@ -23,7 +23,7 @@
 
     neovim_dotfiles:
       repo: https://github.com/carneirofc/dotfiles.git
-      path: nvim
+      path: common/nvim
       version: master
 
     neovim_python_executable: '/home/carneirofc/miniconda3/envs/py27/bin/python'

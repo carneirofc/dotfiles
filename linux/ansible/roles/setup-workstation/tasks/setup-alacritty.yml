@@ -1,0 +1,12 @@
+---
+- name: "Alacritty config directory"
+  file:
+    path: "{{ alacritty_dotdir }}"
+    state: directory
+
+- name: "Alacritty settings"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  with_items: "{{ alacritty_settings }}"
