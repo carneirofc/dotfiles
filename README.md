@@ -15,6 +15,7 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 ├── linux/             # Linux-specific (CachyOS laptop)
 │   ├── zsh/           # zsh config + p10k + jinja templates
 │   ├── alacritty/     # alacritty terminal (the terminal I use)
+│   ├── kitty/         # kitty terminal (same look/keymaps as alacritty)
 │   ├── ripgrep/       # ripgrep install helper
 │   ├── fonts/         # nerd-font install helper
 │   ├── lua/           # luarocks notes
@@ -126,6 +127,26 @@ ln -v -r -s ./linux/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
 ```
 
 The font is `JetBrainsMono Nerd Font` — install it first (see the fonts helper).
+
+### Kitty
+
+[Kitty](https://sw.kovidgoyal.net/kitty/) is configured in
+`linux/kitty/kitty.conf` and deliberately mirrors the Alacritty setup: same Nord
+palette, same JetBrainsMono Nerd Font at 12pt, 0.9 background opacity, and the
+same keymaps. Ligatures are enabled everywhere (`disable_ligatures never`),
+including under the cursor. It's deployed by the `setup-workstation` role
+(`setup_kitty: true`), or link it manually:
+
+```bash
+mkdir -pv ~/.config/kitty
+ln -v -r -s ./linux/kitty/kitty.conf ~/.config/kitty/kitty.conf
+```
+
+Two things don't map one-to-one from Alacritty: kitty has no in-terminal search
+(`ctrl+shift+f` opens the scrollback pager instead), and `TERM` is pinned to
+`xterm-256color` to match Alacritty — switch it to `xterm-kitty` if you want
+kitty's extra terminfo features and don't mind installing its terminfo on
+remote hosts.
 
 ### CLI tools
 

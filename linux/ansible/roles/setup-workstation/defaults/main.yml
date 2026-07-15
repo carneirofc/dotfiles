@@ -6,6 +6,10 @@ dotdir: "~/.config"
 alacritty_dotdir: "{{ dotdir }}/alacritty"
 alacritty_settings: [] # { "src": ..., "dest": ... } simple file copy
 
+# --------- Kitty ----------
+kitty_dotdir: "{{ dotdir }}/kitty"
+kitty_settings: [] # { "src": ..., "dest": ... } simple file copy
+
 # --------- FONTS ----------
 fonts_dir: /usr/share/fonts
 fonts_packages: [] # list of package names = Install fonts with package manager

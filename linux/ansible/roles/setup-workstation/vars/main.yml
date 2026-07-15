@@ -2,6 +2,10 @@ alacritty_settings:
   - src: "{{ playbook_dir }}/../alacritty/alacritty.toml"
     dest: "{{ alacritty_dotdir }}/alacritty.toml"
 
+kitty_settings:
+  - src: "{{ playbook_dir }}/../kitty/kitty.conf"
+    dest: "{{ kitty_dotdir }}/kitty.conf"
+
 zsh_settings:
   - src: zsh/p10k.zsh
     dest: "{{ zsh_path }}"

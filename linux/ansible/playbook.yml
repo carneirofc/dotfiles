@@ -9,6 +9,7 @@
     setup_fonts: false
     setup_nvim: false
     setup_alacritty: true
+    setup_kitty: true
 
   roles:
     - setup-workstation

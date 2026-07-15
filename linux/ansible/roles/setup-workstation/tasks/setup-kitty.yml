@@ -1,0 +1,12 @@
+---
+- name: "Kitty config directory"
+  file:
+    path: "{{ kitty_dotdir }}"
+    state: directory
+
+- name: "Kitty settings"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  with_items: "{{ kitty_settings }}"

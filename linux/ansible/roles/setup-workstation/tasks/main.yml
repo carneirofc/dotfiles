@@ -15,3 +15,7 @@
   when:
     - setup_alacritty is defined and setup_alacritty
 
+- include_tasks: setup-kitty.yml
+  when:
+    - setup_kitty is defined and setup_kitty
+
