@@ -22,6 +22,17 @@ theme "carneirofc-mocha"
 
 default_mode "normal"
 
+// Mouse capture stays ON so zellij keeps click-to-focus (panes/tabs) and
+// wheel scrollback. This means a plain click-drag is zellij's selection, not
+// the terminal's. For native terminal selection/copy, hold Shift while
+// dragging (Shift+drag) — this bypasses zellij entirely.
+mouse_mode true
+
+// If you want zellij's own copy actions (scroll/search mode) to write directly
+// to the Wayland system clipboard instead of terminal OSC52, install
+// wl-clipboard (sudo pacman -S wl-clipboard) and uncomment:
+// copy_command "wl-copy"
+
 web_client {
     font "monospace"
 }
