@@ -43,13 +43,6 @@ function M.setup()
 
         -- use({ 'ap/vim-css-color' }) -- { 'for': ['css', 'vim'] } -- Color previews for CSS
 
-        -- Tree-Sitter
-        -- "  parsers should be installed, use the command :TSInstall <language> or :TSInstallInfo
-        -- "  usage:   :TSUpdate so we keep parsers fresh
-        -- "           :TSInstall bash cmake cpp css dockerfile http javascript json5 latex lua python tsx typescript vim
-        -- "   see :h nvim-treesitter-modules or "Available modules" below for a list of modules and their options.
-        use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
-
         -- Useful status updates for LSP
         use({ 'j-hui/fidget.nvim', tag = "v1.4.5" })
 
