@@ -9,6 +9,8 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 
 ```
 .
+├── claude/            # Claude Code user-level config
+│   └── agents/        # custom subagents (symlinked to ~/.claude/agents)
 ├── common/            # cross-platform configs (symlinked the same way on any OS)
 │   ├── nvim/          # Neovim configuration
 │   └── git/           # Git configuration
@@ -32,6 +34,20 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 Rule of thumb: if a config works unchanged on both OSes it lives in `common/`;
 anything that only makes sense on one OS (or is installed differently) lives
 under `linux/` or `windows/`.
+
+## Claude Code
+
+`claude/agents/` holds user-level [Claude Code subagents](https://code.claude.com/docs/en/sub-agents)
+that route mechanical work (codebase search, doc lookups, test runs, git
+history) to Haiku and mid-tier work (deep code reading, scoped edits) to
+Sonnet, keeping the expensive main model for the work that needs it. Link it
+into place:
+
+```bash
+ln -v -r -s ./claude/agents ~/.claude/agents
+```
+
+Run `/agents` inside Claude Code to confirm they're picked up.
 
 ## Neovim
 
