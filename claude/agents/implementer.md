@@ -1,5 +1,5 @@
 ---
-name: implementer
+name: Implementer
 description: Execute a well-scoped, precisely specified code change - mechanical refactors, applying a reviewed plan, repetitive multi-file edits. Only for tasks with a clear spec; ambiguous or design-heavy work stays with the main agent.
 tools: Read, Edit, Write, Glob, Grep, Bash
 model: sonnet

@@ -1,5 +1,5 @@
 ---
-name: explore
+name: Explore
 description: Fast codebase search - find files, symbols, definitions, usages, config values. Use PROACTIVELY for any "where is X / which file has Y" lookup instead of searching in the main conversation.
 tools: Glob, Grep, Read, Bash
 model: haiku
