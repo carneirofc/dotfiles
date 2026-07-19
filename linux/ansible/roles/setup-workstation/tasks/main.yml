@@ -19,3 +19,7 @@
   when:
     - setup_kitty is defined and setup_kitty
 
+- include_tasks: setup-fastfetch.yml
+  when:
+    - setup_fastfetch is defined and setup_fastfetch
+

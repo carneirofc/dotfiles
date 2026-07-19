@@ -18,6 +18,7 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 │   ├── zsh/           # zsh config + p10k + jinja templates
 │   ├── alacritty/     # alacritty terminal (the terminal I use)
 │   ├── kitty/         # kitty terminal (same look/keymaps as alacritty)
+│   ├── fastfetch/     # fastfetch system-info screen (Nord icon rows)
 │   ├── ripgrep/       # ripgrep install helper
 │   ├── fonts/         # nerd-font install helper
 │   ├── lua/           # luarocks notes
@@ -163,6 +164,30 @@ Two things don't map one-to-one from Alacritty: kitty has no in-terminal search
 `xterm-256color` to match Alacritty — switch it to `xterm-kitty` if you want
 kitty's extra terminfo features and don't mind installing its terminfo on
 remote hosts.
+
+### Fastfetch
+
+[Fastfetch](https://github.com/fastfetch-cli/fastfetch) draws the system-info
+screen at shell startup. The config is `linux/fastfetch/config.jsonc` — a modern
+JSONC layout with clean Nerd Font icon rows, the same Nord palette as the
+terminals, and percentage bars for memory/disk (root only). It's deployed by the
+`setup-workstation` role (`setup_fastfetch: true`), or symlink it with the helper
+script (works from any directory):
+
+```bash
+./linux/fastfetch/setup.bash
+```
+
+which just does the equivalent of:
+
+```bash
+mkdir -pv ~/.config/fastfetch
+ln -v -r -s ./linux/fastfetch/config.jsonc ~/.config/fastfetch/config.jsonc
+```
+
+The icons need a Nerd Font (this setup uses `JetBrainsMono Nerd Font`). The logo
+uses the builtin `cachyos` art — switch `logo.source` to `arch` in the config if
+you're on a different distro.
 
 ### CLI tools
 

@@ -1,0 +1,12 @@
+---
+- name: "Fastfetch config directory"
+  file:
+    path: "{{ fastfetch_dotdir }}"
+    state: directory
+
+- name: "Fastfetch settings"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  with_items: "{{ fastfetch_settings }}"

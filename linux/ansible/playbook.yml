@@ -10,6 +10,7 @@
     setup_nvim: false
     setup_alacritty: true
     setup_kitty: true
+    setup_fastfetch: true
 
   roles:
     - setup-workstation

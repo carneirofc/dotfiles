@@ -10,6 +10,10 @@ alacritty_settings: [] # { "src": ..., "dest": ... } simple file copy
 kitty_dotdir: "{{ dotdir }}/kitty"
 kitty_settings: [] # { "src": ..., "dest": ... } simple file copy
 
+# ------- Fastfetch --------
+fastfetch_dotdir: "{{ dotdir }}/fastfetch"
+fastfetch_settings: [] # { "src": ..., "dest": ... } simple file copy
+
 # --------- FONTS ----------
 fonts_dir: /usr/share/fonts
 fonts_packages: [] # list of package names = Install fonts with package manager

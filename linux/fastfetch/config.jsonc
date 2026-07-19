@@ -1,0 +1,130 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+    // Modern icon-row layout, Nord palette, JetBrainsMono Nerd Font glyphs.
+    // Matches the alacritty/kitty look in this repo.
+
+    "logo": {
+        "type": "builtin",
+        // CachyOS art; switch to "arch" if the CachyOS logo misrenders.
+        "source": "cachyos",
+        "padding": {
+            "top": 1,
+            "right": 3
+        },
+        // Nord accents for the logo colors.
+        "color": {
+            "1": "blue",
+            "2": "cyan"
+        }
+    },
+
+    "display": {
+        "separator": "  ",
+        "key": {
+            "type": "icon"
+        },
+        "color": {
+            "keys": "blue",
+            "title": "cyan"
+        },
+        "percent": {
+            "type": 9
+        },
+        "bar": {
+            "width": 10,
+            "char": {
+                "elapsed": "▰",
+                "total": "▱"
+            }
+        }
+    },
+
+    "modules": [
+        {
+            "type": "title",
+            "keyColor": "cyan"
+        },
+        "separator",
+
+        {
+            "type": "os",
+            "key": "OS",
+            "keyIcon": "",
+            "format": "{name} {version}"
+        },
+        {
+            "type": "kernel",
+            "key": "Kernel",
+            "keyIcon": ""
+        },
+        {
+            "type": "uptime",
+            "key": "Uptime",
+            "keyIcon": "󰅐"
+        },
+        {
+            "type": "packages",
+            "key": "Packages",
+            "keyIcon": "󰏖"
+        },
+        {
+            "type": "wm",
+            "key": "WM",
+            "keyIcon": ""
+        },
+        {
+            "type": "shell",
+            "key": "Shell",
+            "keyIcon": ""
+        },
+        {
+            "type": "terminal",
+            "key": "Terminal",
+            "keyIcon": ""
+        },
+        {
+            "type": "terminalfont",
+            "key": "Font",
+            "keyIcon": ""
+        },
+
+        "break",
+
+        {
+            "type": "cpu",
+            "key": "CPU",
+            "keyIcon": ""
+        },
+        {
+            "type": "gpu",
+            "key": "GPU",
+            "keyIcon": "󰢮"
+        },
+        {
+            "type": "memory",
+            "key": "Memory",
+            "keyIcon": "",
+            "percent": {
+                "type": 3
+            }
+        },
+        {
+            "type": "disk",
+            "key": "Disk",
+            "keyIcon": "",
+            "folders": "/",
+            "percent": {
+                "type": 3
+            }
+        },
+
+        "break",
+
+        {
+            "type": "colors",
+            "paddingLeft": 2,
+            "symbol": "circle"
+        }
+    ]
+}

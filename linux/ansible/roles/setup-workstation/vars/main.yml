@@ -6,6 +6,10 @@ kitty_settings:
   - src: "{{ playbook_dir }}/../kitty/kitty.conf"
     dest: "{{ kitty_dotdir }}/kitty.conf"
 
+fastfetch_settings:
+  - src: "{{ playbook_dir }}/../fastfetch/config.jsonc"
+    dest: "{{ fastfetch_dotdir }}/config.jsonc"
+
 zsh_settings:
   - src: zsh/p10k.zsh
     dest: "{{ zsh_path }}"
