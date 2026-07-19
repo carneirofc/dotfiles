@@ -8,6 +8,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **docs**: Xbox controller Bluetooth setup section in the README —
+  `UserspaceHID=false` and disabling ERTM via `/etc/modprobe.d/bluetooth.conf`
+  to fix pairing/connection drops.
 - **fastfetch**: modern `linux/fastfetch/config.jsonc` with clean Nerd Font
   icon rows, the repo's Nord palette, and memory/disk bars (root only). Deployed
   by the `setup-workstation` ansible role (`setup_fastfetch` toggle) or via the

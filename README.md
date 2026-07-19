@@ -216,6 +216,56 @@ Enable it by setting the corresponding variable to `true`:
     - setup-workstation
 ```
 
+### Xbox controller Bluetooth
+
+Getting an Xbox controller to pair reliably over Bluetooth needs a few tweaks —
+BlueZ changed the `UserspaceHID` default to `true` in March 2024, which breaks
+Xbox controllers, and ERTM (Enhanced Re-Transmission Mode) conflicts with the
+controller's Bluetooth implementation and causes most connection drops. These
+are system-level config files, so they're the same regardless of distro.
+Adapted from [this guide](https://www.simon-neutert.de/posts/2025/09/07/aurora-xbox-nuc11/).
+
+In `/etc/bluetooth/main.conf`, add to the `[General]` section:
+
+```ini
+ControllerMode = dual
+Privacy = device
+FastConnectable = true
+JustWorksRepairing = confirm
+```
+
+and add a new `[LE]` section:
+
+```ini
+[LE]
+MinConnectionInterval=7
+MaxConnectionInterval=9
+ConnectionLatency=0
+```
+
+In `/etc/bluetooth/input.conf`, set in the `[General]` section:
+
+```ini
+UserspaceHID=false
+ClassicBondedOnly=false
+```
+
+Create `/etc/modprobe.d/bluetooth.conf` to disable ERTM:
+
+```ini
+options bluetooth disable_ertm=1
+```
+
+The `disable_ertm` option is read when the `bluetooth` kernel module loads, so a
+reboot is required for it to take effect:
+
+```bash
+sudo reboot
+```
+
+(A `sudo systemctl restart bluetooth` picks up the `main.conf`/`input.conf`
+changes but not the module option.)
+
 ## Some utilities and must-have programs
 
 - [ripgrep](https://github.com/BurntSushi/ripgrep) — fast recursive search.
