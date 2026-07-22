@@ -72,10 +72,13 @@ function Install-Wezterm {
 }
 
 function Install-Zellij {
-    # Zellij has no native Windows build; installed for use under WSL.
-    Install-Dir `
-        -Source (Join-Path $PSScriptRoot 'zellij') `
-        -Destination (Join-Path $env:APPDATA 'zellij')
+    # Native Windows Zellij uses the platform config dir, not ~/.config/zellij:
+    # %APPDATA%\Zellij\config (verify with `zellij setup --check`). config.kdl and
+    # the themes/ folder go directly there. %APPDATA%\zellij (lowercase, no
+    # \config) is never read -- the theme/profile there goes undiscovered.
+    $dest = Join-Path $env:APPDATA 'Zellij\config'
+    Install-File -Source (Join-Path $PSScriptRoot 'zellij\config.kdl') -Destination (Join-Path $dest 'config.kdl')
+    Install-Dir  -Source (Join-Path $PSScriptRoot 'zellij\themes')     -Destination (Join-Path $dest 'themes')
 }
 
 function Install-Claude {

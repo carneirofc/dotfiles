@@ -1,5 +1,5 @@
-// Zellij config for Windows (installed to %APPDATA%\zellij by setup-windows.ps1).
-// Zellij has no native Windows build; this applies when running under WSL.
+// Zellij config for Windows (installed to %APPDATA%\Zellij\config by setup-windows.ps1).
+// Native Windows Zellij uses the platform config dir; verify with `zellij setup --check`.
 // Kept in sync with linux/zellij/config.kdl.
 
 keybinds clear-defaults=true {

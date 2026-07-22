@@ -23,6 +23,11 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   `~/.config/fastfetch`. Documented in the README.
 
 ### Changed
+- **windows**: `setup-windows.ps1` installs Zellij to the native Windows config
+  dir `%APPDATA%\Zellij\config` (config.kdl and `themes/`), instead of the
+  never-read `%APPDATA%\zellij`. Verify with `zellij setup --check`.
+- **windows**: `alacritty.toml` sets opacity to `1.0` and drops the
+  JetBrainsMono Nerd Font family, falling back to Alacritty's built-in default.
 - **windows**: `setup-windows.ps1` copies the Neovim config to
   `%LOCALAPPDATA%\nvim` instead of symlinking it, so the whole bootstrap runs on
   a restricted account with no elevation or Developer Mode.
