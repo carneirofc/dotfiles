@@ -10,7 +10,8 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 ```
 .
 ├── claude/            # Claude Code user-level config
-│   └── agents/        # custom subagents (symlinked to ~/.claude/agents)
+│   ├── agents/        # custom subagents (symlinked to ~/.claude/agents)
+│   └── skills/        # custom skills (copied to ~/.claude/skills on Windows)
 ├── common/            # cross-platform configs (symlinked the same way on any OS)
 │   ├── nvim/          # Neovim configuration
 │   └── git/           # Git configuration
@@ -27,14 +28,28 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 │       ├── playbook.yml
 │       └── roles/     # local workstation role for linux tooling
 └── windows/           # Windows-specific
+    ├── alacritty/         # alacritty terminal (Windows-tuned variant)
+    ├── zellij/            # zellij config + theme (used under WSL)
     ├── profile.ps1        # PowerShell profile
     ├── settings.json      # Windows Terminal settings
-    └── setup-windows.ps1  # bootstrap: links nvim + installs the profile
+    └── setup-windows.ps1  # bootstrap: profile, nvim, wezterm/alacritty/zellij, claude
 ```
 
 Rule of thumb: if a config works unchanged on both OSes it lives in `common/`;
 anything that only makes sense on one OS (or is installed differently) lives
 under `linux/` or `windows/`.
+
+On Windows, `setup-windows.ps1` installs the PowerShell profile and **copies**
+every config into place — no symlinks, so it runs on a locked-down account with
+no elevation or Developer Mode: nvim (from `common/`) to `%LOCALAPPDATA%\nvim`,
+wezterm (from `common/`) to `~/.config/wezterm`, alacritty to
+`%APPDATA%\alacritty`, zellij to `%APPDATA%\zellij` (applies under WSL — zellij
+has no native Windows build), and the Claude agents/skills to `~/.claude`. It is
+idempotent; re-run it to refresh every destination.
+
+```powershell
+pwsh -File .\windows\setup-windows.ps1
+```
 
 ## Claude Code
 
@@ -63,11 +78,11 @@ mkdir -v ~/.config
 ln -v -r -s ./common/nvim ~/.config/nvim
 ```
 
-Windows (absolute paths required — the `setup-windows.ps1` script does this for you):
+Windows (the `setup-windows.ps1` script does this for you; it **copies** rather
+than symlinks so no elevation or Developer Mode is needed):
 
 ```powershell
-$dest = (Get-Location).Path + "\common\nvim"
-New-Item -Verbose -Value $dest -Path $env:USERPROFILE\AppData\Local\nvim -ItemType SymbolicLink
+Copy-Item -Recurse -Force .\common\nvim (Join-Path $env:LOCALAPPDATA 'nvim')
 ```
 
 Then install any external dependencies referenced by the `.lua` files
