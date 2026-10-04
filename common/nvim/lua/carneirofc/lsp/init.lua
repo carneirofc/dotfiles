@@ -1,24 +1,23 @@
 local M = {}
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
+-- Language servers installed and enabled through mason / mason-lspconfig.
+-- mason-lspconfig calls `vim.lsp.enable()` for every server it has installed
+-- (automatic_enable = true), so nothing else is needed for these.
+local mason_servers = { 'lua_ls', 'ruff', 'ts_ls', 'biome' }
+
+-- Language servers expected to come from the system package manager. They are
+-- only enabled when their binary is on PATH so a missing one never produces a
+-- "Spawning language server ... failed" error.
+local system_servers = { 'clangd', 'gopls' }
+
+-- Formatters / linters consumed by none-ls. Installed through the mason
+-- registry on first start; mason prepends its bin dir to PATH.
+local mason_tools = { 'shfmt', 'goimports', 'mypy', 'prettier' }
+
+-- Buffer-local keymaps, applied on every LspAttach.
 local on_attach = function(event)
     local bufnr = event.buf
-    -- if client.name == "omnisharp" then
-    --     client.server_capabilities.semanticTokensProvider.legend = {
-    --         tokenModifiers = { "static" },
-    --         tokenTypes = { "comment", "excluded", "identifier", "keyword", "keyword", "number", "operator", "operator",
-    --             "preprocessor", "string", "whitespace", "text", "static", "preprocessor", "punctuation", "string",
-    --             "string", "class", "delegate", "enum", "interface", "module", "struct", "typeParameter", "field",
-    --             "enumMember", "constant", "local", "parameter", "method", "method", "property", "event", "namespace",
-    --             "label", "xml", "xml", "xml", "xml", "xml", "xml", "xml", "xml", "xml", "xml", "xml", "xml", "xml",
-    --             "xml", "xml", "xml", "xml", "xml", "xml", "xml", "xml", "regexp", "regexp", "regexp", "regexp", "regexp",
-    --             "regexp", "regexp", "regexp", "regexp" }
-    --     }
-    -- end
 
-    -- In this case, we create a function that lets us more easily define mappings specific
-    -- for LSP related items. It sets the mode, buffer and description for us each time.
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = '[lsp] rename' })
     vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[lsp] code action' })
     vim.keymap.set('n', '<A-S-f>', function()
@@ -30,17 +29,18 @@ local on_attach = function(event)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[lsp] go to definition' })
     vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references,
         { buffer = bufnr, desc = '[lsp] go to reference' })
-    vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[ls] go to implementation' })
+    vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[lsp] go to implementation' })
     vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols,
         { buffer = bufnr, desc = '[lsp] document symbols' })
     vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols,
         { buffer = bufnr, desc = '[lsp] workspace symbols' })
 
-
     -- See `:help K` for why this keymap
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = '[lsp] hover documentation' })
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = '[lsp] signature documentation' })
-    vim.keymap.set('n', '<C-K>', vim.diagnostic.open_float, { buffer = bufnr, desc = '[lsp] diagnostics' })
+    -- Signature help: Neovim ships <C-s> in insert mode (see :help lsp-defaults).
+    -- <C-k> is reserved for window navigation (keymaps.lua), so the diagnostic
+    -- float lives on <leader>e.
+    vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { buffer = bufnr, desc = '[lsp] line diagnostics' })
 
     -- Lesser used LSP functionality
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = bufnr, desc = 'Go to Declaration' })
@@ -78,115 +78,67 @@ local function setup_null_ls()
     })
 end
 
---  local function setup_lsp_zero()
---      local lsp = require('lsp-zero').preset({})
-
---      lsp.ensure_installed({ 'clangd', 'gopls', 'pyright', 'tsserver', 'csharp_ls' })
-
---      --✓ pyright
---      --✓ rust-analyzer rust_analyzer
---      --✓ reorder-python-imports
---      --✓ mypy
---      --✓ flake8
---      --✓ quick-lint-js quick_lint_js
---      --✓ black
---      --✓ clangd
---      --✓ gopls
---      --✓ lua-language-server lua_ls
---      --✓ luaformatter
---      --✓ typescript-language-server tsserver
-
---      lsp.on_attach(on_attach)
-
---      lsp.format_on_save({
---          servers = {
---              ['lua_ls'] = { 'lua' },
---              ['rust_analyzer'] = { 'rust' },
---              ['null-ls'] = { 'python', 'javascript', 'typescript', 'cpp', 'c', 'go' }
---          },
---          format_opts = { async = false, timeout_ms = 1000 }
---      })
---      -- Configure language servers before lsp setup
---      require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
-
---      lsp.setup()
---  end
-
-local function setup_lua_ls()
-    require('fidget').notify("[carneirofc] setup lua_ls", vim.log.levels.INFO, nil)
-    require('lspconfig').lua_ls.setup({
-        on_init = function(client)
-            --    if client.workspace_folders then
-            --      local path = client.workspace_folders[1].name
-            --      if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
-            --        require('fidget').notify("[carneirofc] not configuring nvim lua", vim.log.levels.WARN, nil)
-            --        return
-            --      end
-            --    end
-
-            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                runtime = {
-                    -- Tell the language server which version of Lua you're using
-                    -- (most likely LuaJIT in the case of Neovim)
-                    version = 'LuaJIT'
-                },
-                -- Make the server aware of Neovim runtime files
-                workspace = {
-                    checkThirdParty = false,
-                    library = {
-                        vim.env.VIMRUNTIME
-                        -- Depending on the usage, you might want to add additional paths here.
-                        -- "${3rd}/luv/library"
-                        -- "${3rd}/busted/library",
-                    }
-                    -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
-                    -- library = vim.api.nvim_get_runtime_file("", true)
-                }
-            })
-        end,
-        settings = {
-            Lua = {}
-        }
-    })
+-- Install any missing none-ls tool through the mason registry (async, no-op
+-- when everything is already present).
+local function ensure_mason_tools()
+    local registry = require('mason-registry')
+    registry.refresh(function()
+        for _, name in ipairs(mason_tools) do
+            local ok, pkg = pcall(registry.get_package, name)
+            if ok and not pkg:is_installed() then
+                require('fidget').notify("[carneirofc] mason: installing " .. name, vim.log.levels.INFO, nil)
+                pkg:install()
+            end
+        end
+    end)
 end
 
-local function setup_ruff_ls()
-    require('lspconfig').ruff.setup({
-        init_options = {
-            settings = {
-                -- Server settings should go here
-            }
-        }
-    })
-end
+-- Per-server overrides. Server definitions themselves come from
+-- nvim-lspconfig's `lsp/` directory (see :help lspconfig-nvim-0.11).
+local function configure_servers()
+    -- lua_ls: lazydev injects the Neovim runtime / plugin paths into the
+    -- workspace library lazily, replacing the old on_init settings hack.
+    require('lazydev').setup({})
 
-local function setup_biome()
-    require('lspconfig').ts_ls.setup({
+    vim.lsp.config('ts_ls', {
         on_attach = function(client)
-            -- Optional: Disable tsserver formatting if using Biome
+            -- Biome owns formatting for JS/TS.
             client.server_capabilities.documentFormattingProvider = false
             require('fidget').notify("[carneirofc] ts_ls attached", vim.log.levels.INFO, nil)
         end
     })
-    require('lspconfig').biome.setup({
+    vim.lsp.config('biome', {
         on_attach = function(client)
-            -- Enable Biome formatting
             client.server_capabilities.documentFormattingProvider = true
             require('fidget').notify("[carneirofc] biome attached", vim.log.levels.INFO, nil)
         end
     })
 end
 
+local function enable_servers()
+    require('mason-lspconfig').setup({
+        ensure_installed = mason_servers,
+        automatic_enable = true,
+    })
+
+    for _, name in ipairs(system_servers) do
+        local cfg = vim.lsp.config[name]
+        local cmd = cfg and cfg.cmd
+        if type(cmd) == 'table' and vim.fn.executable(cmd[1]) == 1 then
+            vim.lsp.enable(name)
+        end
+    end
+end
+
 function M.setup()
-    -- https://github.com/neovim/nvim-lspconfig
     require('fidget').notify("[carneirofc] creating autocmd", vim.log.levels.INFO, nil)
     vim.api.nvim_create_autocmd('LspAttach', { desc = "lsp_on_attach", callback = on_attach })
 
-    setup_lua_ls()
-    setup_ruff_ls()
-    setup_biome()
+    configure_servers()
+    enable_servers()
 
     setup_null_ls()
+    ensure_mason_tools()
 
     -- Setup completion engine after the LSP has been configured
     require('carneirofc.lsp.setup-cmp').setup()

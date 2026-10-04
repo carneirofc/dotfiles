@@ -2,7 +2,7 @@ local M = {}
 function M.setup()
     -- Automatically install packer
     local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-    if not vim.loop.fs_stat(install_path) then
+    if not vim.uv.fs_stat(install_path) then
         PACKER_BOOTSTRAP = vim.fn.system({
             'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path
         })
@@ -52,7 +52,6 @@ function M.setup()
         use({ 'neovim/nvim-lspconfig' })
         use({ 'williamboman/mason.nvim' })
         use({ 'williamboman/mason-lspconfig.nvim' })
-        use({ 'neovim/nvim-lspconfig' })
         use({ 'folke/lazydev.nvim' })
 
         -- Autocompletion

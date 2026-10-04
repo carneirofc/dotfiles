@@ -84,7 +84,7 @@ function M.setup()
         },
         formatting = {
             format = lspkind.cmp_format({
-                with_text = true, -- do not show text alongside icons
+                mode = 'symbol_text', -- show the kind text alongside the icon
                 menu = {
                     buffer = "[buff]",
                     nvim_lsp = "[LSP]",

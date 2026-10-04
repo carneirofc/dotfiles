@@ -1,3 +1,4 @@
 common/nvim/.netrwhist
 common/nvim/plugged
 *.bak
+common/nvim/plugin/packer_compiled.lua
