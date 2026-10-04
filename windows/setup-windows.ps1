@@ -82,24 +82,9 @@ function Install-Zellij {
 }
 
 function Install-Claude {
-    $claudeSrc = Join-Path $RepoRoot 'claude'
-    $claudeDest = Join-Path $env:USERPROFILE '.claude'
-
-    Install-Dir `
-        -Source (Join-Path $claudeSrc 'agents') `
-        -Destination (Join-Path $claudeDest 'agents')
-
-    $skills = Join-Path $claudeSrc 'skills'
-    if (Test-Path -Path $skills) {
-        Install-Dir -Source $skills -Destination (Join-Path $claudeDest 'skills')
-    }
-
-    foreach ($f in 'CLAUDE.md', 'AGENTS.md') {
-        $src = Join-Path $claudeSrc $f
-        if (Test-Path -Path $src) {
-            Install-File -Source $src -Destination (Join-Path $claudeDest $f)
-        }
-    }
+    # Delegate to the standalone claude installer so the copy logic lives in one
+    # place (see claude/install-claude.ps1, which also runs on its own).
+    & (Join-Path $RepoRoot 'claude\install-claude.ps1')
 }
 
 Install-Profile
