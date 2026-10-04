@@ -14,12 +14,14 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 │   └── skills/        # custom skills (copied to ~/.claude/skills on Windows)
 ├── common/            # cross-platform configs (symlinked the same way on any OS)
 │   ├── nvim/          # Neovim configuration
+│   ├── ssh/           # SSH client defaults (keepalives, connection reuse)
 │   └── git/           # Git configuration
 ├── linux/             # Linux-specific (CachyOS laptop)
 │   ├── zsh/           # zsh config + p10k + jinja templates
 │   ├── alacritty/     # alacritty terminal (the terminal I use)
 │   ├── kitty/         # kitty terminal (same look/keymaps as alacritty)
 │   ├── fastfetch/     # fastfetch system-info screen (Nord icon rows)
+│   ├── network/       # NetworkManager Wi-Fi power-save drop-in
 │   ├── ripgrep/       # ripgrep install helper
 │   ├── fonts/         # nerd-font install helper
 │   ├── lua/           # luarocks notes
@@ -64,6 +66,15 @@ ln -v -r -s ./claude/agents ~/.claude/agents
 ```
 
 Run `/agents` inside Claude Code to confirm they're picked up.
+
+To install everything (`agents/`, `skills/`, `CLAUDE.md`, `AGENTS.md`) as plain
+copies into `~/.claude` instead, use the standalone installers; both are
+idempotent and honour `CLAUDE_HOME`:
+
+```bash
+./claude/install-claude.bash            # Linux / macOS
+pwsh -File .\claude\install-claude.ps1  # Windows (setup-windows.ps1 calls this)
+```
 
 ## Neovim
 
@@ -123,6 +134,32 @@ alias nvim='TERM= nvim'
 
 ```bash
 sudo ln -v -s "$(whereis win32yank.exe | awk '{print $2 }')" "/usr/local/bin/win32yank.exe"
+```
+
+## SSH
+
+`common/ssh/config` holds client defaults only — keepalives so a session rides
+out a brief link outage instead of wedging, and connection reuse so a second
+shell to the same host skips the handshake. Install it with:
+
+```bash
+./common/ssh/setup.bash
+```
+
+It symlinks the config to `~/.ssh/config`, creates the `~/.ssh/sockets`
+directory that `ControlPath` needs, and backs up any existing config to
+`~/.ssh/config.bak` rather than overwriting it.
+
+Nothing host-specific belongs in this repo — it's public. Private hosts, keys,
+and per-host overrides go in `~/.ssh/config.local`, which the shipped config
+`Include`s *above* its own `Host *` block. ssh keeps the first value it obtains
+for each keyword, so anything in `config.local` wins over the defaults. A
+missing `config.local` is ignored silently.
+
+Check what a host actually resolves to with:
+
+```bash
+ssh -G somehost
 ```
 
 ## Windows setup
@@ -295,6 +332,61 @@ sudo reboot
 
 (A `sudo systemctl restart bluetooth` picks up the `main.conf`/`input.conf`
 changes but not the module option.)
+
+### Wi-Fi stability (Intel AX210 / iwlwifi)
+
+Symptom: SSH sessions hang, `ping` reports unreachable, and the link recovers on
+its own a moment later. The card looks connected the whole time. Two independent
+causes, and they compound.
+
+**1. Power save.** On Intel cards, `wifi.powersave` stalls idle connections — an
+SSH prompt with no traffic simply stops receiving. Install the NetworkManager
+drop-in to disable it globally:
+
+```bash
+./linux/network/setup.bash
+```
+
+It copies `wifi-powersave.conf` into `/etc/NetworkManager/conf.d/` (with sudo)
+and reloads NetworkManager. Confirm it took:
+
+```bash
+iw dev wlan0 get power_save    # expect: Power save: off
+```
+
+**2. Roam ping-pong between two BSSIDs of the same SSID.** A router that
+band-steers advertises one SSID on two radios. If neither is clearly better —
+say 5 GHz at a weak -72 dBm and 2.4 GHz strong but on a congested channel — the
+card oscillates between them, and each roam is a *full* disassociation that
+drops packets for several seconds. Check for it:
+
+```bash
+journalctl -b -k | grep "wlan0: disconnect from AP"
+```
+
+Repeated `disconnect from AP <a> for new auth to <b>` lines, minutes or even
+seconds apart, are the signature. List the radios behind the SSID:
+
+```bash
+nmcli device wifi rescan; nmcli -f IN-USE,BSSID,SSID,CHAN,FREQ,SIGNAL device wifi list
+```
+
+For a machine that never moves, pin the connection to one BSSID so it stops
+roaming entirely:
+
+```bash
+sudo nmcli connection modify <connection-name> 802-11-wireless.bssid <BSSID>
+sudo nmcli connection up <connection-name>
+```
+
+Pick the BSSID by signal and channel congestion — a strong 2.4 GHz on a channel
+shared with three neighbors can be worse than a weaker 5 GHz on clean spectrum.
+Note that 5 GHz channels 52–144 are DFS: the AP must vacate on radar detection,
+which causes its own dropouts, so prefer a non-DFS channel where there's a
+choice. Undo the pin with `802-11-wireless.bssid ""`.
+
+The pin is per-network, so it stays out of this repo — only the power-save
+drop-in is shipped. Pair both with the SSH keepalives above.
 
 ## Some utilities and must-have programs
 

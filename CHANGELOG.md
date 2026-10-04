@@ -55,6 +55,27 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 - **docs**: `AGENTS.md` work-contract tree for the repo — root rail plus
   `common/nvim`, `common/wezterm`, `linux`, `linux/ansible`, `linux/zsh` and
   `windows` child docs (section shape from `claude/AGENTS.md`).
+- **ssh**: `common/ssh/config` with client defaults — `ServerAliveInterval`/
+  `ServerAliveCountMax` keepalives so a session rides out a brief link outage
+  instead of wedging silently, plus `ControlMaster` connection reuse. Installed
+  by `common/ssh/setup.bash`, which symlinks it, creates the `~/.ssh/sockets`
+  dir `ControlPath` needs, and backs up any existing config. Host-specific
+  config stays local in `~/.ssh/config.local`, `Include`d above the `Host *`
+  defaults so it takes precedence. Documented in the README.
+- **linux**: `linux/network/wifi-powersave.conf`, a NetworkManager drop-in that
+  disables Wi-Fi power save globally — on Intel AX210/iwlwifi it stalls idle
+  connections and hangs SSH. Installed to `/etc/NetworkManager/conf.d/` by
+  `linux/network/setup.bash`.
+- **docs**: Wi-Fi stability section in the README covering both causes of the
+  "SSH hangs, ping unreachable, recovers on its own" symptom — power save, and
+  roam ping-pong between two BSSIDs of a band-steering router — with the
+  `journalctl` signature to identify it and the `nmcli` BSSID pin to stop it.
+- **claude**: standalone installers `claude/install-claude.bash` (Linux/macOS)
+  and `claude/install-claude.ps1` (Windows) copy `agents/`, `skills/`,
+  `CLAUDE.md` and `AGENTS.md` into `~/.claude` (`CLAUDE_HOME` overrides), plain
+  copies, idempotent, stale destinations removed first so deletions propagate.
+  `setup-windows.ps1` delegates its Claude step to the `.ps1` so the copy logic
+  lives in one place.
 - **windows**: `setup-windows.ps1` now copies the wezterm, alacritty, and zellij
   configs and the Claude agent/skill files into their Windows locations
   (`~/.config/wezterm`, `%APPDATA%\alacritty`, `%APPDATA%\zellij`, `~/.claude`),
