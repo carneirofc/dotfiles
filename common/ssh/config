@@ -1,0 +1,22 @@
+# SSH client defaults.
+#
+# ssh uses the FIRST value it obtains for each keyword, so this Include must
+# stay above the `Host *` block: anything you put in ~/.ssh/config.local (private
+# hosts, keys, per-host overrides) wins over the defaults below. A missing
+# config.local is silently ignored.
+Include ~/.ssh/config.local
+
+Host *
+    # Survive brief link outages instead of hanging silently. Without these, a
+    # wifi roam or power-save stall leaves the session wedged with no output and
+    # no error until the kernel finally gives up on the TCP connection.
+    # 30s x 6 = ~3 minutes of grace before a genuinely dead session is torn down.
+    ServerAliveInterval 30
+    ServerAliveCountMax 6
+    TCPKeepAlive yes
+
+    # Reuse one connection for additional sessions to the same host, so opening a
+    # second shell doesn't pay for a fresh handshake over a marginal link.
+    ControlMaster auto
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+    ControlPersist 10m
