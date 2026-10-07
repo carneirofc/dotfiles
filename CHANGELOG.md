@@ -8,6 +8,12 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **theming**: wallpaper-driven colors with matugen. `linux/matugen/` renders a
+  KDE color scheme and Alacritty, Kitty, WezTerm and Zellij palettes from the
+  wallpaper; `set-wallpaper.sh` sets the desktop/lock-screen wallpaper and
+  regenerates everything. `linux/kde/apply.sh` applies the Plasma look (blur,
+  decorations, icons, rounded corners) via `kwriteconfig6`. Deployed by the
+  `setup-workstation` role (`setup_theming` toggle).
 - **windows**: `setup-windows.ps1` now copies the wezterm, alacritty, and zellij
   configs and the Claude agent/skill files into their Windows locations
   (`~/.config/wezterm`, `%APPDATA%\alacritty`, `%APPDATA%\zellij`, `~/.claude`),
@@ -23,6 +29,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   `~/.config/fastfetch`. Documented in the README.
 
 ### Changed
+- **terminals**: Alacritty, Kitty, WezTerm and Zellij take their colors from
+  the matugen-generated files. Alacritty drops its inline Nord palette; Kitty
+  keeps Nord as a fallback, and WezTerm falls back to `colors/custom.lua`.
 - **windows**: `setup-windows.ps1` installs Zellij to the native Windows config
   dir `%APPDATA%\Zellij\config` (config.kdl and `themes/`), instead of the
   never-read `%APPDATA%\zellij`. Verify with `zellij setup --check`.

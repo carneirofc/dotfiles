@@ -20,6 +20,8 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 │   ├── alacritty/     # alacritty terminal (the terminal I use)
 │   ├── kitty/         # kitty terminal (same look/keymaps as alacritty)
 │   ├── fastfetch/     # fastfetch system-info screen (Nord icon rows)
+│   ├── matugen/       # wallpaper-driven color palette for KDE + terminals
+│   ├── kde/           # KDE Plasma look (blur, icons, decorations)
 │   ├── ripgrep/       # ripgrep install helper
 │   ├── fonts/         # nerd-font install helper
 │   ├── lua/           # luarocks notes
@@ -179,6 +181,45 @@ Two things don't map one-to-one from Alacritty: kitty has no in-terminal search
 `xterm-256color` to match Alacritty — switch it to `xterm-kitty` if you want
 kitty's extra terminfo features and don't mind installing its terminfo on
 remote hosts.
+
+### Theming (KDE Plasma + matugen)
+
+The desktop and terminal colors are generated from the wallpaper by
+[matugen](https://github.com/InioX/matugen) (Material You palette).
+`linux/matugen/` holds the config and one template per app:
+
+| Template | Output | Reload |
+|---|---|---|
+| `kde.colors` | `~/.local/share/color-schemes/Matugen.colors` | applied via `plasma-apply-colorscheme` |
+| `alacritty.toml` | `~/.config/alacritty/colors.toml` | live (imported by `alacritty.toml`) |
+| `kitty.conf` | `~/.config/kitty/colors.conf` | live (`SIGUSR1`) |
+| `wezterm.lua` | `~/.config/wezterm/colors/matugen.lua` | live (falls back to `colors/custom.lua`) |
+| `zellij.kdl` | `~/.config/zellij/themes/matugen.kdl` | new sessions |
+
+The terminal ANSI colors are fixed hues (`[config.custom_colors]`) harmonized
+toward the wallpaper, so red still reads as red. The WezTerm and Zellij outputs
+land inside this repo through the config symlinks and are gitignored.
+
+```bash
+sudo pacman -S matugen
+ln -sfn "$PWD/linux/matugen" ~/.config/matugen
+~/.config/matugen/set-wallpaper.sh ~/Pictures/Wallpaper/<image>.png
+```
+
+`set-wallpaper.sh` sets the desktop and lock-screen wallpaper, then runs
+matugen; extra args are forwarded (e.g. `-t scheme-content` for colors closer
+to the image, `-m light`).
+
+`linux/kde/apply.sh` applies the rest of the look with `kwriteconfig6`, one key
+at a time, so the rc files Plasma rewrites at runtime aren't tracked whole:
+Breeze Dark, blur, borderless centered-title decorations, the scheme's accent,
+Papirus-Dark icons and rounded corners when installed
+(`papirus-icon-theme`, `kwin-effect-rounded-corners`). Panels and widgets live
+in `plasma-org.kde.plasma.desktop-appletsrc`, which is machine-specific, so
+they stay manual.
+
+Both run from the `setup-workstation` role (`setup_theming: true`, wallpaper in
+`theming_wallpaper`).
 
 ### Fastfetch
 
