@@ -14,6 +14,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   regenerates everything. `linux/kde/apply.sh` applies the Plasma look (blur,
   decorations, icons, rounded corners) via `kwriteconfig6`. Deployed by the
   `setup-workstation` role (`setup_theming` toggle).
+- **kde**: `linux/kde/sync-login.sh` copies the Plasma look (colors, icons,
+  fonts) and wallpaper to the Plasma Login Manager greeter, so the login
+  screen matches the lock screen. Run as root by the theming task.
 - **windows**: `setup-windows.ps1` now copies the wezterm, alacritty, and zellij
   configs and the Claude agent/skill files into their Windows locations
   (`~/.config/wezterm`, `%APPDATA%\alacritty`, `%APPDATA%\zellij`, `~/.claude`),

@@ -218,8 +218,18 @@ Papirus-Dark icons and rounded corners when installed
 in `plasma-org.kde.plasma.desktop-appletsrc`, which is machine-specific, so
 they stay manual.
 
-Both run from the `setup-workstation` role (`setup_theming: true`, wallpaper in
-`theming_wallpaper`).
+The login screen (Plasma Login Manager) runs as the `plasmalogin` user and
+keeps its own copy of `kdeglobals` and friends, so it doesn't follow these
+changes the way the lock screen does. `linux/kde/sync-login.sh` copies them
+(colors, icons, fonts, keyboard, monitors) and the wallpaper over, same as
+System Settings > Login Screen > *Apply Plasma Settings*:
+
+```bash
+sudo linux/kde/sync-login.sh ~ ~/Pictures/Wallpaper/<image>.png
+```
+
+All three run from the `setup-workstation` role (`setup_theming: true`,
+wallpaper in `theming_wallpaper`), the login sync last and with `become`.
 
 ### Fastfetch
 
