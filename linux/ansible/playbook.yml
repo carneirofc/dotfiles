@@ -11,6 +11,8 @@
     setup_alacritty: true
     setup_kitty: true
     setup_fastfetch: true
+    setup_theming: true
+    theming_wallpaper: "~/Pictures/Wallpaper/Anima_Upscaled__00014_.png"
 
   roles:
     - setup-workstation

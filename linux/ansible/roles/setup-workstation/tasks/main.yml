@@ -23,3 +23,7 @@
   when:
     - setup_fastfetch is defined and setup_fastfetch
 
+
+- include_tasks: setup-theming.yml
+  when:
+    - setup_theming is defined and setup_theming

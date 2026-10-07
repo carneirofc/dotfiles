@@ -1,0 +1,15 @@
+---
+- name: "matugen config link"
+  file:
+    src: "{{ playbook_dir }}/../matugen"
+    dest: "{{ matugen_dotdir }}"
+    state: link
+
+- name: "KDE Plasma look"
+  command: "{{ playbook_dir }}/../kde/apply.sh"
+  changed_when: false
+
+- name: "Wallpaper and matugen palette"
+  command: "{{ matugen_dotdir | expanduser }}/set-wallpaper.sh {{ theming_wallpaper | expanduser }}"
+  changed_when: false
+  when: theming_wallpaper | length > 0

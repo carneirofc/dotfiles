@@ -14,6 +14,10 @@ kitty_settings: [] # { "src": ..., "dest": ... } simple file copy
 fastfetch_dotdir: "{{ dotdir }}/fastfetch"
 fastfetch_settings: [] # { "src": ..., "dest": ... } simple file copy
 
+# -------- Theming ---------
+matugen_dotdir: "{{ dotdir }}/matugen"
+theming_wallpaper: "" # image to theme from; empty = only link configs and apply the KDE look
+
 # --------- FONTS ----------
 fonts_dir: /usr/share/fonts
 fonts_packages: [] # list of package names = Install fonts with package manager
