@@ -13,3 +13,11 @@
   command: "{{ matugen_dotdir | expanduser }}/set-wallpaper.sh {{ theming_wallpaper | expanduser }}"
   changed_when: false
   when: theming_wallpaper | length > 0
+
+# Last, so the greeter gets the palette and icons generated above.
+- name: "Login screen matches the session"
+  command: >-
+    {{ playbook_dir }}/../kde/sync-login.sh {{ ansible_env.HOME }}
+    {{ theming_wallpaper | expanduser if theming_wallpaper | length > 0 else '' }}
+  become: true
+  changed_when: false
