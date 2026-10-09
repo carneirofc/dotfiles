@@ -10,14 +10,11 @@ fi
 USE_POWERLINE="true"
 
 # Source zsh-configuration
-if [[ -e {{ zsh_path }}/zsh-config ]]; then
-  source {{ zsh_path }}/zsh-config
+if [[ -e {{ zsh_dotdir }}/zsh-config ]]; then
+  source {{ zsh_dotdir }}/zsh-config
 fi
 
-# Use manjaro zsh prompt
-if [[ -e {{ zsh_path }}/zsh-prompt ]]; then
-  source {{ zsh_path }}/zsh-prompt
+# Prompt and autosuggestions
+if [[ -e {{ zsh_dotdir }}/zsh-prompt ]]; then
+  source {{ zsh_dotdir }}/zsh-prompt
 fi
-
-export PATH=/opt/node/node-v16.13.0-linux-x64/bin/:${PATH}
-

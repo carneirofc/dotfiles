@@ -11,25 +11,15 @@ fastfetch_settings:
     dest: "{{ fastfetch_dotdir }}/config.jsonc"
 
 zsh_settings:
-  - src: zsh/p10k.zsh
-    dest: "{{ zsh_path }}"
+  - src: "{{ playbook_dir }}/../zsh/p10k.zsh"
+    dest: "{{ zsh_dotdir }}/p10k.zsh"
 
 zsh_template_settings:
-  - src: zsh/zshenv
+  - src: "{{ playbook_dir }}/../zsh/zshenv"
     dest: "~/.zshenv"
-  - src: zsh/zsh-config.j2 
-    dest: "{{ zsh_path }}/zsh-config"
-  - src: zsh/zsh-prompt.j2
-    dest: "{{ zsh_path }}/zsh-prompt"
-  - src: zsh/zshrc.j2
+  - src: "{{ playbook_dir }}/../zsh/zsh-config.j2"
+    dest: "{{ zsh_dotdir }}/zsh-config"
+  - src: "{{ playbook_dir }}/../zsh/zsh-prompt.j2"
+    dest: "{{ zsh_dotdir }}/zsh-prompt"
+  - src: "{{ playbook_dir }}/../zsh/zshrc.j2"
     dest: "{{ zsh_dotdir }}/.zshrc"
-
-zsh_plugins_repos:
-    - repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
-      dest: "zsh-syntax-highlighting"
-    - repo: https://github.com/zsh-users/zsh-history-substring-search.git
-      dest: "zsh-history-substring-search"
-    - repo: https://github.com/zsh-users/zsh-autosuggestions.git
-      dest: "zsh-autosuggestions"
-    - repo: https://github.com/romkatv/powerlevel10k.git
-      dest: "zsh-theme-powerlevel10k"

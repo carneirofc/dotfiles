@@ -1,29 +1,25 @@
-# Apply different settigns for different terminals
+# Plain prompt for the TTY, or when powerlevel10k isn't installed.
+plain_prompt() {
+  PROMPT='%F{blue}%~%f %(?..%F{red}%?%f )%# '
+}
+
+# Apply different settings for different terminals
 case $(basename "$(cat "/proc/$PPID/comm")") in
   login)
-      source {{ zsh_path }}/zsh-maia-prompt
-    	alias x='startx ~/.xinitrc'
+    plain_prompt
     ;;
   *)
-      if [[ $TERM == "linux" ]]; then
-        # TTY does not have powerline fonts
-        source {{ zsh_path }}/zsh-maia-prompt
-        alias x='startx ~/.xinitrc'
-        
-      elif [[ "$USE_POWERLINE" == "true" ]]; then
-        # Use powerline
-        source {{ zsh_path }}-theme-powerlevel10k/powerlevel10k.zsh-theme
-        [[ ! -f {{ zsh_path }}/p10k.zsh ]] || source {{ zsh_path }}/p10k.zsh
-        source {{ zsh_path }}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-        ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-
-      else
-        # Don't use powerline anyway
-        source {{ zsh_path }}/zsh-maia-prompt
-        source {{ zsh_path }}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-        ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-      fi
+    if [[ $TERM == "linux" ]]; then
+      # TTY does not have powerline fonts
+      plain_prompt
+    elif [[ "$USE_POWERLINE" == "true" && -r {{ zsh_p10k_theme }}/powerlevel10k.zsh-theme ]]; then
+      source {{ zsh_p10k_theme }}/powerlevel10k.zsh-theme
+      [[ ! -f {{ zsh_dotdir }}/p10k.zsh ]] || source {{ zsh_dotdir }}/p10k.zsh
+    else
+      plain_prompt
+    fi
+    source {{ zsh_path }}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+    ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
     ;;
 esac
