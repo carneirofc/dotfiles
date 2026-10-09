@@ -1,16 +1,32 @@
 ---
-- hosts: all
+- hosts: localhost
   become: false
   gather_facts: true
-# connection: local
 
   vars:
+    setup_packages: true
     setup_zsh: true
-    setup_fonts: false
+    zsh_login_shell: false
     setup_nvim: false
     setup_alacritty: true
     setup_kitty: true
+    setup_wezterm: true
+    setup_zellij: true
     setup_fastfetch: true
+    setup_theming: true
+    # theming_wallpaper differs per machine: set it in local.yml.
+
+  pre_tasks:
+    - name: "Arch-based distro"
+      assert:
+        that: ansible_facts['os_family'] == 'Archlinux'
+        fail_msg: "This playbook installs with pacman and supports Arch-based distros only."
+
+    # Per-machine overrides (laptop vs desktop), untracked; see local.example.yml.
+    - name: "Machine-local overrides"
+      include_vars: "{{ item }}"
+      with_fileglob:
+        - "{{ playbook_dir }}/local.yml"
 
   roles:
     - setup-workstation

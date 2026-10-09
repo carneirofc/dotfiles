@@ -41,6 +41,8 @@ function RemoveFromPath {
 
 function AddToPath {
     param($list)
+    $list.Add($env:USERPROFILE + "\.local\bin")
+
     $appsPath = $env:USERPROFILE + "\apps"
     $list.Add($appsPath)
     $list.Add("$appsPath\lua")

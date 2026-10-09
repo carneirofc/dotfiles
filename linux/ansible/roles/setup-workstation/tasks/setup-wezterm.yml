@@ -1,0 +1,18 @@
+---
+- name: "WezTerm package"
+  community.general.pacman:
+    name: wezterm
+    state: present
+  become: true
+
+- name: "WezTerm old config link"
+  include_tasks: remove-links.yml
+  vars:
+    link_paths: ["{{ wezterm_dotdir }}"]
+
+# matugen writes colors/matugen.lua into the copy; colors/active.lua picks it up.
+- name: "WezTerm config"
+  include_tasks: copy-tree.yml
+  vars:
+    tree_src: "{{ playbook_dir }}/../../common/wezterm"
+    tree_dest: "{{ wezterm_dotdir }}"

@@ -1,0 +1,24 @@
+---
+# Copy the files git tracks under tree_src (a repo directory) to tree_dest.
+# Untracked and ignored files there (generated output, local tool state)
+# stay behind, unlike with a plain directory copy.
+- name: "Tracked files in {{ tree_src | basename }}"
+  command: git -c core.quotePath=false ls-files
+  args:
+    chdir: "{{ tree_src }}"
+  register: tree_files
+  changed_when: false
+  check_mode: false
+
+- name: "Directories for {{ tree_src | basename }}"
+  file:
+    path: "{{ tree_dest }}/{{ item }}"
+    state: directory
+  loop: "{{ [''] + (tree_files.stdout_lines | map('dirname') | reject('eq', '') | unique | list) }}"
+
+- name: "Copy {{ tree_src | basename }}"
+  copy:
+    src: "{{ tree_src }}/{{ item }}"
+    dest: "{{ tree_dest }}/{{ item }}"
+    mode: preserve
+  loop: "{{ tree_files.stdout_lines }}"

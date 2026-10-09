@@ -1,54 +1,17 @@
 ---
-- name: Install neovim
-  get_url:
-    dest: /usr/local/bin/nvim
-    force: yes
-    url: "{{ nvim_url }}"
-    checksum: "{{ nvim_checksum }}"
-    mode: u=rx,g=rx,o=rx
+- name: "Neovim packages"
+  community.general.pacman:
+    name: "{{ nvim_packages }}"
+    state: present
   become: true
 
-- name: Neovim apt dependencies for plugins
-  apt:
-    pkg:
-      - nodejs
-      - npm
-      - bat
-      - fzf
-      - clangd
-      - fuse
-      - libfuse
-  when: ansible_os_family == 'Debian'
-  become: true
+- name: "Neovim old config link"
+  include_tasks: remove-links.yml
+  vars:
+    link_paths: ["{{ nvim_dotdir }}"]
 
-- name: Neovim Python dependencies
-  pip:
-    state: latest
-    # executable: "{{ nvim_pip_executable }}"
-    name:
-      # Neovim
-      - neovim
-
-      # Markdown
-      - mdformat
-      - mdformat-gfm
-
-      # Python nvim LSP
-      - python-lsp-server
-      - pyls-flake8
-      - pylsp-mypy
-      - pyls-isort
-      - python-lsp-black
-      - pylsp-rope
-      - rope
-
-      # python dev
-      - black
-      - mypy
-      - flake8
-      - pre-commit
-
-      # Ansible
-      - ansible
-      - ansible-lint
-      - ansible-format
+# Trailing slashes copy the directory's contents, not the directory itself.
+- name: "Neovim config"
+  copy:
+    src: "{{ playbook_dir }}/../../common/nvim/"
+    dest: "{{ nvim_dotdir }}/"

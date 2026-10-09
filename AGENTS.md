@@ -3,7 +3,8 @@
 ## Purpose
 
 - Personal dotfiles for a CachyOS (Arch) laptop and a locked-down Windows
-  account. Configs are either symlinked (Linux) or copied (Windows) into place.
+  account. Configs are copied into place (ansible on Linux, `setup-windows.ps1`
+  on Windows); a few README steps still symlink by hand.
 - `README.md` is the human-facing install guide; keep it in sync when a
   setup step changes.
 
@@ -53,5 +54,5 @@
   Children: `linux/ansible/AGENTS.md`, `linux/zsh/AGENTS.md`.
 - `windows/AGENTS.md` — Windows bootstrap (copy-based) and Windows-tuned
   terminal variants.
-- Folders without a child doc (`common/git`, `common/ssh`) follow this root
-  doc directly.
+- Folders without a child doc (`common/git`, `common/ssh`, `common/zellij`)
+  follow this root doc directly.

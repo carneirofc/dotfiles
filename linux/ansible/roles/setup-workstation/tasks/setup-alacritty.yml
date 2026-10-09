@@ -1,4 +1,10 @@
 ---
+- name: "Alacritty package"
+  community.general.pacman:
+    name: alacritty
+    state: present
+  become: true
+
 - name: "Alacritty config directory"
   file:
     path: "{{ alacritty_dotdir }}"

@@ -1,0 +1,42 @@
+# matugen — Material You palette from the wallpaper, rendered into every
+# app's color file. Linked to ~/.config/matugen; run ./set-wallpaper.sh <image>.
+# Template paths are relative to this file.
+
+[config]
+
+# Base ANSI hues for the terminals. `blend` harmonizes them toward the
+# wallpaper's source color so they sit in the same palette; matugen derives
+# <name>, on_<name>_container, etc. from each.
+[config.custom_colors]
+red = { color = "#e8545d", blend = true }
+green = { color = "#7fc77f", blend = true }
+yellow = { color = "#e6c26a", blend = true }
+blue = { color = "#6fa8ff", blend = true }
+magenta = { color = "#c678dd", blend = true }
+cyan = { color = "#56c2c9", blend = true }
+
+# Plasma ignores re-applying the active scheme, so bounce through BreezeDark.
+[templates.kde]
+input_path = "./templates/kde.colors"
+output_path = "~/.local/share/color-schemes/Matugen.colors"
+post_hook = "plasma-apply-colorscheme BreezeDark >/dev/null && plasma-apply-colorscheme Matugen >/dev/null"
+
+# Alacritty live-reloads imported files.
+[templates.alacritty]
+input_path = "./templates/alacritty.toml"
+output_path = "~/.config/alacritty/colors.toml"
+
+[templates.kitty]
+input_path = "./templates/kitty.conf"
+output_path = "~/.config/kitty/colors.conf"
+post_hook = "pkill -USR1 -x kitty || true"
+
+# WezTerm reloads when a required module changes.
+[templates.wezterm]
+input_path = "./templates/wezterm.lua"
+output_path = "~/.config/wezterm/colors/matugen.lua"
+
+# Zellij has no live theme reload; new sessions pick it up.
+[templates.zellij]
+input_path = "./templates/zellij.kdl"
+output_path = "~/.config/zellij/themes/matugen.kdl"

@@ -1,8 +1,19 @@
 ---
+- name: "Fastfetch package"
+  community.general.pacman:
+    name: fastfetch
+    state: present
+  become: true
+
 - name: "Fastfetch config directory"
   file:
     path: "{{ fastfetch_dotdir }}"
     state: directory
+
+- name: "Fastfetch old config link"
+  include_tasks: remove-links.yml
+  vars:
+    link_paths: "{{ fastfetch_settings | map(attribute='dest') | list }}"
 
 - name: "Fastfetch settings"
   copy:

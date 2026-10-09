@@ -1,35 +1,20 @@
 ---
-- name: "zsh install from package manager"
-  apt:
-    name: zsh
-    state: latest
-    update_cache: yes
+- name: "zsh packages"
+  community.general.pacman:
+    name: "{{ zsh_packages }}"
+    state: present
   become: true
-  when: ansible_os_family == 'Debian'
 
-- name: "zsh install from package manager"
-  yum:
-    name: zsh
-    state: latest
-    update_cache: yes
-  become: true
-  when: ansible_os_family == 'RedHat'
+- name: "zsh optional packages"
+  include_tasks: install-optional.yml
+  vars:
+    optional_packages: "{{ zsh_optional_packages }}"
 
-- name: "change user shell to zsh"
-  become: yes
-  user:
-    name: "{{ user }}"
-    shell: "{{ zsh_bin }}"
-
-- name: "zsh dirs"
+- name: "zsh config directory"
   file:
-    path: "{{ item }}"
+    path: "{{ zsh_dotdir }}"
     state: directory
     mode: '0755'
-  with_items:
-    - "{{ zsh_dotdir }}"
-    - "{{ zsh_path }}"
-    - "{{ zsh_plugins }}"
 
 - name: "zsh dotfiles"
   copy:
@@ -45,8 +30,9 @@
     mode: "0644"
   with_items: "{{ zsh_template_settings }}"
 
-- name: "zsh plugins"
-  git:
-    repo: "{{ item.repo }}"
-    dest: "{{ zsh_plugins }}/{{ item.dest }}"
-  with_items: "{{ zsh_plugins_repos }}"
+- name: "zsh as login shell"
+  user:
+    name: "{{ user }}"
+    shell: "{{ zsh_bin }}"
+  become: true
+  when: zsh_login_shell | bool

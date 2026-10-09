@@ -2,7 +2,8 @@
 
 ## Purpose
 
-- Cross-platform Neovim config. Linux symlinks `~/.config/nvim` here; Windows
+- Cross-platform Neovim config. On Linux the ansible `setup_nvim` toggle
+  copies it to `~/.config/nvim` (or symlink it by hand, see README); Windows
   copies it to `%LOCALAPPDATA%\nvim`. Targets Neovim 0.11+ (tested on 0.12).
 
 ## Ownership

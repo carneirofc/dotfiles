@@ -1,0 +1,24 @@
+---
+- name: "Zellij package"
+  community.general.pacman:
+    name: zellij
+    state: present
+  become: true
+
+- name: "Zellij old config link"
+  include_tasks: remove-links.yml
+  vars:
+    link_paths: ["{{ zellij_dotdir }}"]
+
+- name: "Zellij themes"
+  include_tasks: copy-tree.yml
+  vars:
+    tree_src: "{{ playbook_dir }}/../../common/zellij/themes"
+    tree_dest: "{{ zellij_dotdir }}/themes"
+
+# The shared config names the repo theme; swap in this machine's.
+- name: "Zellij config"
+  copy:
+    content: "{{ lookup('file', playbook_dir ~ '/../../common/zellij/config.kdl') | regex_replace('^theme .*$', 'theme \"' ~ zellij_theme ~ '\"', multiline=True) }}\n"
+    dest: "{{ zellij_dotdir }}/config.kdl"
+    mode: "0644"

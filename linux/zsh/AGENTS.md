@@ -3,9 +3,9 @@
 ## Purpose
 
 - zsh shell setup: `zshenv` (sets `ZDOTDIR`), the `zshrc.j2` /
-  `zsh-config.j2` / `zsh-prompt.j2` jinja templates rendered by the ansible
-  role, the powerlevel10k prompt (`p10k.zsh`), and `install.sh` for a manual
-  install.
+  `zsh-config.j2` / `zsh-prompt.j2` jinja templates, and the powerlevel10k
+  prompt config (`p10k.zsh`). Deployed by the ansible role's `setup-zsh.yml`;
+  there is no standalone installer.
 
 ## Ownership
 
@@ -13,17 +13,15 @@
 
 ## Local Contracts
 
-- `.j2` files are templates: the ansible role renders them
-  (`zsh_template_settings`); `install.sh` expects already-rendered `.zshrc`,
-  `zsh-config`, `zsh-prompt` beside it. Keep template variables in sync with
-  the role's `vars/main.yml`.
-- Destinations: `~/.zshenv` (sets `ZDOTDIR=~/.config/zsh`),
-  `~/.config/zsh/.zshrc`, and `p10k.zsh` / `zsh-config` / `zsh-prompt` under
-  `/usr/share/zsh/`; plugins (`zsh-syntax-highlighting`,
-  `zsh-history-substring-search`, `zsh-autosuggestions`) are git-cloned into
-  `/usr/share/zsh/plugins` and powerlevel10k into
-  `/usr/share/zsh-theme-powerlevel10k` by `install.sh` (needs `sudo`).
-- `install.sh` symlinks by default (`USE_LN`), `FORCE=1` overwrites.
+- The role renders, as the user, `zshenv` → `~/.zshenv`, the templates →
+  `~/.config/zsh/{.zshrc,zsh-config,zsh-prompt}`, and copies `p10k.zsh` →
+  `~/.config/zsh/p10k.zsh`. Nothing is written to `/usr/share/zsh`.
+- Plugins (`zsh-autosuggestions`, `zsh-syntax-highlighting`,
+  `zsh-history-substring-search`) and `zsh-theme-powerlevel10k` (optional)
+  come from pacman; templates source them from the system paths in the role's
+  `defaults/main.yml` (`zsh_path`, `zsh_p10k_theme`).
+- Keep template variables in sync with the role's `defaults/main.yml` and
+  `vars/main.yml`. Changing the login shell is opt-in (`zsh_login_shell`).
 
 ## Work Guidance
 
@@ -32,7 +30,7 @@
 
 ## Verification
 
-- `zsh -i -c 'echo ok'` after install prints `ok` with no errors, and
+- `zsh -i -c 'echo ok'` after a playbook run prints `ok` with no errors, and
   `p10k configure` is not re-prompted.
 
 ## Child Index

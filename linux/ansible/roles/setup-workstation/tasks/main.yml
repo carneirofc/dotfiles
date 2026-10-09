@@ -1,25 +1,37 @@
 ---
-- include_tasks: setup-fonts.yml
-  when:
-    - setup_fonts is defined and setup_fonts
+# Arch doesn't support partial upgrades: never refresh the package lists
+# without upgrading the system too. Sync and upgrade once, up front, so every
+# install below runs against current databases.
+# https://wiki.archlinux.org/title/System_maintenance#Partial_upgrades_are_unsupported
+- name: "System upgrade (pacman -Syu)"
+  community.general.pacman:
+    update_cache: true
+    upgrade: true
+  become: true
+
+- include_tasks: setup-packages.yml
+  when: setup_packages | default(false) | bool
 
 - include_tasks: setup-nvim.yml
-  when:
-    - setup_nvim is defined and setup_nvim
+  when: setup_nvim | default(false) | bool
 
 - include_tasks: setup-zsh.yml
-  when:
-    - setup_zsh is defined and setup_zsh
+  when: setup_zsh | default(false) | bool
 
 - include_tasks: setup-alacritty.yml
-  when:
-    - setup_alacritty is defined and setup_alacritty
+  when: setup_alacritty | default(false) | bool
 
 - include_tasks: setup-kitty.yml
-  when:
-    - setup_kitty is defined and setup_kitty
+  when: setup_kitty | default(false) | bool
+
+- include_tasks: setup-wezterm.yml
+  when: setup_wezterm | default(false) | bool
+
+- include_tasks: setup-zellij.yml
+  when: setup_zellij | default(false) | bool
 
 - include_tasks: setup-fastfetch.yml
-  when:
-    - setup_fastfetch is defined and setup_fastfetch
+  when: setup_fastfetch | default(false) | bool
 
+- include_tasks: setup-theming.yml
+  when: setup_theming | default(false) | bool

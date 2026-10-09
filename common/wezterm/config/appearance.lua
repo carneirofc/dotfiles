@@ -2,7 +2,7 @@ local safe = require('utils.safe')
 
 local gpu_adapters = safe.require('utils.gpu-adapter')
 local backdrops = safe.require('utils.backdrops')
-local colors = safe.require('colors.custom')
+local colors = safe.require('colors.active')
 
 -- `enumerate_gpus` talks to the GPU drivers and `initial_options` touches the filesystem,
 -- so both are guarded: a failure here costs an option, not the whole config.

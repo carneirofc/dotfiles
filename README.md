@@ -1,7 +1,8 @@
 # Dotfiles
 
 My public dotfiles, organized so a single repo can configure Windows, my Linux
-laptop (CachyOS), and any cross-platform tooling that lives in between.
+machines (CachyOS laptop and desktop; any Arch-based distro works), and any
+cross-platform tooling that lives in between.
 
 I'm slowly moving things to Ansible. Some config files are Jinja templates.
 
@@ -12,26 +13,29 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 ├── claude/            # Claude Code user-level config
 │   ├── agents/        # custom subagents (symlinked to ~/.claude/agents)
 │   └── skills/        # custom skills (copied to ~/.claude/skills on Windows)
-├── common/            # cross-platform configs (symlinked the same way on any OS)
+├── common/            # cross-platform configs (copied into place on every OS)
 │   ├── nvim/          # Neovim configuration
+│   ├── wezterm/       # WezTerm config (Linux and Windows)
+│   ├── zellij/        # Zellij config + theme (Linux and Windows)
 │   ├── ssh/           # SSH client defaults (keepalives, connection reuse)
 │   └── git/           # Git configuration
-├── linux/             # Linux-specific (CachyOS laptop)
+├── linux/             # Linux-specific (Arch-based: CachyOS laptop + desktop)
 │   ├── zsh/           # zsh config + p10k + jinja templates
 │   ├── alacritty/     # alacritty terminal (the terminal I use)
 │   ├── kitty/         # kitty terminal (same look/keymaps as alacritty)
 │   ├── fastfetch/     # fastfetch system-info screen (Nord icon rows)
 │   ├── network/       # NetworkManager Wi-Fi power-save drop-in
-│   ├── ripgrep/       # ripgrep install helper
-│   ├── fonts/         # nerd-font install helper
+│   ├── matugen/       # wallpaper-driven color palette for KDE + terminals
+│   ├── kde/           # KDE Plasma look (blur, icons, decorations)
+│   ├── hypr/          # Hyprland install helper
 │   ├── lua/           # luarocks notes
-│   ├── install-tools.sh   # fetch prebuilt CLI tools (rg, jq, fd) into ~/.local/bin
+│   ├── bootstrap.sh   # install ansible with pacman and run the playbook
 │   └── ansible/       # ansible-based provisioning
 │       ├── playbook.yml
+│       ├── inventory.yml  # localhost only
 │       └── roles/     # local workstation role for linux tooling
 └── windows/           # Windows-specific
     ├── alacritty/         # alacritty terminal (Windows-tuned variant)
-    ├── zellij/            # zellij config + theme (used under WSL)
     ├── profile.ps1        # PowerShell profile
     ├── settings.json      # Windows Terminal settings
     └── setup-windows.ps1  # bootstrap: profile, nvim, wezterm/alacritty/zellij, claude
@@ -45,9 +49,11 @@ On Windows, `setup-windows.ps1` installs the PowerShell profile and **copies**
 every config into place — no symlinks, so it runs on a locked-down account with
 no elevation or Developer Mode: nvim (from `common/`) to `%LOCALAPPDATA%\nvim`,
 wezterm (from `common/`) to `~/.config/wezterm`, alacritty to
-`%APPDATA%\alacritty`, zellij to `%APPDATA%\zellij` (applies under WSL — zellij
-has no native Windows build), and the Claude agents/skills to `~/.claude`. It is
-idempotent; re-run it to refresh every destination.
+`%APPDATA%\alacritty`, zellij (from `common/`) to `%APPDATA%\Zellij\config`, and
+the Claude agents/skills to `~/.claude`. It is idempotent; re-run it to
+refresh every destination. Only files git tracks are copied, and nothing
+already in a destination is deleted, so locally installed skills and WezTerm
+backdrops survive; a file removed from the repo has to be deleted by hand.
 
 ```powershell
 pwsh -File .\windows\setup-windows.ps1
@@ -68,8 +74,9 @@ ln -v -r -s ./claude/agents ~/.claude/agents
 Run `/agents` inside Claude Code to confirm they're picked up.
 
 To install everything (`agents/`, `skills/`, `CLAUDE.md`, `AGENTS.md`) as plain
-copies into `~/.claude` instead, use the standalone installers; both are
-idempotent and honour `CLAUDE_HOME`:
+copies into `~/.claude` instead, use the standalone installers. Both copy only
+the files git tracks, never delete anything already in `~/.claude` (locally
+installed skills survive), are idempotent and honour `CLAUDE_HOME`:
 
 ```bash
 ./claude/install-claude.bash            # Linux / macOS
@@ -165,38 +172,67 @@ ssh -G somehost
 ## Windows setup
 
 `windows/` contains a PowerShell profile and Windows Terminal `settings.json`.
-Install the `JetBrains Mono NF` font first, then run the bootstrap from an
-elevated PowerShell (needed for symlinks):
+Install the `JetBrains Mono NF` font and git first, then run the bootstrap from
+a normal (not elevated) PowerShell 7 prompt. It only copies files, so it needs
+no admin rights or Developer Mode:
 
 ```powershell
-./windows/setup-windows.ps1
+pwsh -File .\windows\setup-windows.ps1
 ```
 
-## Linux setup (CachyOS)
+The script doesn't install `settings.json`; copy it into Windows Terminal's
+settings by hand (Settings > Open JSON file).
+
+## Linux setup (Arch-based)
+
+Linux machines (the CachyOS laptop and desktop) are provisioned by Ansible.
+Everything is installed with **pacman**, so only Arch-based distros are
+supported; the playbook stops early on anything else.
 
 ### Ansible
 
-Install Ansible:
+`linux/bootstrap.sh` upgrades the system and installs Ansible with pacman (the
+`ansible` package bundles `community.general`, which provides the pacman
+module), then runs the playbook against this machine, asking once for your sudo
+password:
 
 ```bash
-pip install ansible==5.2.0 ansible-core==2.12.1 ansible-lint==5.3.2
+./linux/bootstrap.sh            # provision
+./linux/bootstrap.sh --check    # dry run; extra args go to ansible-playbook
 ```
 
-Run the playbook (from the `linux/ansible/` directory so roles resolve):
+To run it by hand instead, from `linux/ansible/` (its `ansible.cfg` points at
+the localhost inventory):
 
 ```bash
+sudo pacman -Syu --needed ansible
 cd linux/ansible
-ansible-playbook playbook.yml
+ansible-playbook playbook.yml --ask-become-pass
 ```
 
-If Ansible can't find some packages, specify the interpreter:
+Toggle features in `linux/ansible/playbook.yml` (`setup_packages`, `setup_zsh`,
+`setup_nvim`, `setup_alacritty`, `setup_kitty`, `setup_wezterm`,
+`setup_zellij`, `setup_fastfetch`, `setup_theming`). Per-machine differences — say, nvim only on the desktop —
+go in `linux/ansible/local.yml` (gitignored; copy `local.example.yml`), or pass
+them once with `-e setup_nvim=true`. The wallpaper path (`theming_wallpaper`)
+differs between machines, so it lives only there; theming skips it with a
+message when the file isn't found.
 
-```bash
-ansible-playbook playbook.yml -K -e 'ansible_python_interpreter=/usr/bin/python3.8'
-```
+Every run starts with a full system upgrade (`pacman -Syu`). Arch doesn't
+support partial upgrades, so packages are never installed against package
+lists that are stale or synced without upgrading.
 
-This playbook uses the local `setup-workstation` role in this repo. Toggle the
-features you want in `linux/ansible/playbook.yml`.
+Configs are **copied** (or rendered from templates) into `~/.config`, never
+symlinked into the repo: edit them here and re-run the playbook to deploy.
+Symlinks left by older setups are removed and replaced by the copies. Copies
+don't delete files removed from the repo; clean those up by hand.
+
+`setup_packages` installs the base CLI tools and the font: `git`, `ripgrep`,
+`fd`, `jq`, `fzf`, `bat` and `ttf-jetbrains-mono-nerd` (`base_packages` in the
+role defaults). Each feature installs its own packages too. Packages that only
+CachyOS's repos carry (`zsh-theme-powerlevel10k`,
+`kwin-effect-rounded-corners`) are optional: they're skipped with a note on
+distros where they'd need the AUR.
 
 ### Alacritty
 
@@ -210,7 +246,8 @@ mkdir -pv ~/.config/alacritty
 ln -v -r -s ./linux/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
 ```
 
-The font is `JetBrainsMono Nerd Font` — install it first (see the fonts helper).
+The font is `JetBrainsMono Nerd Font` (`ttf-jetbrains-mono-nerd`, installed by
+`setup_packages`).
 
 ### Kitty
 
@@ -232,56 +269,83 @@ Two things don't map one-to-one from Alacritty: kitty has no in-terminal search
 kitty's extra terminfo features and don't mind installing its terminfo on
 remote hosts.
 
+### Theming (KDE Plasma + matugen)
+
+The desktop and terminal colors are generated from the wallpaper by
+[matugen](https://github.com/InioX/matugen) (Material You palette).
+`linux/matugen/` holds the config and one template per app:
+
+| Template | Output | Reload |
+|---|---|---|
+| `kde.colors` | `~/.local/share/color-schemes/Matugen.colors` | applied via `plasma-apply-colorscheme` |
+| `alacritty.toml` | `~/.config/alacritty/colors.toml` | live (imported by `alacritty.toml`) |
+| `kitty.conf` | `~/.config/kitty/colors.conf` | live (`SIGUSR1`) |
+| `wezterm.lua` | `~/.config/wezterm/colors/matugen.lua` | live (falls back to `colors/custom.lua`) |
+| `zellij.kdl` | `~/.config/zellij/themes/matugen.kdl` | new sessions |
+
+The terminal ANSI colors are fixed hues (`[config.custom_colors]`) harmonized
+toward the wallpaper, so red still reads as red. Every output lands in
+`~/.config`; the configs there are copies, so nothing is generated into the
+repo.
+
+```bash
+sudo pacman -S matugen
+cp -rT linux/matugen ~/.config/matugen
+~/.config/matugen/set-wallpaper.sh ~/Pictures/Wallpaper/<image>.png
+```
+
+`set-wallpaper.sh` sets the desktop and lock-screen wallpaper, then runs
+matugen; extra args are forwarded (e.g. `-t scheme-content` for colors closer
+to the image). The mode defaults to dark; set `MATUGEN_MODE=light` for a light
+palette (matugen rejects a second `--mode`, so it can't go in the extra args).
+
+`linux/kde/apply.sh` applies the rest of the look with `kwriteconfig6`, one key
+at a time, so the rc files Plasma rewrites at runtime aren't tracked whole:
+Breeze Dark, blur, borderless centered-title decorations, the scheme's accent,
+Papirus-Dark icons and rounded corners when installed
+(`papirus-icon-theme`, `kwin-effect-rounded-corners`). Panels and widgets live
+in `plasma-org.kde.plasma.desktop-appletsrc`, which is machine-specific, so
+they stay manual.
+
+The login screen (Plasma Login Manager) runs as the `plasmalogin` user and
+keeps its own copy of `kdeglobals` and friends, so it doesn't follow these
+changes the way the lock screen does. `linux/kde/sync-login.sh` copies them
+(colors, icons, fonts, keyboard, monitors) and the wallpaper over, same as
+System Settings > Login Screen > *Apply Plasma Settings*:
+
+```bash
+sudo linux/kde/sync-login.sh ~ ~/Pictures/Wallpaper/<image>.png
+```
+
+All three run from the `setup-workstation` role (`setup_theming: true`,
+wallpaper in `theming_wallpaper`), the login sync last and with `become`. Each
+step only runs where it can: the KDE look needs Plasma installed, the wallpaper
+needs a running Plasma session (run `set-wallpaper.sh` yourself after logging
+in otherwise), and the login sync needs Plasma Login Manager (a `plasmalogin`
+user), so SDDM machines skip it.
+
 ### Fastfetch
 
 [Fastfetch](https://github.com/fastfetch-cli/fastfetch) draws the system-info
 screen at shell startup. The config is `linux/fastfetch/config.jsonc` — a modern
 JSONC layout with clean Nerd Font icon rows, the same Nord palette as the
 terminals, and percentage bars for memory/disk (root only). It's deployed by the
-`setup-workstation` role (`setup_fastfetch: true`), or symlink it with the helper
-script (works from any directory):
-
-```bash
-./linux/fastfetch/setup.bash
-```
-
-which just does the equivalent of:
-
-```bash
-mkdir -pv ~/.config/fastfetch
-ln -v -r -s ./linux/fastfetch/config.jsonc ~/.config/fastfetch/config.jsonc
-```
+`setup-workstation` role (`setup_fastfetch: true`), which copies it to
+`~/.config/fastfetch/config.jsonc`.
 
 The icons need a Nerd Font (this setup uses `JetBrainsMono Nerd Font`). The logo
 uses the builtin `cachyos` art — switch `logo.source` to `arch` in the config if
 you're on a different distro.
 
-### CLI tools
-
-`linux/install-tools.sh` fetches prebuilt binaries (ripgrep, jq, fd) into
-`~/.local/bin`:
-
-```bash
-./linux/install-tools.sh
-```
-
 ### zsh
 
-zsh is set up via the `setup-workstation` role in the [playbook](./linux/ansible/playbook.yml).
-Enable it by setting the corresponding variable to `true`:
+zsh is set up by the `setup-workstation` role (`setup_zsh: true`). It installs
+zsh and its plugins with pacman, then renders the config into `~/.config/zsh`
+(`ZDOTDIR`, set by `~/.zshenv`) — nothing is written under `/usr/share`. The
+prompt is powerlevel10k when `zsh-theme-powerlevel10k` is installed, and a
+plain prompt otherwise (and on the TTY).
 
-```yaml
----
-- connection: local
-  become: false
-  hosts: localhost
-
-  vars:
-    setup_zsh: true
-
-  roles:
-    - setup-workstation
-```
+Your login shell is left alone; set `zsh_login_shell: true` to `chsh` to zsh.
 
 ### Xbox controller Bluetooth
 

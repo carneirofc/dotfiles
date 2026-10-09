@@ -1,9 +1,13 @@
 [general]
-working_directory = "None"
+working_directory = "C:\\Users\\cfc6"
 live_config_reload = true
 
 [env]
 TERM = "xterm-256color"
+
+[terminal.shell]
+program = "pwsh"
+args = ["-NoLogo"]
 
 [window]
 dimensions = { columns = 100, lines = 30 }
