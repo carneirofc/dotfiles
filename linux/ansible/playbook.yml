@@ -5,6 +5,7 @@
 
   vars:
     setup_packages: true
+    setup_git: true
     setup_zsh: true
     zsh_login_shell: false
     setup_nvim: false

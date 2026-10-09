@@ -1,5 +1,14 @@
-[credential]
-    helper = store
+# Installed to ~/.config/git/config (git's XDG config). ~/.gitconfig, if
+# present, is read after this file and wins on conflicts.
 [user]
     name = carneirofc
     email = claudiofcarneiro@hotmail.com
+
+# GitHub credentials come from the gh CLI (`gh auth login`), never a
+# plaintext store. The empty helper resets any inherited helper first.
+[credential "https://github.com"]
+    helper =
+    helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+    helper =
+    helper = !gh auth git-credential

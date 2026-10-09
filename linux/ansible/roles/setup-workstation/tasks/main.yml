@@ -12,6 +12,9 @@
 - include_tasks: setup-packages.yml
   when: setup_packages | default(false) | bool
 
+- include_tasks: setup-git.yml
+  when: setup_git | default(false) | bool
+
 - include_tasks: setup-nvim.yml
   when: setup_nvim | default(false) | bool
 

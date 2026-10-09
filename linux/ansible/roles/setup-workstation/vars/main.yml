@@ -1,3 +1,9 @@
+git_settings:
+  - src: "{{ playbook_dir }}/../../common/git/config"
+    dest: "{{ git_dotdir }}/config"
+  - src: "{{ playbook_dir }}/../../common/git/ignore"
+    dest: "{{ git_dotdir }}/ignore"
+
 alacritty_settings:
   - src: "{{ playbook_dir }}/../alacritty/alacritty.toml"
     dest: "{{ alacritty_dotdir }}/alacritty.toml"

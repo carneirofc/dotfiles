@@ -1,0 +1,23 @@
+---
+- name: "Git packages"
+  community.general.pacman:
+    name: "{{ git_packages }}"
+    state: present
+  become: true
+
+- name: "Git config directory"
+  file:
+    path: "{{ git_dotdir }}"
+    state: directory
+
+- name: "Git old config links"
+  include_tasks: remove-links.yml
+  vars:
+    link_paths: "{{ git_settings | map(attribute='dest') | list }}"
+
+- name: "Git settings"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  with_items: "{{ git_settings }}"

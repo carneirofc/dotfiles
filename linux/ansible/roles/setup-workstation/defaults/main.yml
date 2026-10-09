@@ -13,6 +13,13 @@ base_packages:
   - bat
   - ttf-jetbrains-mono-nerd
 
+# ---------- Git -----------
+git_dotdir: "{{ dotdir }}/git"
+git_packages:
+  - git
+  - github-cli # credential helper (gh auth git-credential)
+git_settings: [] # { "src": ..., "dest": ... } simple file copy
+
 # ------- Alacritty --------
 alacritty_dotdir: "{{ dotdir }}/alacritty"
 alacritty_settings: [] # { "src": ..., "dest": ... } simple file copy

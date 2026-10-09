@@ -3,7 +3,7 @@
 ## Purpose
 
 - `playbook.yml` + the single `setup-workstation` role that provisions an
-  Arch-based localhost: base packages, zsh, nvim, alacritty, kitty, wezterm,
+  Arch-based localhost: base packages, git, zsh, nvim, alacritty, kitty, wezterm,
   zellij, fastfetch and matugen/KDE theming. Run through
   `linux/bootstrap.sh`, which installs ansible with pacman first.
 

@@ -3,8 +3,9 @@
 #   pwsh -File .\windows\setup-windows.ps1
 #
 # Installs the PowerShell profile and copies every config (nvim, wezterm,
-# alacritty, zellij) plus the Claude agent/skill files into place. Re-running is
-# safe and refreshes every destination. Only files git tracks are copied, and
+# alacritty, zellij, git) plus the Claude agent/skill files into place.
+# Re-running is safe and refreshes every destination. Only files git tracks are
+# copied, and
 # nothing already in a destination is deleted: local files there (installed
 # skills, WezTerm backdrops) survive, and a file removed from the repo stays
 # behind until you delete it by hand.
@@ -95,6 +96,14 @@ function Install-Zellij {
     Install-Tree -Source (Join-Path $src 'themes')     -Destination (Join-Path $dest 'themes')
 }
 
+function Install-Git {
+    # Git for Windows reads %USERPROFILE%\.config\git\{config,ignore} (XDG),
+    # alongside any ~/.gitconfig. The credential helper needs gh on PATH.
+    Install-Tree `
+        -Source (Join-Path $RepoRoot 'common\git') `
+        -Destination (Join-Path $env:USERPROFILE '.config\git')
+}
+
 function Install-Claude {
     # Delegate to the standalone claude installer so the copy logic lives in one
     # place (see claude/install-claude.ps1, which also runs on its own).
@@ -106,4 +115,5 @@ Install-Neovim
 Install-Alacritty
 Install-Wezterm
 Install-Zellij
+Install-Git
 Install-Claude

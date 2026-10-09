@@ -8,6 +8,10 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **git**: `common/git/` is now installed — `config` and a global `ignore`
+  (`**/.claude/settings.local.json`) copy to `~/.config/git/` via the
+  playbook's `setup_git` toggle (which also installs `github-cli`) and
+  `setup-windows.ps1`. Documented in a README Git section.
 - **zellij**: binds the actions added in 0.45 — pane `;` (last pane) and
   `Shift f` (fullscreen without UI); scroll/search `[`/`]` (previous/next
   prompt) and `m` (select command); scroll `c` (copy last command output);
@@ -144,6 +148,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   playbook copies it instead.
 
 ### Fixed
+- **git**: `common/git/config` stored credentials in plaintext
+  (`credential.helper = store`); GitHub and gist credentials now come from
+  `gh auth git-credential`.
 - **docs**: the Windows setup section said to run `setup-windows.ps1` elevated
   "for symlinks"; it copies files and needs neither. It now says to use a
   normal PowerShell 7 prompt, that git is required, and that Windows Terminal's
