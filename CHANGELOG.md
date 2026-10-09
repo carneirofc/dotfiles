@@ -31,6 +31,15 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   cwd-independent `linux/fastfetch/setup.bash`, which symlinks it into
   `~/.config/fastfetch`. Documented in the README.
 
+- **linux**: `linux/bootstrap.sh` installs Ansible with pacman and runs the
+  playbook against this machine. The playbook gains an `ansible.cfg` and a
+  localhost inventory, and reads per-machine overrides (laptop vs desktop) from
+  a gitignored `linux/ansible/local.yml`.
+- **ansible**: `setup_packages` installs base CLI tools (`ripgrep`, `fd`, `jq`,
+  `fzf`, `bat`, `git`) and `ttf-jetbrains-mono-nerd`; every feature installs
+  its own packages. CachyOS-only packages (powerlevel10k, rounded corners) are
+  optional and skipped where they'd need the AUR.
+
 ### Changed
 - **terminals**: Alacritty, Kitty, WezTerm and Zellij take their colors from
   the matugen-generated files. Alacritty drops its inline Nord palette; Kitty
@@ -44,3 +53,32 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   `%LOCALAPPDATA%\nvim` instead of symlinking it, so the whole bootstrap runs on
   a restricted account with no elevation or Developer Mode.
 - **claude**: capitalized the `explore` and `implementer` subagent names.
+- **ansible**: Arch-based distros only — everything installs with pacman,
+  and the playbook asserts the OS family up front. `setup_nvim` installs
+  neovim and its tooling from pacman and links `common/nvim`.
+- **zsh**: config is rendered into `~/.config/zsh` as the user instead of
+  `/usr/share/zsh`; plugins and powerlevel10k come from pacman. Changing the
+  login shell is opt-in (`zsh_login_shell`).
+- **ansible**: theming steps only run where they can — the wallpaper needs a
+  Plasma session and the login sync needs Plasma Login Manager.
+- **hypr**: `setup.bash` installs repo Hyprland with `sudo pacman --needed`;
+  the AUR `-git` stack is behind `--git`.
+- **ai-tools**: `setup-ai-tools.bash` checks for `uv`/`npx` first and finds
+  `graphify` through `uv tool dir --bin` instead of assuming `~/.local/bin`.
+
+### Removed
+- **ansible**: apt/yum code paths, the Nerd Font download task (dead v2
+  URLs), the pinned nightly nvim AppImage and the system-wide pip installs.
+- **linux**: `install-tools.sh`, `ripgrep/install.sh` and `zsh/install.sh`,
+  replaced by pacman packages and the playbook.
+
+### Fixed
+- **ansible**: the playbook targeted `hosts: all` with no inventory, so it ran
+  on nothing.
+- **zsh**: templates and `p10k.zsh` resolved to missing paths, the setup wrote
+  to `/usr/share/zsh` without root, and the prompt sourced Manjaro's
+  `zsh-maia-prompt` and a hardcoded node v16 path.
+- **ansible**: feature toggles accept `-e setup_x=true` (ansible-core 2.19+
+  rejects string conditionals).
+- **kde**: `sync-login.sh` explains a missing Plasma Login Manager instead of
+  failing on `id`.

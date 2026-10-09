@@ -1,7 +1,8 @@
 # Dotfiles
 
 My public dotfiles, organized so a single repo can configure Windows, my Linux
-laptop (CachyOS), and any cross-platform tooling that lives in between.
+machines (CachyOS laptop and desktop; any Arch-based distro works), and any
+cross-platform tooling that lives in between.
 
 I'm slowly moving things to Ansible. Some config files are Jinja templates.
 
@@ -15,19 +16,19 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 ├── common/            # cross-platform configs (symlinked the same way on any OS)
 │   ├── nvim/          # Neovim configuration
 │   └── git/           # Git configuration
-├── linux/             # Linux-specific (CachyOS laptop)
+├── linux/             # Linux-specific (Arch-based: CachyOS laptop + desktop)
 │   ├── zsh/           # zsh config + p10k + jinja templates
 │   ├── alacritty/     # alacritty terminal (the terminal I use)
 │   ├── kitty/         # kitty terminal (same look/keymaps as alacritty)
 │   ├── fastfetch/     # fastfetch system-info screen (Nord icon rows)
 │   ├── matugen/       # wallpaper-driven color palette for KDE + terminals
 │   ├── kde/           # KDE Plasma look (blur, icons, decorations)
-│   ├── ripgrep/       # ripgrep install helper
-│   ├── fonts/         # nerd-font install helper
+│   ├── hypr/          # Hyprland install helper
 │   ├── lua/           # luarocks notes
-│   ├── install-tools.sh   # fetch prebuilt CLI tools (rg, jq, fd) into ~/.local/bin
+│   ├── bootstrap.sh   # install ansible with pacman and run the playbook
 │   └── ansible/       # ansible-based provisioning
 │       ├── playbook.yml
+│       ├── inventory.yml  # localhost only
 │       └── roles/     # local workstation role for linux tooling
 └── windows/           # Windows-specific
     ├── alacritty/         # alacritty terminal (Windows-tuned variant)
@@ -122,31 +123,44 @@ elevated PowerShell (needed for symlinks):
 ./windows/setup-windows.ps1
 ```
 
-## Linux setup (CachyOS)
+## Linux setup (Arch-based)
+
+Linux machines (the CachyOS laptop and desktop) are provisioned by Ansible.
+Everything is installed with **pacman**, so only Arch-based distros are
+supported; the playbook stops early on anything else.
 
 ### Ansible
 
-Install Ansible:
+`linux/bootstrap.sh` installs Ansible with pacman (the `ansible` package bundles
+`community.general`, which provides the pacman module) and runs the playbook
+against this machine, asking once for your sudo password:
 
 ```bash
-pip install ansible==5.2.0 ansible-core==2.12.1 ansible-lint==5.3.2
+./linux/bootstrap.sh            # provision
+./linux/bootstrap.sh --check    # dry run; extra args go to ansible-playbook
 ```
 
-Run the playbook (from the `linux/ansible/` directory so roles resolve):
+To run it by hand instead, from `linux/ansible/` (its `ansible.cfg` points at
+the localhost inventory):
 
 ```bash
+sudo pacman -S --needed ansible
 cd linux/ansible
-ansible-playbook playbook.yml
+ansible-playbook playbook.yml --ask-become-pass
 ```
 
-If Ansible can't find some packages, specify the interpreter:
+Toggle features in `linux/ansible/playbook.yml` (`setup_packages`, `setup_zsh`,
+`setup_nvim`, `setup_alacritty`, `setup_kitty`, `setup_fastfetch`,
+`setup_theming`). Per-machine differences — say, a different wallpaper or nvim
+only on the desktop — go in `linux/ansible/local.yml` (gitignored; copy
+`local.example.yml`), or pass them once with `-e setup_nvim=true`.
 
-```bash
-ansible-playbook playbook.yml -K -e 'ansible_python_interpreter=/usr/bin/python3.8'
-```
-
-This playbook uses the local `setup-workstation` role in this repo. Toggle the
-features you want in `linux/ansible/playbook.yml`.
+`setup_packages` installs the base CLI tools and the font: `git`, `ripgrep`,
+`fd`, `jq`, `fzf`, `bat` and `ttf-jetbrains-mono-nerd` (`base_packages` in the
+role defaults). Each feature installs its own packages too. Packages that only
+CachyOS's repos carry (`zsh-theme-powerlevel10k`,
+`kwin-effect-rounded-corners`) are optional: they're skipped with a note on
+distros where they'd need the AUR.
 
 ### Alacritty
 
@@ -160,7 +174,8 @@ mkdir -pv ~/.config/alacritty
 ln -v -r -s ./linux/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
 ```
 
-The font is `JetBrainsMono Nerd Font` — install it first (see the fonts helper).
+The font is `JetBrainsMono Nerd Font` (`ttf-jetbrains-mono-nerd`, installed by
+`setup_packages`).
 
 ### Kitty
 
@@ -229,7 +244,11 @@ sudo linux/kde/sync-login.sh ~ ~/Pictures/Wallpaper/<image>.png
 ```
 
 All three run from the `setup-workstation` role (`setup_theming: true`,
-wallpaper in `theming_wallpaper`), the login sync last and with `become`.
+wallpaper in `theming_wallpaper`), the login sync last and with `become`. Each
+step only runs where it can: the KDE look needs Plasma installed, the wallpaper
+needs a running Plasma session (run `set-wallpaper.sh` yourself after logging
+in otherwise), and the login sync needs Plasma Login Manager (a `plasmalogin`
+user), so SDDM machines skip it.
 
 ### Fastfetch
 
@@ -255,32 +274,15 @@ The icons need a Nerd Font (this setup uses `JetBrainsMono Nerd Font`). The logo
 uses the builtin `cachyos` art — switch `logo.source` to `arch` in the config if
 you're on a different distro.
 
-### CLI tools
-
-`linux/install-tools.sh` fetches prebuilt binaries (ripgrep, jq, fd) into
-`~/.local/bin`:
-
-```bash
-./linux/install-tools.sh
-```
-
 ### zsh
 
-zsh is set up via the `setup-workstation` role in the [playbook](./linux/ansible/playbook.yml).
-Enable it by setting the corresponding variable to `true`:
+zsh is set up by the `setup-workstation` role (`setup_zsh: true`). It installs
+zsh and its plugins with pacman, then renders the config into `~/.config/zsh`
+(`ZDOTDIR`, set by `~/.zshenv`) — nothing is written under `/usr/share`. The
+prompt is powerlevel10k when `zsh-theme-powerlevel10k` is installed, and a
+plain prompt otherwise (and on the TTY).
 
-```yaml
----
-- connection: local
-  become: false
-  hosts: localhost
-
-  vars:
-    setup_zsh: true
-
-  roles:
-    - setup-workstation
-```
+Your login shell is left alone; set `zsh_login_shell: true` to `chsh` to zsh.
 
 ### Xbox controller Bluetooth
 
