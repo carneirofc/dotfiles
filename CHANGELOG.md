@@ -83,6 +83,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   playbook copies it instead.
 
 ### Fixed
+- **matugen**: `set-wallpaper.sh <image> -m light` failed because the script
+  already passes `--mode dark`, and matugen rejects the flag twice. The mode
+  now comes from `MATUGEN_MODE` (default `dark`).
 - **ansible**: the playbook targeted `hosts: all` with no inventory, so it ran
   on nothing.
 - **zsh**: templates and `p10k.zsh` resolved to missing paths, the setup wrote

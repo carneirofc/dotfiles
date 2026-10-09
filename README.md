@@ -235,7 +235,8 @@ cp -rT linux/matugen ~/.config/matugen
 
 `set-wallpaper.sh` sets the desktop and lock-screen wallpaper, then runs
 matugen; extra args are forwarded (e.g. `-t scheme-content` for colors closer
-to the image, `-m light`).
+to the image). The mode defaults to dark; set `MATUGEN_MODE=light` for a light
+palette (matugen rejects a second `--mode`, so it can't go in the extra args).
 
 `linux/kde/apply.sh` applies the rest of the look with `kwriteconfig6`, one key
 at a time, so the rc files Plasma rewrites at runtime aren't tracked whole:

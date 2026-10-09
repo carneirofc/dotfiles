@@ -3,6 +3,7 @@
 # matugen palette for every themed app from it.
 #
 # Usage: set-wallpaper.sh <image> [extra matugen args, e.g. -t scheme-content]
+#        MATUGEN_MODE=light set-wallpaper.sh <image>   # default: dark
 set -euo pipefail
 
 if [[ $# -lt 1 ]]; then
@@ -20,8 +21,9 @@ kwriteconfig6 --file kscreenlockerrc \
     --key Image "file://$image"
 
 # --source-color-index 0 picks the dominant color without the interactive prompt.
+# The mode comes from MATUGEN_MODE: matugen rejects a second --mode in "$@".
 matugen image "$image" \
     --config "$config_dir/config.toml" \
-    --mode dark \
+    --mode "${MATUGEN_MODE:-dark}" \
     --source-color-index 0 \
     "$@"
