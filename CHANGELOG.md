@@ -86,6 +86,8 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   `graphify` through `uv tool dir --bin` instead of assuming `~/.local/bin`.
 
 ### Removed
+- **git**: the `.gitignore` entries for matugen output inside the repo; with
+  WezTerm and Zellij copied instead of linked, matugen writes to `~/.config`.
 - **ansible**: apt/yum code paths, the Nerd Font download task (dead v2
   URLs), the pinned nightly nvim AppImage and the system-wide pip installs.
 - **linux**: `install-tools.sh`, `ripgrep/install.sh` and `zsh/install.sh`,

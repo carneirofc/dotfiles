@@ -225,8 +225,9 @@ The desktop and terminal colors are generated from the wallpaper by
 | `zellij.kdl` | `~/.config/zellij/themes/matugen.kdl` | new sessions |
 
 The terminal ANSI colors are fixed hues (`[config.custom_colors]`) harmonized
-toward the wallpaper, so red still reads as red. The WezTerm and Zellij outputs
-land inside this repo through the config symlinks and are gitignored.
+toward the wallpaper, so red still reads as red. Every output lands in
+`~/.config`; the configs there are copies, so nothing is generated into the
+repo.
 
 ```bash
 sudo pacman -S matugen
