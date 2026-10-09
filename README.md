@@ -169,10 +169,22 @@ Check what a host actually resolves to with:
 ssh -G somehost
 ```
 
+## Git
+
+`common/git/` holds the user-level git config: identity, and GitHub
+credentials through the [gh](https://cli.github.com/) CLI
+(`gh auth git-credential`) instead of a plaintext credential store, plus a
+global `ignore` file. Both install to git's XDG location, `~/.config/git/`:
+on Linux by the playbook (`setup_git`, which also installs `github-cli`), on
+Windows by `setup-windows.ps1`. Log in once with `gh auth login`.
+
+`~/.gitconfig`, if you have one, is read after `~/.config/git/config` and
+wins on conflicts, so machine-local settings can stay there.
+
 ## Windows setup
 
 `windows/` contains a PowerShell profile and Windows Terminal `settings.json`.
-Install the `JetBrains Mono NF` font and git first, then run the bootstrap from
+Install the `JetBrains Mono NF` font, git and gh first, then run the bootstrap from
 a normal (not elevated) PowerShell 7 prompt. It only copies files, so it needs
 no admin rights or Developer Mode:
 
@@ -210,7 +222,7 @@ cd linux/ansible
 ansible-playbook playbook.yml --ask-become-pass
 ```
 
-Toggle features in `linux/ansible/playbook.yml` (`setup_packages`, `setup_zsh`,
+Toggle features in `linux/ansible/playbook.yml` (`setup_packages`, `setup_git`, `setup_zsh`,
 `setup_nvim`, `setup_alacritty`, `setup_kitty`, `setup_wezterm`,
 `setup_zellij`, `setup_fastfetch`, `setup_theming`). Per-machine differences — say, nvim only on the desktop —
 go in `linux/ansible/local.yml` (gitignored; copy `local.example.yml`), or pass

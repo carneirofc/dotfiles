@@ -20,9 +20,10 @@
   backdrops survive). git is required. The Claude step delegates to
   `claude/install-claude.ps1`, which follows the same rule.
 - Cross-platform configs are copied from `common/` (nvim →
-  `%LOCALAPPDATA%\nvim`, wezterm → `~/.config/wezterm`, zellij); only configs
-  that need Windows-specific values get a variant here (`windows/alacritty/`),
-  and those override the Linux ones for this OS only.
+  `%LOCALAPPDATA%\nvim`, wezterm → `~/.config/wezterm`, git →
+  `~/.config/git`, zellij); only configs that need Windows-specific values
+  get a variant here (`windows/alacritty/`), and those override the Linux ones
+  for this OS only.
 - Zellij installs to `%APPDATA%\Zellij\config` (capital Z; the lower-case dir
   is never read).
 - The copied nvim tree must not include generated Linux artifacts
