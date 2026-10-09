@@ -5,8 +5,13 @@
     state: present
   become: true
 
-- name: "Neovim config link"
-  file:
-    src: "{{ (playbook_dir ~ '/../../common/nvim') | realpath }}"
-    dest: "{{ nvim_dotdir }}"
-    state: link
+- name: "Neovim old config link"
+  include_tasks: remove-links.yml
+  vars:
+    link_paths: ["{{ nvim_dotdir }}"]
+
+# Trailing slashes copy the directory's contents, not the directory itself.
+- name: "Neovim config"
+  copy:
+    src: "{{ playbook_dir }}/../../common/nvim/"
+    dest: "{{ nvim_dotdir }}/"

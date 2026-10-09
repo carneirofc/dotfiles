@@ -1,0 +1,19 @@
+---
+# Remove the symlinks in link_paths left by the old link-based setup, so the
+# copy tasks write real files instead of writing through a link into the
+# repo (directories) or keeping the link (files whose content already matches).
+- name: "Old symlinks"
+  stat:
+    path: "{{ item }}"
+    follow: false
+  loop: "{{ link_paths }}"
+  register: old_links
+  check_mode: false
+
+- name: "Remove old symlinks (replaced by copies)"
+  file:
+    path: "{{ item.item }}"
+    state: absent
+  loop: "{{ old_links.results | selectattr('stat.islnk', 'defined') | selectattr('stat.islnk') | list }}"
+  loop_control:
+    label: "{{ item.item }}"

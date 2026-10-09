@@ -10,6 +10,11 @@
     path: "{{ fastfetch_dotdir }}"
     state: directory
 
+- name: "Fastfetch old config link"
+  include_tasks: remove-links.yml
+  vars:
+    link_paths: "{{ fastfetch_settings | map(attribute='dest') | list }}"
+
 - name: "Fastfetch settings"
   copy:
     src: "{{ item.src }}"

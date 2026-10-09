@@ -162,6 +162,11 @@ Every run starts with a full system upgrade (`pacman -Syu`). Arch doesn't
 support partial upgrades, so packages are never installed against package
 lists that are stale or synced without upgrading.
 
+Configs are **copied** (or rendered from templates) into `~/.config`, never
+symlinked into the repo: edit them here and re-run the playbook to deploy.
+Symlinks left by older setups are removed and replaced by the copies. Copies
+don't delete files removed from the repo; clean those up by hand.
+
 `setup_packages` installs the base CLI tools and the font: `git`, `ripgrep`,
 `fd`, `jq`, `fzf`, `bat` and `ttf-jetbrains-mono-nerd` (`base_packages` in the
 role defaults). Each feature installs its own packages too. Packages that only
@@ -224,7 +229,7 @@ land inside this repo through the config symlinks and are gitignored.
 
 ```bash
 sudo pacman -S matugen
-ln -sfn "$PWD/linux/matugen" ~/.config/matugen
+cp -rT linux/matugen ~/.config/matugen
 ~/.config/matugen/set-wallpaper.sh ~/Pictures/Wallpaper/<image>.png
 ```
 
@@ -263,19 +268,8 @@ user), so SDDM machines skip it.
 screen at shell startup. The config is `linux/fastfetch/config.jsonc` — a modern
 JSONC layout with clean Nerd Font icon rows, the same Nord palette as the
 terminals, and percentage bars for memory/disk (root only). It's deployed by the
-`setup-workstation` role (`setup_fastfetch: true`), or symlink it with the helper
-script (works from any directory):
-
-```bash
-./linux/fastfetch/setup.bash
-```
-
-which just does the equivalent of:
-
-```bash
-mkdir -pv ~/.config/fastfetch
-ln -v -r -s ./linux/fastfetch/config.jsonc ~/.config/fastfetch/config.jsonc
-```
+`setup-workstation` role (`setup_fastfetch: true`), which copies it to
+`~/.config/fastfetch/config.jsonc`.
 
 The icons need a Nerd Font (this setup uses `JetBrainsMono Nerd Font`). The logo
 uses the builtin `cachyos` art — switch `logo.source` to `arch` in the config if

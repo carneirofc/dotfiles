@@ -27,9 +27,8 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   to fix pairing/connection drops.
 - **fastfetch**: modern `linux/fastfetch/config.jsonc` with clean Nerd Font
   icon rows, the repo's Nord palette, and memory/disk bars (root only). Deployed
-  by the `setup-workstation` ansible role (`setup_fastfetch` toggle) or via the
-  cwd-independent `linux/fastfetch/setup.bash`, which symlinks it into
-  `~/.config/fastfetch`. Documented in the README.
+  by the `setup-workstation` ansible role (`setup_fastfetch` toggle).
+  Documented in the README.
 
 - **linux**: `linux/bootstrap.sh` installs Ansible with pacman and runs the
   playbook against this machine. The playbook gains an `ansible.cfg` and a
@@ -44,6 +43,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 - **linux**: no install runs against stale package lists. `bootstrap.sh`,
   `hypr/setup.bash` and the role (first task, every run) do a full
   `pacman -Syu`, never a partial `-Sy`, per the Arch wiki.
+- **ansible**: configs are copied instead of symlinked into the repo. The
+  Neovim and matugen config dirs are now copies; old symlinks there (and at
+  the fastfetch config) are removed first.
 - **ansible**: `theming_wallpaper` has no default path; set it per machine in
   `local.yml`. Theming checks the file exists before using it, and skips the
   wallpaper and greeter image with a message when it doesn't.
@@ -61,7 +63,7 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 - **claude**: capitalized the `explore` and `implementer` subagent names.
 - **ansible**: Arch-based distros only — everything installs with pacman,
   and the playbook asserts the OS family up front. `setup_nvim` installs
-  neovim and its tooling from pacman and links `common/nvim`.
+  neovim and its tooling from pacman and copies `common/nvim`.
 - **zsh**: config is rendered into `~/.config/zsh` as the user instead of
   `/usr/share/zsh`; plugins and powerlevel10k come from pacman. Changing the
   login shell is opt-in (`zsh_login_shell`).
@@ -77,6 +79,8 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   URLs), the pinned nightly nvim AppImage and the system-wide pip installs.
 - **linux**: `install-tools.sh`, `ripgrep/install.sh` and `zsh/install.sh`,
   replaced by pacman packages and the playbook.
+- **fastfetch**: `linux/fastfetch/setup.bash`, which symlinked the config; the
+  playbook copies it instead.
 
 ### Fixed
 - **ansible**: the playbook targeted `hosts: all` with no inventory, so it ran

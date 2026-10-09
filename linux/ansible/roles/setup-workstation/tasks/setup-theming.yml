@@ -10,11 +10,17 @@
   vars:
     optional_packages: "{{ theming_optional_packages }}"
 
-- name: "matugen config link"
-  file:
-    src: "{{ (playbook_dir ~ '/../matugen') | realpath }}"
-    dest: "{{ matugen_dotdir }}"
-    state: link
+- name: "matugen old config link"
+  include_tasks: remove-links.yml
+  vars:
+    link_paths: ["{{ matugen_dotdir }}"]
+
+# preserve keeps set-wallpaper.sh executable.
+- name: "matugen config"
+  copy:
+    src: "{{ playbook_dir }}/../matugen/"
+    dest: "{{ matugen_dotdir }}/"
+    mode: preserve
 
 # The wallpaper lives in a different place on each machine (set it in
 # local.yml); only theme from it when it's actually there.
