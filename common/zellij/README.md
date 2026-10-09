@@ -1,6 +1,6 @@
 # Zellij
 
-Configuration for [Zellij](https://zellij.dev) (tested with 0.44.x), shared
+Configuration for [Zellij](https://zellij.dev) (tested with 0.45.x), shared
 by Linux and Windows.
 
 ## Layout
@@ -50,7 +50,9 @@ live-reloaded.
 
 ## Keybinds
 
-`config.kdl` uses `keybinds clear-defaults=true` with the full 0.44 default
+`config.kdl` uses `keybinds clear-defaults=true` with the full 0.45 default
 binding set written out, so upstream default changes never silently alter
-behavior. Tweak per-mode blocks directly; `zellij setup --dump-config` prints
+behavior. Deliberate departures: `Alt`+arrows/`hjkl` in scroll mode move focus
+and return to normal mode, and resize mode's `hjkl` increase the pane size
+(0.45 upstream decreases it). Tweak per-mode blocks directly; `zellij setup --dump-config` prints
 the current upstream defaults for comparison.

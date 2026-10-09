@@ -8,6 +8,10 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **zellij**: binds the actions added in 0.45 — pane `;` (last pane) and
+  `Shift f` (fullscreen without UI); scroll/search `[`/`]` (previous/next
+  prompt) and `m` (select command); scroll `c` (copy last command output);
+  session `[`/`]` (guest/host session) and `f` (host fullscreen).
 - **ansible**: `setup_wezterm` installs WezTerm with pacman and copies the
   tracked files of `common/wezterm` to `~/.config/wezterm`, replacing an old
   symlink there.
