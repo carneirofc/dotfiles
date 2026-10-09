@@ -4,7 +4,10 @@
 #
 # Installs the PowerShell profile and copies every config (nvim, wezterm,
 # alacritty, zellij) plus the Claude agent/skill files into place. Re-running is
-# safe and refreshes every destination.
+# safe and refreshes every destination. Only files git tracks are copied, and
+# nothing already in a destination is deleted: local files there (installed
+# skills, WezTerm backdrops) survive, and a file removed from the repo stays
+# behind until you delete it by hand.
 #
 # Everything is a plain copy: no symlinks, no elevation, no Developer Mode.
 # Runs on a locked-down/basic Windows account.
@@ -18,6 +21,9 @@ $hasPython = (Get-Command python -ErrorAction Ignore)
 $hasLua = (Get-Command lua -ErrorAction Ignore)
 $hasNode = (Get-Command node -ErrorAction Ignore)
 $hasGit = (Get-Command git -ErrorAction Ignore)
+if (-not $hasGit) {
+    throw 'git is required: configs are copied from the files git tracks.'
+}
 
 # --- copy helpers -----------------------------------------------------------
 
@@ -30,17 +36,20 @@ function Install-File {
     Copy-Item -Verbose -Path $Source -Destination $Destination -Force
 }
 
-function Install-Dir {
+function Install-Tree {
+    # Copy the files git tracks under $Source (a repo directory) into
+    # $Destination, file by file. Untracked and ignored files in the checkout
+    # (nvim/plugged, local tool state) are never deployed, and nothing in
+    # $Destination is deleted.
     param([string]$Source, [string]$Destination)
-    $parent = Split-Path -Parent $Destination
-    if (-not (Test-Path -Path $parent)) {
-        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    $files = git -C $Source -c core.quotePath=false ls-files
+    # Native commands don't honor $ErrorActionPreference; check the exit code.
+    if ($LASTEXITCODE -ne 0) {
+        throw "git ls-files failed in $Source"
     }
-    # Remove a stale destination so upstream deletions propagate on re-run.
-    if (Test-Path -Path $Destination) {
-        Remove-Item -Path $Destination -Recurse -Force
+    foreach ($file in $files) {
+        Install-File -Source (Join-Path $Source $file) -Destination (Join-Path $Destination $file)
     }
-    Copy-Item -Verbose -Path $Source -Destination $Destination -Recurse -Force
 }
 
 # --- install steps ----------------------------------------------------------
@@ -55,7 +64,7 @@ function Install-Profile {
 function Install-Neovim {
     # cross-platform nvim config lives in common/; copied (not symlinked) so no
     # elevation / Developer Mode is required. Neovim reads %LOCALAPPDATA%\nvim.
-    Install-Dir `
+    Install-Tree `
         -Source (Join-Path $RepoRoot 'common\nvim') `
         -Destination (Join-Path $env:LOCALAPPDATA 'nvim')
 }
@@ -70,7 +79,7 @@ function Install-Alacritty {
 function Install-Wezterm {
     # WezTerm reads %USERPROFILE%\.config\wezterm\wezterm.lua. The config is
     # cross-platform, so it is shared from common/.
-    Install-Dir `
+    Install-Tree `
         -Source (Join-Path $RepoRoot 'common\wezterm') `
         -Destination (Join-Path $env:USERPROFILE '.config\wezterm')
 }
@@ -83,20 +92,20 @@ function Install-Zellij {
     $dest = Join-Path $env:APPDATA 'Zellij\config'
     $src = Join-Path $RepoRoot 'common\zellij'
     Install-File -Source (Join-Path $src 'config.kdl') -Destination (Join-Path $dest 'config.kdl')
-    Install-Dir  -Source (Join-Path $src 'themes')     -Destination (Join-Path $dest 'themes')
+    Install-Tree -Source (Join-Path $src 'themes')     -Destination (Join-Path $dest 'themes')
 }
 
 function Install-Claude {
     $claudeSrc = Join-Path $RepoRoot 'claude'
     $claudeDest = Join-Path $env:USERPROFILE '.claude'
 
-    Install-Dir `
+    Install-Tree `
         -Source (Join-Path $claudeSrc 'agents') `
         -Destination (Join-Path $claudeDest 'agents')
 
     $skills = Join-Path $claudeSrc 'skills'
     if (Test-Path -Path $skills) {
-        Install-Dir -Source $skills -Destination (Join-Path $claudeDest 'skills')
+        Install-Tree -Source $skills -Destination (Join-Path $claudeDest 'skills')
     }
 
     foreach ($f in 'CLAUDE.md', 'AGENTS.md') {

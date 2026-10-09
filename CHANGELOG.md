@@ -100,6 +100,12 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   playbook copies it instead.
 
 ### Fixed
+- **windows**: `setup-windows.ps1` deleted each destination before copying, so
+  every run wiped `~/.claude/skills` (the repo only tracks `.gitkeep`) and
+  `~/.claude/agents`, plus WezTerm backdrop images and anything else local.
+  It now copies the files git tracks over what's there and deletes nothing,
+  which also stops untracked files in the checkout (`nvim/plugged`) from
+  being deployed. Files removed from the repo now linger; delete them by hand.
 - **windows**: `setup-windows.ps1` stops at the first error
   (`$ErrorActionPreference = 'Stop'`) instead of printing it and carrying on,
   which could leave a config half-copied behind a run that looked finished.
