@@ -1,6 +1,7 @@
 # Zellij
 
-Configuration for [Zellij](https://zellij.dev) (tested with 0.44.x).
+Configuration for [Zellij](https://zellij.dev) (tested with 0.44.x), shared
+by Linux and Windows.
 
 ## Layout
 
@@ -21,11 +22,12 @@ config file:
 
 ## Install
 
-Link (or copy) this directory to `$XDG_CONFIG_HOME/zellij`:
+The config is copied into place, never symlinked (Zellij rewrites
+`config.kdl` when settings change from inside it, which would land in the
+repo through a link):
 
-```sh
-ln -s "$PWD" ~/.config/zellij
-```
+- **Linux** — `~/.config/zellij`, by the `setup-workstation` Ansible role.
+- **Windows** — `%APPDATA%\Zellij\config`, by `windows/setup-windows.ps1`.
 
 Verify with `zellij setup --check`.
 
@@ -36,6 +38,11 @@ defined in `themes/carneirofc-mocha.kdl` using the
 [theme styling spec](https://zellij.dev/documentation/themes.html). It is based
 on the Catppuccin Mocha palette to match the Wezterm config
 (`common/wezterm/wezterm.lua`).
+
+On Linux with theming enabled, the Ansible role switches the line to
+`theme "matugen"`, the palette matugen generates from the wallpaper into
+`~/.config/zellij/themes/matugen.kdl` (see `linux/matugen`). Until matugen has
+run once, Zellij falls back to its built-in theme.
 
 Note: themes in `themes/` are picked up on session start. For rapid iteration,
 temporarily paste the `themes { ... }` block into `config.kdl`, which is

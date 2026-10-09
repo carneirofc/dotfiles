@@ -13,8 +13,9 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 ├── claude/            # Claude Code user-level config
 │   ├── agents/        # custom subagents (symlinked to ~/.claude/agents)
 │   └── skills/        # custom skills (copied to ~/.claude/skills on Windows)
-├── common/            # cross-platform configs (symlinked the same way on any OS)
+├── common/            # cross-platform configs (copied into place on every OS)
 │   ├── nvim/          # Neovim configuration
+│   ├── zellij/        # Zellij config + theme (Linux and Windows)
 │   └── git/           # Git configuration
 ├── linux/             # Linux-specific (Arch-based: CachyOS laptop + desktop)
 │   ├── zsh/           # zsh config + p10k + jinja templates
@@ -32,7 +33,6 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 │       └── roles/     # local workstation role for linux tooling
 └── windows/           # Windows-specific
     ├── alacritty/         # alacritty terminal (Windows-tuned variant)
-    ├── zellij/            # zellij config + theme (used under WSL)
     ├── profile.ps1        # PowerShell profile
     ├── settings.json      # Windows Terminal settings
     └── setup-windows.ps1  # bootstrap: profile, nvim, wezterm/alacritty/zellij, claude
@@ -46,8 +46,8 @@ On Windows, `setup-windows.ps1` installs the PowerShell profile and **copies**
 every config into place — no symlinks, so it runs on a locked-down account with
 no elevation or Developer Mode: nvim (from `common/`) to `%LOCALAPPDATA%\nvim`,
 wezterm (from `common/`) to `~/.config/wezterm`, alacritty to
-`%APPDATA%\alacritty`, zellij to `%APPDATA%\zellij` (applies under WSL — zellij
-has no native Windows build), and the Claude agents/skills to `~/.claude`. It is
+`%APPDATA%\alacritty`, zellij (from `common/`) to `%APPDATA%\Zellij\config`, and
+the Claude agents/skills to `~/.claude`. It is
 idempotent; re-run it to refresh every destination.
 
 ```powershell

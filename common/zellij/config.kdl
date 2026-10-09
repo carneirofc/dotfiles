@@ -1,6 +1,7 @@
-// Zellij config for Windows (installed to %APPDATA%\Zellij\config by setup-windows.ps1).
-// Native Windows Zellij uses the platform config dir; verify with `zellij setup --check`.
-// Kept in sync with linux/zellij/config.kdl.
+// Zellij config shared by Linux and Windows; verify with `zellij setup --check`.
+// Linux: copied to ~/.config/zellij by the setup-workstation role, which swaps
+//   the theme line for "matugen" when theming is enabled.
+// Windows: copied to %APPDATA%\Zellij\config by setup-windows.ps1.
 
 keybinds clear-defaults=true {
     locked {

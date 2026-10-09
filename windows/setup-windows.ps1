@@ -77,8 +77,9 @@ function Install-Zellij {
     # the themes/ folder go directly there. %APPDATA%\zellij (lowercase, no
     # \config) is never read -- the theme/profile there goes undiscovered.
     $dest = Join-Path $env:APPDATA 'Zellij\config'
-    Install-File -Source (Join-Path $PSScriptRoot 'zellij\config.kdl') -Destination (Join-Path $dest 'config.kdl')
-    Install-Dir  -Source (Join-Path $PSScriptRoot 'zellij\themes')     -Destination (Join-Path $dest 'themes')
+    $src = Join-Path $RepoRoot 'common\zellij'
+    Install-File -Source (Join-Path $src 'config.kdl') -Destination (Join-Path $dest 'config.kdl')
+    Install-Dir  -Source (Join-Path $src 'themes')     -Destination (Join-Path $dest 'themes')
 }
 
 function Install-Claude {

@@ -40,6 +40,10 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   optional and skipped where they'd need the AUR.
 
 ### Changed
+- **zellij**: one config for Linux and Windows in `common/zellij/`, replacing
+  the near-identical `linux/zellij/` and `windows/zellij/` copies (they differed
+  only in the header and theme line). It replaces the header Zellij wrote into
+  the repo through the old symlink.
 - **linux**: no install runs against stale package lists. `bootstrap.sh`,
   `hypr/setup.bash` and the role (first task, every run) do a full
   `pacman -Syu`, never a partial `-Sy`, per the Arch wiki.
