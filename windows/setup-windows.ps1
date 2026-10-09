@@ -8,6 +8,10 @@
 #
 # Everything is a plain copy: no symlinks, no elevation, no Developer Mode.
 # Runs on a locked-down/basic Windows account.
+
+# Stop at the first failed step instead of reporting success over it.
+$ErrorActionPreference = 'Stop'
+
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 
 $hasPython = (Get-Command python -ErrorAction Ignore)

@@ -100,6 +100,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   playbook copies it instead.
 
 ### Fixed
+- **windows**: `setup-windows.ps1` stops at the first error
+  (`$ErrorActionPreference = 'Stop'`) instead of printing it and carrying on,
+  which could leave a config half-copied behind a run that looked finished.
 - **matugen**: `set-wallpaper.sh <image> -m light` failed because the script
   already passes `--mode dark`, and matugen rejects the flag twice. The mode
   now comes from `MATUGEN_MODE` (default `dark`).
