@@ -1,4 +1,10 @@
 ---
+- name: "Kitty package"
+  community.general.pacman:
+    name: kitty
+    state: present
+  become: true
+
 - name: "Kitty config directory"
   file:
     path: "{{ kitty_dotdir }}"

@@ -1,6 +1,17 @@
 # -------- general ---------
-user: "{{ ansible_user_id }}"
+user: "{{ ansible_facts['user_id'] }}"
 dotdir: "~/.config"
+
+# -------- packages --------
+# Installed with pacman by setup-packages.yml.
+base_packages:
+  - git
+  - ripgrep
+  - fd
+  - jq
+  - fzf
+  - bat
+  - ttf-jetbrains-mono-nerd
 
 # ------- Alacritty --------
 alacritty_dotdir: "{{ dotdir }}/alacritty"
@@ -17,24 +28,36 @@ fastfetch_settings: [] # { "src": ..., "dest": ... } simple file copy
 # -------- Theming ---------
 matugen_dotdir: "{{ dotdir }}/matugen"
 theming_wallpaper: "" # image to theme from; empty = only link configs and apply the KDE look
-
-# --------- FONTS ----------
-fonts_dir: /usr/share/fonts
-fonts_packages: [] # list of package names = Install fonts with package manager
-fonts_download: [] # list of dict {"url": ..., "dest": ...} Download and install fonts
+theming_packages:
+  - matugen
+  - papirus-icon-theme
+# Installed only when a configured repo carries them (e.g. CachyOS; AUR elsewhere).
+theming_optional_packages:
+  - kwin-effect-rounded-corners
 
 # ---------- ZSH -----------
 zsh_dotdir: "{{ dotdir }}/zsh"
 zsh_bin: "/usr/bin/zsh"
-zsh_path: "/usr/share/zsh"
-zsh_plugins: "{{ zsh_path }}/plugins" # Plugins path
-zsh_plugins_repos: [] # Dict with zsh plugins { "repo": ..., "dest": ... } where dest is relative to the plugins path
+zsh_path: "/usr/share/zsh" # system zsh dir; plugins live in its plugins/
+zsh_p10k_theme: "/usr/share/zsh-theme-powerlevel10k"
+zsh_login_shell: false # chsh to zsh
+zsh_packages:
+  - zsh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - zsh-history-substring-search
+zsh_optional_packages:
+  - zsh-theme-powerlevel10k
 
 zsh_settings: [] # { "src": ..., "dest": ...} simple file copy
 zsh_template_settings: [] # jinja templates
 
 # ---------- NVIM ----------
-# nvim_checksum wget https://github.com/neovim/neovim/releases/download/v0.9.0/nvim-linux64.tar.gz.sha256sum --quiet -^C | awk '{print $1 }'
-nvim_checksum: sha256:fa93f06bec111fea6f316f186b96e19ba289a2dca2d0731e23597398b7397c8f
-nvim_url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-nvim_pip_executable: pip3
+nvim_dotdir: "{{ dotdir }}/nvim"
+nvim_packages:
+  - neovim
+  - python-pynvim
+  - nodejs
+  - npm
+  - clang
+  - mdformat

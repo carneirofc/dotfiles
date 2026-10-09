@@ -1,0 +1,22 @@
+---
+# Install each package in optional_packages that a configured repo carries;
+# skip (and say so) the ones that would need the AUR.
+- name: "Optional packages available in the repos"
+  command: pacman -Si -- {{ item }}
+  loop: "{{ optional_packages }}"
+  register: optional_lookup
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: "Install optional packages"
+  community.general.pacman:
+    name: "{{ optional_lookup.results | selectattr('rc', 'eq', 0) | map(attribute='item') | list }}"
+    state: present
+  become: true
+  when: optional_lookup.results | selectattr('rc', 'eq', 0) | list | length > 0
+
+- name: "Optional packages not in the repos"
+  debug:
+    msg: "Skipped (install from the AUR if wanted): {{ optional_lookup.results | rejectattr('rc', 'eq', 0) | map(attribute='item') | join(', ') }}"
+  when: optional_lookup.results | rejectattr('rc', 'eq', 0) | list | length > 0

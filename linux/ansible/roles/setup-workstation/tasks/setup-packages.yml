@@ -1,0 +1,6 @@
+---
+- name: "Base packages"
+  community.general.pacman:
+    name: "{{ base_packages }}"
+    state: present
+  become: true

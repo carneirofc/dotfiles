@@ -1,4 +1,10 @@
 ---
+- name: "Fastfetch package"
+  community.general.pacman:
+    name: fastfetch
+    state: present
+  become: true
+
 - name: "Fastfetch config directory"
   file:
     path: "{{ fastfetch_dotdir }}"
