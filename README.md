@@ -131,9 +131,10 @@ supported; the playbook stops early on anything else.
 
 ### Ansible
 
-`linux/bootstrap.sh` installs Ansible with pacman (the `ansible` package bundles
-`community.general`, which provides the pacman module) and runs the playbook
-against this machine, asking once for your sudo password:
+`linux/bootstrap.sh` upgrades the system and installs Ansible with pacman (the
+`ansible` package bundles `community.general`, which provides the pacman
+module), then runs the playbook against this machine, asking once for your sudo
+password:
 
 ```bash
 ./linux/bootstrap.sh            # provision
@@ -144,7 +145,7 @@ To run it by hand instead, from `linux/ansible/` (its `ansible.cfg` points at
 the localhost inventory):
 
 ```bash
-sudo pacman -S --needed ansible
+sudo pacman -Syu --needed ansible
 cd linux/ansible
 ansible-playbook playbook.yml --ask-become-pass
 ```
@@ -154,6 +155,10 @@ Toggle features in `linux/ansible/playbook.yml` (`setup_packages`, `setup_zsh`,
 `setup_theming`). Per-machine differences — say, a different wallpaper or nvim
 only on the desktop — go in `linux/ansible/local.yml` (gitignored; copy
 `local.example.yml`), or pass them once with `-e setup_nvim=true`.
+
+Every run starts with a full system upgrade (`pacman -Syu`). Arch doesn't
+support partial upgrades, so packages are never installed against package
+lists that are stale or synced without upgrading.
 
 `setup_packages` installs the base CLI tools and the font: `git`, `ripgrep`,
 `fd`, `jq`, `fzf`, `bat` and `ttf-jetbrains-mono-nerd` (`base_packages` in the

@@ -41,6 +41,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   optional and skipped where they'd need the AUR.
 
 ### Changed
+- **linux**: no install runs against stale package lists. `bootstrap.sh`,
+  `hypr/setup.bash` and the role (first task, every run) do a full
+  `pacman -Syu`, never a partial `-Sy`, per the Arch wiki.
 - **terminals**: Alacritty, Kitty, WezTerm and Zellij take their colors from
   the matugen-generated files. Alacritty drops its inline Nord palette; Kitty
   keeps Nord as a fallback, and WezTerm falls back to `colors/custom.lua`.

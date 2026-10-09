@@ -10,11 +10,11 @@ command -v pacman >/dev/null || { echo "pacman not found; Arch-based distros onl
 
 case ${1:-} in
 "")
-    sudo pacman -S --needed hyprland
+    sudo pacman -Syu --needed hyprland
     ;;
 --git)
     command -v yay >/dev/null || { echo "--git needs yay (AUR helper)" >&2; exit 1; }
-    yay -S --needed \
+    yay -Syu --needed \
         ninja gcc cmake meson libxcb xcb-proto xcb-util xcb-util-keysyms libxfixes libx11 \
         libxcomposite libxrender libxcursor pixman wayland-protocols cairo pango libxkbcommon \
         xcb-util-wm xorg-xwayland libinput libliftoff libdisplay-info cpio tomlplusplus \

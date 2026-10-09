@@ -1,4 +1,14 @@
 ---
+# Arch doesn't support partial upgrades: never refresh the package lists
+# without upgrading the system too. Sync and upgrade once, up front, so every
+# install below runs against current databases.
+# https://wiki.archlinux.org/title/System_maintenance#Partial_upgrades_are_unsupported
+- name: "System upgrade (pacman -Syu)"
+  community.general.pacman:
+    update_cache: true
+    upgrade: true
+  become: true
+
 - include_tasks: setup-packages.yml
   when: setup_packages | default(false) | bool
 
