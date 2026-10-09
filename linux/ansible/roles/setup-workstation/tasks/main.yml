@@ -24,6 +24,9 @@
 - include_tasks: setup-kitty.yml
   when: setup_kitty | default(false) | bool
 
+- include_tasks: setup-wezterm.yml
+  when: setup_wezterm | default(false) | bool
+
 - include_tasks: setup-zellij.yml
   when: setup_zellij | default(false) | bool
 

@@ -8,6 +8,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **ansible**: `setup_wezterm` installs WezTerm with pacman and copies the
+  tracked files of `common/wezterm` to `~/.config/wezterm`, replacing an old
+  symlink there.
 - **ansible**: `setup_zellij` installs Zellij with pacman and copies the shared
   `common/zellij` config to `~/.config/zellij`, setting `theme "matugen"` when
   theming is on (`zellij_theme`). A new `copy-tree.yml` copies only the files

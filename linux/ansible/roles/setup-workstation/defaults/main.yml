@@ -21,6 +21,9 @@ alacritty_settings: [] # { "src": ..., "dest": ... } simple file copy
 kitty_dotdir: "{{ dotdir }}/kitty"
 kitty_settings: [] # { "src": ..., "dest": ... } simple file copy
 
+# -------- WezTerm ---------
+wezterm_dotdir: "{{ dotdir }}/wezterm"
+
 # --------- Zellij ---------
 zellij_dotdir: "{{ dotdir }}/zellij"
 # matugen's wallpaper palette when theming is on, else the repo theme.
