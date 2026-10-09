@@ -100,6 +100,10 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
   playbook copies it instead.
 
 ### Fixed
+- **docs**: the Windows setup section said to run `setup-windows.ps1` elevated
+  "for symlinks"; it copies files and needs neither. It now says to use a
+  normal PowerShell 7 prompt, that git is required, and that Windows Terminal's
+  `settings.json` is copied by hand.
 - **windows**: `setup-windows.ps1` deleted each destination before copying, so
   every run wiped `~/.claude/skills` (the repo only tracks `.gitkeep`) and
   `~/.claude/agents`, plus WezTerm backdrop images and anything else local.

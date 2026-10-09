@@ -48,8 +48,10 @@ every config into place — no symlinks, so it runs on a locked-down account wit
 no elevation or Developer Mode: nvim (from `common/`) to `%LOCALAPPDATA%\nvim`,
 wezterm (from `common/`) to `~/.config/wezterm`, alacritty to
 `%APPDATA%\alacritty`, zellij (from `common/`) to `%APPDATA%\Zellij\config`, and
-the Claude agents/skills to `~/.claude`. It is
-idempotent; re-run it to refresh every destination.
+the Claude agents/skills to `~/.claude`. It is idempotent; re-run it to
+refresh every destination. Only files git tracks are copied, and nothing
+already in a destination is deleted, so locally installed skills and WezTerm
+backdrops survive; a file removed from the repo has to be deleted by hand.
 
 ```powershell
 pwsh -File .\windows\setup-windows.ps1
@@ -117,12 +119,16 @@ sudo ln -v -s "$(whereis win32yank.exe | awk '{print $2 }')" "/usr/local/bin/win
 ## Windows setup
 
 `windows/` contains a PowerShell profile and Windows Terminal `settings.json`.
-Install the `JetBrains Mono NF` font first, then run the bootstrap from an
-elevated PowerShell (needed for symlinks):
+Install the `JetBrains Mono NF` font and git first, then run the bootstrap from
+a normal (not elevated) PowerShell 7 prompt. It only copies files, so it needs
+no admin rights or Developer Mode:
 
 ```powershell
-./windows/setup-windows.ps1
+pwsh -File .\windows\setup-windows.ps1
 ```
+
+The script doesn't install `settings.json`; copy it into Windows Terminal's
+settings by hand (Settings > Open JSON file).
 
 ## Linux setup (Arch-based)
 
