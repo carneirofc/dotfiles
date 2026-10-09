@@ -29,6 +29,7 @@ I'm slowly moving things to Ansible. Some config files are Jinja templates.
 │   ├── kde/           # KDE Plasma look (blur, icons, decorations)
 │   ├── hypr/          # Hyprland install helper
 │   ├── lua/           # luarocks notes
+│   ├── setup-linux.bash # one-command setup: playbook + claude + ssh (+ opt-ins)
 │   ├── bootstrap.sh   # install ansible with pacman and run the playbook
 │   └── ansible/       # ansible-based provisioning
 │       ├── playbook.yml
@@ -200,6 +201,25 @@ settings by hand (Settings > Open JSON file).
 Linux machines (the CachyOS laptop and desktop) are provisioned by Ansible.
 Everything is installed with **pacman**, so only Arch-based distros are
 supported; the playbook stops early on anything else.
+
+### Quick start
+
+Clone the repo anywhere and run the one-command setup. It runs the Ansible
+playbook (below), installs the Claude Code config into `~/.claude` and the SSH
+client config, asking once for your sudo password:
+
+```bash
+git clone https://github.com/carneirofc/dotfiles.git
+cd dotfiles
+./linux/setup-linux.bash                    # playbook + claude + ssh
+./linux/setup-linux.bash --wifi --ai-tools  # also Wi-Fi power-save fix, graphify/context7
+./linux/setup-linux.bash -- --check         # args after -- go to ansible-playbook
+```
+
+Skip a default step with `--no-ansible`, `--no-claude` or `--no-ssh`
+(`--help` lists them). Every step is idempotent: re-run it after pulling to
+deploy the latest configs. Each step is also a standalone script, documented
+in its own section.
 
 ### Ansible
 

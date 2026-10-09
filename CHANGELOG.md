@@ -8,6 +8,10 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **linux**: `linux/setup-linux.bash` — one-command Linux setup that runs
+  the playbook (`bootstrap.sh`), the Claude installer and the SSH setup, with
+  opt-in `--wifi` and `--ai-tools` steps and `--no-*` flags to skip one.
+  Documented in a README Linux Quick start section.
 - **git**: `common/git/` is now installed — `config` and a global `ignore`
   (`**/.claude/settings.local.json`) copy to `~/.config/git/` via the
   playbook's `setup_git` toggle (which also installs `github-cli`) and

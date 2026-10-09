@@ -7,11 +7,15 @@
   (`fastfetch/`), theming (`matugen/`, `kde/`), compositor (`hypr/`),
   networking (`network/`), luarocks notes (`lua/`), and the ansible playbook
   that provisions most of it (`ansible/`, run via `bootstrap.sh`).
+- `setup-linux.bash` is the one-command entry point: it chains
+  `bootstrap.sh`, `claude/install-claude.bash`, `common/ssh/setup.bash` and
+  the opt-in `network/setup.bash` / `setup-ai-tools.bash`. A new standalone
+  setup script gets a step there too.
 - Cross-platform configs (nvim, wezterm, zellij, ssh, git) live in `common/`.
 
 ## Ownership
 
-- Owns every folder under `linux/` plus `bootstrap.sh`, except where a child
+- Owns every folder under `linux/` plus `bootstrap.sh` and `setup-linux.bash`, except where a child
   `AGENTS.md` exists (see Child Index).
 
 ## Local Contracts
