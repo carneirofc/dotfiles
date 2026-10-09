@@ -12,7 +12,7 @@
     setup_kitty: true
     setup_fastfetch: true
     setup_theming: true
-    theming_wallpaper: "~/Pictures/Wallpaper/Anima_Upscaled__00014_.png"
+    # theming_wallpaper differs per machine: set it in local.yml.
 
   pre_tasks:
     - name: "Arch-based distro"

@@ -44,6 +44,9 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 - **linux**: no install runs against stale package lists. `bootstrap.sh`,
   `hypr/setup.bash` and the role (first task, every run) do a full
   `pacman -Syu`, never a partial `-Sy`, per the Arch wiki.
+- **ansible**: `theming_wallpaper` has no default path; set it per machine in
+  `local.yml`. Theming checks the file exists before using it, and skips the
+  wallpaper and greeter image with a message when it doesn't.
 - **terminals**: Alacritty, Kitty, WezTerm and Zellij take their colors from
   the matugen-generated files. Alacritty drops its inline Nord palette; Kitty
   keeps Nord as a fallback, and WezTerm falls back to `colors/custom.lua`.
