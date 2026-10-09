@@ -8,6 +8,10 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **ansible**: `setup_zellij` installs Zellij with pacman and copies the shared
+  `common/zellij` config to `~/.config/zellij`, setting `theme "matugen"` when
+  theming is on (`zellij_theme`). A new `copy-tree.yml` copies only the files
+  git tracks, so generated and ignored files in the repo aren't deployed.
 - **theming**: wallpaper-driven colors with matugen. `linux/matugen/` renders a
   KDE color scheme and Alacritty, Kitty, WezTerm and Zellij palettes from the
   wallpaper; `set-wallpaper.sh` sets the desktop/lock-screen wallpaper and

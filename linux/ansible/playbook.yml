@@ -10,6 +10,7 @@
     setup_nvim: false
     setup_alacritty: true
     setup_kitty: true
+    setup_zellij: true
     setup_fastfetch: true
     setup_theming: true
     # theming_wallpaper differs per machine: set it in local.yml.

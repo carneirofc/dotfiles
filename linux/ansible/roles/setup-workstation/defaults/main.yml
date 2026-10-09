@@ -21,6 +21,11 @@ alacritty_settings: [] # { "src": ..., "dest": ... } simple file copy
 kitty_dotdir: "{{ dotdir }}/kitty"
 kitty_settings: [] # { "src": ..., "dest": ... } simple file copy
 
+# --------- Zellij ---------
+zellij_dotdir: "{{ dotdir }}/zellij"
+# matugen's wallpaper palette when theming is on, else the repo theme.
+zellij_theme: "{{ 'matugen' if setup_theming | default(false) | bool else 'carneirofc-mocha' }}"
+
 # ------- Fastfetch --------
 fastfetch_dotdir: "{{ dotdir }}/fastfetch"
 fastfetch_settings: [] # { "src": ..., "dest": ... } simple file copy

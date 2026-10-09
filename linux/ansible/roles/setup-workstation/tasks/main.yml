@@ -24,6 +24,9 @@
 - include_tasks: setup-kitty.yml
   when: setup_kitty | default(false) | bool
 
+- include_tasks: setup-zellij.yml
+  when: setup_zellij | default(false) | bool
+
 - include_tasks: setup-fastfetch.yml
   when: setup_fastfetch | default(false) | bool
 

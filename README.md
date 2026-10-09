@@ -151,8 +151,8 @@ ansible-playbook playbook.yml --ask-become-pass
 ```
 
 Toggle features in `linux/ansible/playbook.yml` (`setup_packages`, `setup_zsh`,
-`setup_nvim`, `setup_alacritty`, `setup_kitty`, `setup_fastfetch`,
-`setup_theming`). Per-machine differences — say, nvim only on the desktop —
+`setup_nvim`, `setup_alacritty`, `setup_kitty`, `setup_zellij`,
+`setup_fastfetch`, `setup_theming`). Per-machine differences — say, nvim only on the desktop —
 go in `linux/ansible/local.yml` (gitignored; copy `local.example.yml`), or pass
 them once with `-e setup_nvim=true`. The wallpaper path (`theming_wallpaper`)
 differs between machines, so it lives only there; theming skips it with a
