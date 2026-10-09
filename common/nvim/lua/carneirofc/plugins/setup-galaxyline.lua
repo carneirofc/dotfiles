@@ -11,6 +11,33 @@ function M.setup()
     local gls = gl.section
     gl.short_line_list = { 'NvimTree', 'vista', 'dbui', 'packer' }
 
+    -- galaxyline's built-in Diagnostic*/GetLspClient providers call
+    -- vim.lsp.buf_get_clients / get_active_clients, both deprecated and
+    -- scheduled for removal. These replacements use the current APIs.
+    local function diagnostic_count(severity)
+        return function()
+            if next(vim.lsp.get_clients({ bufnr = 0 })) == nil then
+                return ''
+            end
+            local n = vim.diagnostic.count(0)[severity] or 0
+            if n == 0 then
+                return ''
+            end
+            return n .. ' '
+        end
+    end
+
+    local function lsp_client_name()
+        local names = {}
+        for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+            table.insert(names, client.name)
+        end
+        if #names == 0 then
+            return 'No Active Lsp'
+        end
+        return table.concat(names, ',')
+    end
+
     gls.left[1] = {
         RainbowRed = {
             provider = function() return '▊ ' end,
@@ -43,7 +70,8 @@ function M.setup()
                     t      = colors.red,
                     v      = colors.blue,
                 }
-                vim.api.nvim_command('hi GalaxyViMode guifg=' .. mode_color[vim.fn.mode()])
+                -- Fall back for modes not listed above (e.g. 'nt', 'niI').
+                vim.api.nvim_command('hi GalaxyViMode guifg=' .. (mode_color[vim.fn.mode()] or colors.red))
                 return '  '
             end,
             highlight = { colors.red, colors.bg, 'bold' },
@@ -92,14 +120,14 @@ function M.setup()
 
     gls.left[8] = {
         DiagnosticError = {
-            provider = 'DiagnosticError',
+            provider = diagnostic_count(vim.diagnostic.severity.ERROR),
             icon = '  ',
             highlight = { colors.red, colors.bg }
         }
     }
     gls.left[9] = {
         DiagnosticWarn = {
-            provider = 'DiagnosticWarn',
+            provider = diagnostic_count(vim.diagnostic.severity.WARN),
             icon = '  ',
             highlight = { colors.yellow, colors.bg },
         }
@@ -107,7 +135,7 @@ function M.setup()
 
     gls.left[10] = {
         DiagnosticHint = {
-            provider = 'DiagnosticHint',
+            provider = diagnostic_count(vim.diagnostic.severity.HINT),
             icon = '  ',
             highlight = { colors.cyan, colors.bg },
         }
@@ -115,7 +143,7 @@ function M.setup()
 
     gls.left[11] = {
         DiagnosticInfo = {
-            provider = 'DiagnosticInfo',
+            provider = diagnostic_count(vim.diagnostic.severity.INFO),
             icon = '  ',
             highlight = { colors.blue, colors.bg },
         }
@@ -123,7 +151,7 @@ function M.setup()
 
     gls.mid[1] = {
         ShowLspClient = {
-            provider = 'GetLspClient',
+            provider = lsp_client_name,
             condition = function()
                 local tbl = { ['dashboard'] = true,[''] = true }
                 if tbl[vim.bo.filetype] then

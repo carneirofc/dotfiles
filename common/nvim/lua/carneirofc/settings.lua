@@ -44,26 +44,39 @@ local options = {
     wrap           = true,                                   -- Wrap lines
 }
 
-function SetOptions()
+local function SetOptions()
     for k, v in pairs(options) do
         vim.opt[k] = v
     end
 end
 
-function SetColors()
-    vim.cmd([[colorscheme rose-pine]])
-    vim.cmd([[ hi NonText   guifg=#494949 ]])
-    vim.cmd([[ hi SignColum guibg=#000000 ]])
-    vim.cmd([[ hi Visual    guibg=#575757 ]])
-    vim.cmd([[ hi VerSplit  guibg=#575757 guifg=#000000 ]])
+local function SetColors()
+    -- The colorscheme is a packer plugin; on a fresh bootstrap it is not
+    -- installed yet, so don't abort the rest of init over it.
+    local ok = pcall(vim.cmd, [[colorscheme rose-pine]])
+    if not ok then
+        vim.notify("colorscheme rose-pine not installed yet, run :PackerSync", vim.log.levels.WARN)
+    end
+    vim.cmd([[ hi NonText    guifg=#494949 ]])
+    vim.cmd([[ hi SignColumn guibg=#000000 ]])
+    vim.cmd([[ hi Visual     guibg=#575757 ]])
+    vim.cmd([[ hi VertSplit  guibg=#575757 guifg=#000000 ]])
+end
+
+local function DisableProviders()
+    -- No plugin in this config uses the remote-plugin providers
+    -- (markdown-preview runs its own node server). Disabling them removes
+    -- the :checkhealth errors/warnings about pynvim, perl, ruby and npm.
+    vim.g.loaded_python3_provider = 0
+    vim.g.loaded_perl_provider = 0
+    vim.g.loaded_ruby_provider = 0
+    vim.g.loaded_node_provider = 0
 end
 
 function M.setup()
     SetOptions()
     SetColors()
-
-    vim.g.python_host_prog = ''
-    vim.g.python3_host_prog = '/usr/bin/python'
+    DisableProviders()
 
     --  if vim.fn.has('wsl') then
     --      vim.cmd([[

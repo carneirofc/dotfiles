@@ -1,6 +1,7 @@
 common/nvim/.netrwhist
 common/nvim/plugged
 *.bak
+common/nvim/plugin/packer_compiled.lua
 
 # machine-local ansible overrides
 linux/ansible/local.yml
