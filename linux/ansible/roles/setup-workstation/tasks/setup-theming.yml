@@ -1,23 +1,61 @@
 ---
+- name: "Theming packages"
+  community.general.pacman:
+    name: "{{ theming_packages }}"
+    state: present
+  become: true
+
+- name: "Theming optional packages"
+  include_tasks: install-optional.yml
+  vars:
+    optional_packages: "{{ theming_optional_packages }}"
+
 - name: "matugen config link"
   file:
-    src: "{{ playbook_dir }}/../matugen"
+    src: "{{ (playbook_dir ~ '/../matugen') | realpath }}"
     dest: "{{ matugen_dotdir }}"
     state: link
+
+- name: "KDE Plasma tooling"
+  stat:
+    path: /usr/bin/kwriteconfig6
+  register: kwriteconfig6
+
+- name: "Plasma Login Manager user"
+  getent:
+    database: passwd
+    key: plasmalogin
+    fail_key: false
 
 - name: "KDE Plasma look"
   command: "{{ playbook_dir }}/../kde/apply.sh"
   changed_when: false
+  when: kwriteconfig6.stat.exists
 
+# Setting the wallpaper talks to plasmashell, so it needs a running session.
 - name: "Wallpaper and matugen palette"
   command: "{{ matugen_dotdir | expanduser }}/set-wallpaper.sh {{ theming_wallpaper | expanduser }}"
   changed_when: false
-  when: theming_wallpaper | length > 0
+  when:
+    - theming_wallpaper | length > 0
+    - kwriteconfig6.stat.exists
+    - "'KDE' in ansible_facts['env'].XDG_CURRENT_DESKTOP | default('')"
+    - ansible_facts['env'].DBUS_SESSION_BUS_ADDRESS is defined
+
+- name: "Wallpaper skipped"
+  debug:
+    msg: "No Plasma session here; run linux/matugen/set-wallpaper.sh from inside Plasma."
+  when:
+    - theming_wallpaper | length > 0
+    - "'KDE' not in ansible_facts['env'].XDG_CURRENT_DESKTOP | default('') or ansible_facts['env'].DBUS_SESSION_BUS_ADDRESS is not defined"
 
 # Last, so the greeter gets the palette and icons generated above.
 - name: "Login screen matches the session"
   command: >-
-    {{ playbook_dir }}/../kde/sync-login.sh {{ ansible_env.HOME }}
+    {{ playbook_dir }}/../kde/sync-login.sh {{ ansible_facts['env'].HOME }}
     {{ theming_wallpaper | expanduser if theming_wallpaper | length > 0 else '' }}
   become: true
   changed_when: false
+  when:
+    - kwriteconfig6.stat.exists
+    - ansible_facts.getent_passwd.plasmalogin is not none

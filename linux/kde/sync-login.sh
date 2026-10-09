@@ -19,7 +19,10 @@ fi
 
 src=$1/.config
 greeter=/var/lib/plasmalogin
-id plasmalogin >/dev/null
+if ! id plasmalogin >/dev/null 2>&1; then
+    echo "$(basename "$0"): no plasmalogin user; Plasma Login Manager isn't installed" >&2
+    exit 1
+fi
 
 install -d -o plasmalogin -g plasmalogin "$greeter/.config"
 for f in kdeglobals plasmarc kcminputrc kxkbrc kwinoutputconfig.json fontconfig/fonts.conf; do
