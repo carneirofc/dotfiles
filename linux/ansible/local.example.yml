@@ -1,0 +1,5 @@
+---
+# Copy to local.yml (gitignored) to override playbook vars on one machine.
+# theming_wallpaper: "~/Pictures/Wallpaper/desktop.png"
+# setup_nvim: true
+# zsh_login_shell: true

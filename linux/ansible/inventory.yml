@@ -1,0 +1,6 @@
+---
+# Provisioning always targets the machine running the playbook.
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
