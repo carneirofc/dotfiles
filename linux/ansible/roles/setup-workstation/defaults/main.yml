@@ -46,6 +46,7 @@ theming_wallpaper: "" # image to theme from; empty = only link configs and apply
 theming_packages:
   - matugen
   - papirus-icon-theme
+  - kvantum # Qt app style; matugen/kvantum-hermes.py builds the Hermes theme
 # Installed only when a configured repo carries them (e.g. CachyOS; AUR elsewhere).
 theming_optional_packages:
   - kwin-effect-rounded-corners

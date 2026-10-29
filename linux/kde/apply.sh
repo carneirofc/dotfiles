@@ -11,7 +11,19 @@ has_effect() {
 
 # Global theme stays Breeze Dark; widgets and Plasma style follow the color scheme.
 kw --file kdeglobals --group KDE --key LookAndFeelPackage org.kde.breezedark.desktop
-kw --file kdeglobals --group KDE --key widgetStyle Breeze
+
+# Qt app style: the "Hermes" Kvantum theme (WezTerm/Hermes look, translucent
+# with blur), built from the matugen scheme by matugen/kvantum-hermes.py. It
+# needs kvantum and a scheme; until then (first run), stay on Breeze.
+kvantum_gen="$HOME/.config/matugen/kvantum-hermes.py"
+if [[ -d /usr/share/Kvantum/KvFlat && -x "$kvantum_gen" ]] &&
+    [[ -f "$HOME/.local/share/color-schemes/Matugen.colors" ]]; then
+    "$kvantum_gen" >/dev/null
+    kw --file "$HOME/.config/Kvantum/kvantum.kvconfig" --group General --key theme Hermes
+    kw --file kdeglobals --group KDE --key widgetStyle kvantum
+else
+    kw --file kdeglobals --group KDE --key widgetStyle Breeze
+fi
 
 # Plasma style "Hermes": Breeze with WezTerm/Hermes-style desktop widget cards
 # (desktoptheme/gen-hermes.py). Anything it doesn't override falls back to Breeze.

@@ -8,6 +8,13 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **kde**: "Hermes" Kvantum theme for Qt apps (Dolphin etc.).
+  `linux/matugen/kvantum-hermes.py` retints Kvantum's KvFlat from the matugen
+  scheme: WezTerm background at 82% with KWin blur, matugen accent,
+  rounded outlined selections, menus and tooltips (Plasma popup style),
+  translucent alternating rows and a transparent Dolphin view. matugen's KDE hook
+  rebuilds it per wallpaper; `apply.sh` sets `widgetStyle=kvantum` once
+  kvantum and the scheme exist; `kvantum` joins `theming_packages`.
 - **kde**: "Hermes" Plasma style (`linux/kde/desktoptheme/`), installed and
   selected by `apply.sh`. Desktop widgets get WezTerm/Hermes-style cards (the
   scheme's view background at 86%, 8px corners, a 1px accent hairline) that

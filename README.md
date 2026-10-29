@@ -346,6 +346,16 @@ accent hairline like the Hermes app). Colors come from the active color scheme,
 so the cards follow matugen. To tweak radius, opacity or padding, edit the
 constants in `desktoptheme/gen-hermes.py`, run it, then rerun `apply.sh`.
 
+Qt apps (Dolphin, Kate, System Settings...) use the **Hermes** Kvantum theme
+(`kvantum` package): KvFlat retinted from the matugen scheme by
+`linux/matugen/kvantum-hermes.py`, so the background is WezTerm's at 82%
+opacity with KWin blur, the accent is matugen primary, and selections, menus
+and tooltips are rounded with a thin accent outline, like Plasma's popups. matugen's KDE hook rebuilds it on every
+wallpaper change, and `apply.sh` selects it (`widgetStyle=kvantum`), falling back
+to Breeze until kvantum and a matugen scheme exist. Running apps pick up a new
+palette on restart. Opacity, corner radius and selection strength are the constants
+at the top of the script.
+
 The login screen (Plasma Login Manager) runs as the `plasmalogin` user and
 keeps its own copy of `kdeglobals` and friends, so it doesn't follow these
 changes the way the lock screen does. `linux/kde/sync-login.sh` copies them

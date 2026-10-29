@@ -16,10 +16,11 @@ magenta = { color = "#c678dd", blend = true }
 cyan = { color = "#56c2c9", blend = true }
 
 # Plasma ignores re-applying the active scheme, so bounce through BreezeDark.
+# Then rebuild the Hermes Kvantum (Qt app style) theme from the new scheme.
 [templates.kde]
 input_path = "./templates/kde.colors"
 output_path = "~/.local/share/color-schemes/Matugen.colors"
-post_hook = "plasma-apply-colorscheme BreezeDark >/dev/null && plasma-apply-colorscheme Matugen >/dev/null"
+post_hook = "plasma-apply-colorscheme BreezeDark >/dev/null && plasma-apply-colorscheme Matugen >/dev/null; [ ! -d /usr/share/Kvantum/KvFlat ] || ~/.config/matugen/kvantum-hermes.py >/dev/null"
 
 # Alacritty live-reloads imported files.
 [templates.alacritty]
