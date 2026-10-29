@@ -12,7 +12,19 @@ has_effect() {
 # Global theme stays Breeze Dark; widgets and Plasma style follow the color scheme.
 kw --file kdeglobals --group KDE --key LookAndFeelPackage org.kde.breezedark.desktop
 kw --file kdeglobals --group KDE --key widgetStyle Breeze
-kw --file plasmarc --group Theme --key name default
+
+# Plasma style "Hermes": Breeze with WezTerm/Hermes-style desktop widget cards
+# (desktoptheme/gen-hermes.py). Anything it doesn't override falls back to Breeze.
+script_dir=$(dirname "$(realpath "$0")")
+theme_dir="$HOME/.local/share/plasma/desktoptheme/hermes"
+rm -rf "$theme_dir"
+mkdir -p "$(dirname "$theme_dir")"
+cp -r "$script_dir/desktoptheme/hermes" "$theme_dir"
+if pgrep -x plasmashell >/dev/null; then
+    plasma-apply-desktoptheme hermes >/dev/null
+else
+    kw --file plasmarc --group Theme --key name hermes
+fi
 
 # The accent is the scheme's selection color (matugen primary), so don't let
 # Plasma override it with its own wallpaper/custom accent.

@@ -8,6 +8,11 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 ## [Unreleased]
 
 ### Added
+- **kde**: "Hermes" Plasma style (`linux/kde/desktoptheme/`), installed and
+  selected by `apply.sh`. Desktop widgets get WezTerm/Hermes-style cards (the
+  scheme's view background at 86%, 8px corners, a 1px accent hairline) that
+  follow matugen; everything else falls back to Breeze. `gen-hermes.py`
+  regenerates the SVGs.
 - **linux**: `linux/setup-linux.bash` — one-command Linux setup that runs
   the playbook (`bootstrap.sh`), the Claude installer and the SSH setup, with
   opt-in `--wifi` and `--ai-tools` steps and `--no-*` flags to skip one.

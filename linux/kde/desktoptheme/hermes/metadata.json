@@ -1,0 +1,12 @@
+{
+    "KPlugin": {
+        "Authors": [{ "Name": "carneirofc" }],
+        "Description": "Breeze with WezTerm/Hermes-style desktop widget cards; colors follow the active color scheme (matugen)",
+        "EnabledByDefault": true,
+        "Id": "hermes",
+        "License": "LGPL",
+        "Name": "Hermes",
+        "Version": "1.0"
+    },
+    "X-Plasma-API": "5.0"
+}

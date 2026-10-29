@@ -339,6 +339,13 @@ Papirus-Dark icons and rounded corners when installed
 in `plasma-org.kde.plasma.desktop-appletsrc`, which is machine-specific, so
 they stay manual.
 
+It also installs and selects the **Hermes** Plasma style
+(`linux/kde/desktoptheme/hermes`): Breeze, except desktop widgets get
+WezTerm-style cards (the terminal's background color, rounded corners, a faint
+accent hairline like the Hermes app). Colors come from the active color scheme,
+so the cards follow matugen. To tweak radius, opacity or padding, edit the
+constants in `desktoptheme/gen-hermes.py`, run it, then rerun `apply.sh`.
+
 The login screen (Plasma Login Manager) runs as the `plasmalogin` user and
 keeps its own copy of `kdeglobals` and friends, so it doesn't follow these
 changes the way the lock screen does. `linux/kde/sync-login.sh` copies them
