@@ -7,6 +7,14 @@ and this project follows [Conventional Commits](https://www.conventionalcommits.
 
 ## [Unreleased]
 
+### Changed
+- **kde**: Hermes Kvantum tabs look like tabs instead of centered buttons.
+  `kvantum-hermes.py` replaces KvFlat's `tab-*` and `floating-tab-*`
+  (document-mode, e.g. Dolphin) elements with flat joined tabs (rounded top,
+  faint baseline, accent wash + 2px underline on the active one), adds `×`
+  close icons, and left-aligns tab bars (`left_tabs=true`,
+  `center_doc_tabs=false`; Kvantum always centers otherwise).
+
 ### Added
 - **kde**: "Hermes" Kvantum theme for Qt apps (Dolphin etc.).
   `linux/matugen/kvantum-hermes.py` retints Kvantum's KvFlat from the matugen

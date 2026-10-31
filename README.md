@@ -350,7 +350,10 @@ Qt apps (Dolphin, Kate, System Settings...) use the **Hermes** Kvantum theme
 (`kvantum` package): KvFlat retinted from the matugen scheme by
 `linux/matugen/kvantum-hermes.py`, so the background is WezTerm's at 82%
 opacity with KWin blur, the accent is matugen primary, and selections, menus
-and tooltips are rounded with a thin accent outline, like Plasma's popups. matugen's KDE hook rebuilds it on every
+and tooltips are rounded with a thin accent outline, like Plasma's popups.
+Tabs (Dolphin, Kate) are a flat, left-aligned strip: inactive tabs sit on a
+faint baseline, the active one gets an accent wash and underline, and close
+buttons are a plain `×` (KvFlat draws them as boxed buttons). matugen's KDE hook rebuilds it on every
 wallpaper change, and `apply.sh` selects it (`widgetStyle=kvantum`), falling back
 to Breeze until kvantum and a matugen scheme exist. Running apps pick up a new
 palette on restart. Opacity, corner radius and selection strength are the constants

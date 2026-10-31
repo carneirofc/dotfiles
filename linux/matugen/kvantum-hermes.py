@@ -33,6 +33,13 @@ SELECTION_FILL = 0.16     # accent wash behind selected items
 ITEM_RADIUS, ITEM_FRAME = 5, 5     # selection box corner radius / tile size
 POPUP_RADIUS, POPUP_FRAME = 8, 8   # menus and tooltips
 POPUP_FILL = 0.88
+# Tabs (Dolphin, Kate...): flat, left-aligned, joined, browser-like; the active
+# one gets an accent wash and underline, the rest sit on a faint baseline.
+TAB_RADIUS, TAB_FRAME = 4, 4
+TAB_UNDERLINE = 2          # px, active tab
+TAB_ACTIVE_FILL = 0.12
+TAB_HOVER_FILL = 0.06
+TAB_BASELINE = 0.12        # hairline under inactive tabs
 # KvFlat's own view background; its lightness is pinned to the surface's.
 KVFLAT_BASE_L = colorsys.rgb_to_hls(*(c / 255 for c in (0x2E, 0x2E, 0x2E)))[1]
 KVFLAT_ACCENT_L = colorsys.rgb_to_hls(*(c / 255 for c in (0x3D, 0xAE, 0xE9)))[1]
@@ -79,7 +86,8 @@ def soften_selection(svg, rounded):
     Kvantum ignores them) and append rounded Plasma-popup-style ones."""
     pat = (r'id="((?:itemview|menuitem)-(?:focused|pressed|toggled)'
            r'(?:-(?:top|bottom|left|right|topleft|topright|bottomleft|bottomright))?'
-           r'|menu-(?:normal|shadow)[^"]*|tooltip-(?:normal|shadow)[^"]*)"')
+           r'|menu-(?:normal|shadow)[^"]*|tooltip-(?:normal|shadow)[^"]*'
+           r'|(?:floating-)?tab-(?:normal|focused|toggled)[^"]*)"')
     svg = re.sub(pat, r'id="kvflat-\1"', svg)
     return svg.replace("</svg>", rounded + "\n</svg>")
 
@@ -131,6 +139,78 @@ def nine_slice(name, x0, fill, border, r, f):
     return "\n".join(out), W
 
 
+def tab_slice(name, x0, fill, line, line_w, r, f):
+    """Tab 9-slice: rounded top corners, square bottom, and a bottom line
+    (accent underline or baseline hairline) of line_w px. No side borders,
+    so joined tabs read as one strip rather than a row of buttons."""
+    E = 8
+    W = 2 * f + E
+    pin = 'style="fill:#000;fill-opacity:0"'
+    F = f'style="fill:{fill[0]};fill-opacity:{fill[1]}"'
+    L = f'style="fill:{line[0]};fill-opacity:{line[1]}"'
+    m = f + E
+    out = [f'<rect id="{name}" {F} x="{x0 + f}" y="{f}" width="{E}" height="{E}"/>']
+
+    def tile(pos, x, y, w, h, body):
+        out.append(f'<g id="{name}-{pos}"><rect {pin} x="{x}" y="{y}" width="{w}" height="{h}"/>{body}</g>')
+
+    # top corners: quarter-rounded fill
+    tile("topleft", x0, 0, f, f,
+         f'<path {F} d="M{x0},{f} L{x0},{r} A{r},{r} 0 0 1 {x0 + r},0 L{x0 + f},0 L{x0 + f},{f} Z"/>')
+    xr = x0 + m
+    tile("topright", xr, 0, f, f,
+         f'<path {F} d="M{xr},0 L{xr + f - r},0 A{r},{r} 0 0 1 {xr + f},{r} L{xr + f},{f} L{xr},{f} Z"/>')
+    tile("top", x0 + f, 0, E, f, f'<rect {F} x="{x0 + f}" y="0" width="{E}" height="{f}"/>')
+    tile("left", x0, f, f, E, f'<rect {F} x="{x0}" y="{f}" width="{f}" height="{E}"/>')
+    tile("right", xr, f, f, E, f'<rect {F} x="{xr}" y="{f}" width="{f}" height="{E}"/>')
+    # bottom row: fill above, line along the bottom edge
+    for pos, x, w in (("bottomleft", x0, f), ("bottom", x0 + f, E), ("bottomright", xr, f)):
+        tile(pos, x, m, w, f,
+             f'<rect {F} x="{x}" y="{m}" width="{w}" height="{f - line_w}"/>'
+             f'<rect {L} x="{x}" y="{m + f - line_w}" width="{w}" height="{line_w}"/>')
+    return "\n".join(out), W
+
+
+def close_icon(name, x0, color, alpha, bg=None):
+    """16px tab close 'x' (KvFlat has none, so Kvantum's boxed default shows)."""
+    pin = 'style="fill:#000;fill-opacity:0"'
+    body = f'<rect {pin} x="{x0}" y="0" width="16" height="16"/>'
+    if bg:
+        body += f'<circle style="fill:{bg[0]};fill-opacity:{bg[1]}" cx="{x0 + 8}" cy="8" r="7"/>'
+    body += (f'<path style="fill:none;stroke:{color};stroke-opacity:{alpha};stroke-width:1.5;'
+             f'stroke-linecap:round" d="M{x0 + 5},5 L{x0 + 11},11 M{x0 + 11},5 L{x0 + 5},11"/>')
+    return f'<g id="{name}">{body}</g>'
+
+
+def build_tabs(primary, text, x):
+    p, t = hexa(primary), hexa(text)
+    clear = (t, 0)
+    parts = []
+    # floating-tab-* is what document-mode tab bars (Dolphin, Kate) use;
+    # KvFlat draws those as boxed buttons, so give both sets the tab look.
+    for prefix in ("tab", "floating-tab"):
+        for state, fill, line, lw in (
+            ("normal", clear, (t, TAB_BASELINE), 1),
+            ("focused", (t, TAB_HOVER_FILL), (t, 0.25), 1),
+            ("toggled", (p, TAB_ACTIVE_FILL), (p, 1), TAB_UNDERLINE),
+        ):
+            svg, w = tab_slice(f"{prefix}-{state}", x, fill, line, lw, TAB_RADIUS, TAB_FRAME)
+            parts.append(svg)
+            x += w + 10
+    for name, c, a, bg in (
+        ("tab-close-normal", t, 0.55, None),
+        ("tab-close-focused", t, 0.95, (t, 0.12)),
+        ("tab-close-pressed", p, 1, (p, 0.25)),
+        ("tab-close-disabled", t, 0.25, None),
+        ("tab-close-toggled", t, 0.75, None),
+        ("tab-close-toggledFocused", t, 0.95, (t, 0.12)),
+        ("tab-close-toggledPressed", p, 1, (p, 0.25)),
+    ):
+        parts.append(close_icon(name, x, c, a, bg))
+        x += 26
+    return "\n".join(parts), x
+
+
 def build_rounded(surface, primary, text):
     s, p, t = hexa(surface), hexa(primary), hexa(text)
     specs = [
@@ -150,6 +230,8 @@ def build_rounded(surface, primary, text):
         svg, w = nine_slice(name, x, fill, border, r, f)
         parts.append(svg)
         x += w + 10
+    tabs, x = build_tabs(primary, text, x)
+    parts.append(tabs)
     return "<g id=\"hermes-rounded\">\n" + "\n".join(parts) + "\n</g>"
 
 
@@ -179,6 +261,14 @@ def kvconfig(base_cfg, scheme):
         "tooltip_blur_radius": str(POPUP_RADIUS),
         "menu_shadow_depth": "0",   # KvFlat's shadow tiles are retired
         "tooltip_shadow_depth": "0",
+        # Tabs as a left-aligned strip, not centered floating buttons.
+        # (Kvantum always centers unless left_tabs is on.)
+        "left_tabs": "true",
+        "center_doc_tabs": "false",
+        "center_normal_tabs": "false",
+        "joined_inactive_tabs": "true",
+        "attach_active_tab": "false",
+        "no_inactive_tab_expansion": "true",
     }
     colors = {
         "window.color": hexa(surface),
@@ -226,6 +316,11 @@ def kvconfig(base_cfg, scheme):
     out, section = [], None
     overrides = {"%General": general, "GeneralColors": colors, "Hacks": hacks,
                  "ItemView": itemview,
+                 "Tab": {**frame(TAB_FRAME),
+                         "text.normal.color": hexa(inactive),
+                         "text.focus.color": light,
+                         "text.press.color": light,
+                         "text.toggle.color": light},
                  "MenuItem": {**frame(ITEM_FRAME), "frame": "true"},
                  "Menu": {**frame(POPUP_FRAME), "frame": "true", "interior": "true"},
                  "ToolTip": {**frame(POPUP_FRAME), "frame": "true", "interior": "true"}}
